@@ -9,15 +9,15 @@
       <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/logo.png') }}">
       <!-- CSS here -->
       <link rel="stylesheet" href="{{ url_for('static', filename='css/preloader.css') }}">
-      <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-      <link rel="stylesheet" href="{{ url_for('static', filename='css/animate.min.css') }}">
-      <link rel="stylesheet" href="{{ url_for('static', filename='css/animatedheadline.css') }}">
-      <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}">
-      <link rel="stylesheet" href="{{ url_for('static', filename='css/swiper-bundle.css') }}">
-      <link rel="stylesheet" href="{{ url_for('static', filename='css/backToTop.css') }}">
-      <link rel="stylesheet" href="{{ url_for('static', filename='css/fontAwesome5Pro.css') }}">
-      <link rel="stylesheet" href="{{ url_for('static', filename='css/flaticon.css') }}">
-      <link rel="stylesheet" href="{{ url_for('static', filename='css/default.css') }}">
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/bootstrap.min.css') }}">
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/animate.min.css') }}">
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/animatedheadline.css') }}">
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/owl.carousel.min.css') }}">
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/swiper-bundle.css') }}">
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/backToTop.css') }}">
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/fontAwesome5Pro.css') }}">
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/flaticon.css') }}">
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/default.css') }}">
       <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
    </head>
@@ -66,10 +66,10 @@
                   <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-6 col-8">
                      <div class="header__right d-flex justify-content-end align-items-center">
                         <div class="header__btn ml-20">
-                           <a href="#" class="e-btn link-btna" target="_blank">Login</a>
+                           <a href="/signup#login" class="e-btn link-btna">Login</a>
                         </div>
                         <div class="header__btn ml-20">
-                           <a href="#" class="e-btn link-btna" target="_blank">Sign Up</a>
+                           <a href="/signup" class="e-btn link-btna">Sign Up</a>
                         </div>
                      </div>
                   </div>
@@ -98,7 +98,7 @@
                                  <img src="{{ url_for('static', filename='images/swiper-slider.png') }}" alt="">
                               </div> -->
                               <div class="flider__btn mt-40">
-                                 <a href="#homeDemo" class="e-btn e-btn-white">Get Started</a>
+                                 <a href="/signup" class="e-btn e-btn-white">Get Started</a>
                               </div>
                            </div>
                         </div>
@@ -744,4 +744,5 @@
       <script src="{{ url_for('static', filename='js/main.js') }}"></script>
    
 
-</body></html>
+</body>
+</html>
