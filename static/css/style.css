@@ -11,6 +11,7 @@ body {
   font-weight: normal;
   color: #5e5f6b;
   line-height: 24px;
+  overflow-x: hidden;
 }
 
 a {
@@ -154,6 +155,18 @@ p {
   margin-bottom: 15px;
   line-height: 24px;
 }
+
+
+.row{
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.home_txt{
+  margin-bottom: 80px;
+}
+
 
 *::-moz-selection {
   background: #de2021;
@@ -392,7 +405,7 @@ p {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  font-size: 14px;
+  font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0;
   line-height: 1.2em;
@@ -414,6 +427,11 @@ p {
   z-index: 1;
   overflow: hidden;
 }
+
+.e-btn.e-btn-white{
+  font-size: 1.2rem;
+}
+
 .link-btna {
   padding: 0;
   width: 120px;
@@ -841,7 +859,7 @@ p {
   margin-right: 35px;
 }
 .main-menu ul li a {
-  font-size: 14px;
+  font-size: 1rem;
   font-weight: 700;
   color: #0e1133;
   display: inline-block;
@@ -1610,19 +1628,19 @@ p {
 }
 @media only screen and (min-width: 1400px) and (max-width: 1600px) {
   .hero-img img {
-    padding-top: 150px;
+    /* padding-top: 150px; */
     max-width: 100%;
   }
 }
 @media only screen and (min-width: 1200px) and (max-width: 1399px) {
   .hero-img img {
-    padding-top: 150px;
+    /* padding-top: 150px; */
     max-width: 100%;
   }
 }
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
   .hero-img img {
-    padding-top: 150px;
+    /* padding-top: 150px; */
     width: 100%;
   }
 }
@@ -1758,9 +1776,9 @@ p {
 /*  03. PURCHASE CSS START
 /*----------------------------------------*/
 .purchase__title {
-  font-size: 50px;
+  font-size: 2.5rem;
   color: #ffffff;
-  margin-bottom: 40px;
+  margin-bottom: 50px;
 }
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .purchase__title {
@@ -1821,6 +1839,106 @@ p {
   background: rgba(23, 18, 46, 0.5);
   mix-blend-mode: multiply;
 }
+
+/*----------------------------------------*/
+/*  FOOTER
+/*----------------------------------------*/
+footer {
+  position: sticky;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+.footer_container{
+  color: #000000;
+  padding: 50px;
+  background-color: #ffffff;
+  width: 100%;
+  height: 300px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 50px;
+}
+
+.footer_container h2,
+.footer_container p{
+  color: rgb(0, 0, 0);
+}
+
+.decs,
+.qucik_links,
+.newsletter{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 212px;
+  width: 400px;
+
+}
+
+/* .newsletter h2{
+  margin-bottom: 20px;
+} */
+
+.name,
+.email{
+  color: #ffffff;
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  background-color: #245D51;
+  height: 50px;
+  width: 400px;
+  border: #000000 1px solid;
+  align-items: center;
+  justify-content: left;
+  margin-bottom: 30px;
+
+}
+
+/* .under_text{
+  background-color: #000;
+  color: #ffffff;
+  height: 30px;
+  width: 100vw;
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  bottom: 0;
+
+} */
+
+
+.under_text {
+  position: relative;
+  background-color: #000;
+  color: #ffffff;
+  height: 30px;
+  width: 100vw;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  bottom: 0; /* This will make it stick to the bottom */
+  left: 0; /* You can also add this to make it stick to the left */
+  right: 0; /* And this to make it stick to the right */
+  z-index: 1000; /* Add this to ensure it's on top of other elements */
+}
+
+
+
+
+
+
+
 
 /*----------------------------------------*/
 /*  03. PROMOTION CSS START
