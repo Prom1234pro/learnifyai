@@ -1,8 +1,8 @@
 from datetime import datetime
 from flask import render_template, request, redirect, session, get_flashed_messages
 from main import create_app
-from main.models import db, User, Group, Course
-from main.register import register_routes, load_active_sessions, save_active_sessions
+from main.models import User, Group, Course
+from main.register import load_active_sessions, save_active_sessions
 # from flask_login import LoginManager, login_user, current_user, logout_user
 
 app, bcrypt = create_app()

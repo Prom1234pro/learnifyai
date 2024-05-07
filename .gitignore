@@ -6,6 +6,7 @@
 
 # Ignore virtual environment
 /env/
+re.txt
 
 # Ignore Python bytecode files
 __pycache__/
