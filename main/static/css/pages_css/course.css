@@ -1,0 +1,90 @@
+.dash-widget {
+	background-color: #fff;
+    display: flex;
+	border-radius: 4px;
+	margin-bottom: 30px;
+	padding: 20px;
+	position: relative;
+	/* box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1); */
+    border: 1px solid #b5b5b5;
+}
+.dash-widget span {
+    margin-right: 15px;
+}
+.start-quiz {
+    justify-self: flex-end;
+    align-self: center;
+    margin-left: auto;
+    margin-right: 10px;
+    background-color: rgb(18, 141, 77);
+    border-radius: .2em;
+    color: white;
+    padding : 10px;
+    cursor: pointer;
+}
+
+.dash-widget-bg {
+	width: 65px;
+	float: left;
+	color: #fff;
+	display: block;
+	font-size: 50px;
+	text-align: center;
+	line-height: 65px;
+	background: #55ce63;
+	border-radius: 50%;
+	font-size: 40px;
+	height: 65px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+
+
+.widget-title1 {
+    color: #616161;
+    font-weight: bold;
+}
+.widget-title2 {
+    font-style: oblique;
+}
+
+/*-----------------
+	5. Header
+-----------------------*/
+
+.header {
+	background-color: #03311b;
+	height: 70px;
+    display: flex;
+    align-items: center;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2em;
+    padding: 2.5em 0;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+/* .header .logo {
+	height: 50px;
+	position: relative;
+	text-align: center;
+	width: 230px;
+} */
+
+.container.fl {
+    /* border: 1px solid red; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.button-upload {
+    /* display: inline-block; */
+    align-self: center;
+    background-color: rgb(18, 141, 77);
+    border-radius: .2em;
+    color: white;
+    padding : 8px 1.5em;
+    border: none;
+}

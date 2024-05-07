@@ -1,0 +1,382 @@
+@import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sen:wght@400;700;800&display=swap');
+
+:root
+{
+    --primary-color: rgb(20, 95, 43);
+    --secondary-color: rgb(236, 236, 236);
+}
+
+
+
+body
+{
+    font-family: "Jost";
+    width: 100%;
+}
+
+
+main
+{
+    background-image: url(./bg.jpg);
+    background-size: cover;
+    min-height: 100vh;
+    display: grid;
+    width: 100%;
+    padding: 0 100px;
+    position: relative;
+}
+.side
+{
+    /* height: 100%; */
+    width: 100%;
+    position: relative;
+    z-index: 10;
+}
+.side_image
+{
+    display: flex;
+    width: 100%;
+    /* height: 100%; */
+    flex-direction: column;
+
+}
+.side_image img
+{
+    width: 100%;
+    height: 500px;
+}
+
+.border-up
+{
+    width: 100%;
+    height: 10px;
+    display: block;
+    position: relative;
+    background-color: var(--secondary-color);
+}
+.border-up::before
+{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: var(--primary-color);
+}
+.border-down
+{
+    content: "";
+    width: 100%;
+    height: 10px;
+    display: block;
+    background-color: var(--secondary-color);
+}
+.step-count
+{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 10px;
+    height: 100%;
+    display: grid;
+    background-color: var(--secondary-color);
+    z-index: 1000;
+}
+.step-single
+{
+    height: 20%;
+    display: flex;
+    flex-direction: column;
+}
+.step-line
+{
+    height: 100%;
+    top: 0;
+    transition: 0.5s;
+    left: 0;
+    display:block;
+    width: 10px;
+    background-color: var(--secondary-color);
+    position: relative;
+    z-index: -2;
+}
+.step-line .fill
+{
+    width: 100%;
+    height: 0;
+    transition: 0.5s;
+    background-color: var(--primary-color);
+}
+.step-number
+{
+    border-radius: 50%;
+    position: relative;
+    left: -18px;
+    background-color: rgb(255, 255,255);
+    min-width: 46px;
+    min-height: 46px;
+    font-size: 25px;
+    color: rgb(212, 212, 212);
+    font-weight: bold;
+    display: grid;
+    place-content: center;
+}
+
+.step-number::before
+{
+    content: "";
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 54px;
+    border-radius: 50%;
+    height: 54px;
+    z-index: -1;
+    background-color: var(--secondary-color);
+}
+.step-number::after
+{
+    content: "";
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    z-index: -1;
+    transition: 0.5s;
+    border-radius: 50%;
+    width: 54px;
+    background-color: var(--primary-color);
+}
+.step-single.active .fill
+{
+    height: 100%;
+}
+.step-single.active .step-number
+{
+    color: rgb(0,0,0);
+}
+.step-single.active .step-number::after
+{
+    height: 54px;
+}
+form
+{
+    display: grid;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+.countdown h3
+{
+    font-size: 30px;
+    font-family: "Jost";
+    color: rgb(255, 255, 255);
+    font-weight: normal;
+}
+  
+
+
+.countdown
+{
+    position: absolute;
+    top: 0;
+    right: 0px;
+    background-color: var(--primary-color);
+    width: 73px;
+    height: 111px;
+    display: grid;
+    place-content: center;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+
+      
+}
+#countdown-timer
+{
+    display: block;
+    font-weight: bold;
+}
+.wrapper
+{
+    width: 71%;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+.wrapper section
+{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+    z-index: 10;
+}
+fieldset
+{
+    flex: 1;
+    margin-top: 20px;
+}
+
+.quiz-question
+{
+    font-size: 28px;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+}
+.radio-field
+{
+    position: relative;
+    height: 75px;
+    width: 100%;
+    margin-bottom: 35px;
+    display: grid;
+    align-items: center;
+}
+.radio-field input
+{
+    appearance: none;
+    position: absolute;
+    border: solid 3px var(--secondary-color);
+    background-color: rgb(255,255,255);
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    transition: 0.5s;
+}
+.radio-field label
+{
+    font-size: 20px;
+    color: rgb(0, 10, 56);
+    font-weight: bold;
+    display: flex;
+    flex-direction: row;
+    pointer-events: none;
+    position: relative;
+    z-index: 10;
+    line-height: 75px;
+}
+.radio-field label::before
+{
+    content: "X";
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    line-height: 105px;
+    top: -10px;
+    background-color: var(--secondary-color);
+    width: 90px;
+    height: 105px;
+    border-bottom-left-radius: 10px;
+    border-top-left-radius: 10px;
+    font-size: 40px;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    margin-right: 50px;
+    transition: 0.5s;
+}
+.radio-field .op1::before
+{
+    content: "A";
+}
+.radio-field .op2::before
+{
+    content: "B";
+}
+.radio-field .op3::before
+{
+    content: "C";
+}
+.radio-field .op4::before
+{
+    content: "D";
+}
+.radio-field input:checked
+{
+    border-color: var(--primary-color);
+}
+.radio-field input:checked~label::before
+{
+    background-color: var(--primary-color);
+}
+.radio-field input:checked::before
+{
+    content: "";
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    width: 40px;
+    height: 40px;
+}
+.radio-field input:checked::after
+{
+    content: "";
+    position: absolute;
+    border-left: solid 3px rgb(0, 0, 0);
+    border-bottom: solid 3px rgb(0,0,0);
+    top: 30px;
+    right: 30px;
+    width: 25px;
+    height: 15px;
+    transform: rotate(-45deg);
+    opacity: 0;
+    z-index: 1000;
+
+}
+  
+
+
+.next-prev
+{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: space-between;
+}
+.next-prev button
+{
+    border: solid 2px transparent;
+    background-color: rgb(255, 255, 255);
+    height: 70px;
+    width: 230px;
+    font-size: 18px;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+}
+.next-prev button i
+{
+    position: relative;
+    top: 2px;
+    margin: 0 7px;
+
+}
+.next-prev .next
+{
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.next-prev .submit {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+  
+.footer-line
+{
+    background-color: rgb(0, 0, 0);
+    width: 100%;
+    height: 158px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+
+#error div
+{
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+}
