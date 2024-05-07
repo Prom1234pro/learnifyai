@@ -112,7 +112,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form method="post" id="groupForm" action="/admin/create-group-key/{{user_id}}">
+          <form method="post" id="groupForm" action="/admin/create-group-key/{{user.id}}">
             <div class="form-group group-name">
                 <label for="group-name" class="col-form-label">Group Name:</label>
                 <input type="text" name="group-name" class="form-control" id="group-name">
@@ -163,7 +163,8 @@
       var button = document.querySelector('#button-up');
       var groupPin = document.querySelector('#group-pin')
       var form = document.getElementById('groupForm');
-      var userId = "{{user_id}}"
+      var userId = "{{user.id}}"
+      console.log(userId)
       groupPin.style.display = "none"
 
       checkbox.addEventListener('change', function() {
@@ -174,7 +175,7 @@
           groupName.style.display = "none";
           school.style.display = "none";
           maxOccupance.style.display = "none";
-          form.action = '/user/create-group/'+userId;
+          form.action = '/user/create-group/{{user.id}}';
         } else {
           enterIdInput.setAttribute('disabled', 'disabled');
           button.textContent = 'Request ID';
@@ -182,12 +183,10 @@
           groupName.style.display = "block";
           school.style.display = "block";
           maxOccupance.style.display = "block";
-          form.action = '/admin/create-group-key/'+userId;
+          form.action = '/admin/create-group-key/{{user.id}}';
         }
       });
-    });
-    
-    
+    }); 
   </script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
