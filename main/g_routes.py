@@ -17,20 +17,22 @@ ACTIVE_SESSIONS_FILE = 'active_sessions.json'
   
 @groute_bp.route('/groups/<string:id>')
 def group(id):
-    public_groups = Group.query.filter_by(is_public=True).all()
+    messages = get_flashed_messages(with_categories=True)
+    public_groups = Group.query.filter_by(is_public=True, activated=True).all()
     user = User.query.get_or_404(id)
-    user_groups = user.groups
+    user_groups = user.activated_groups
     # if not is_auth():     
     #     return redirect(f"/logout/{id}?return_url=http://localhost:5000/groups/{id}")
     # user_activity(id)
-    return render_template('group.html', user=user, user_groups=user_groups, public_groups=public_groups)
+    return render_template('group.html', messages=messages, user=user, user_groups=user_groups, public_groups=public_groups)
 
 @groute_bp.route('/admin/create-group-key/<string:user_id>', methods=['POST'])
 def generate_group_key(user_id):
     if request.method == 'POST':
         data = request.form
         if not data:
-            return jsonify({'error': 'No data provided'})
+            flash('No data provided', "warning")
+            return redirect('/groups/'+user_id)
         
         no_of_users = data.get('max-occupancy')
         # group_admin_id = data.get('group_admin_id')
@@ -43,7 +45,11 @@ def generate_group_key(user_id):
         )
         db.session.add(group)
         db.session.commit()
-        return jsonify({'message': 'Group created successfully', 'group_id': group.group_key, 'no_of_users': group.max_no_users}), 201
+        flash('Group creation was successful', "success")
+        flash('Click create group and check has id', "info")
+        flash(f'Your id is {group.group_key}', "info")
+        flash('Copy your id if not it will be lost', 'warning')
+        return redirect('/groups/'+user_id)
 
 @groute_bp.route('/user/create-group/<string:user_id>', methods=['POST'])
 def create_group(user_id):
@@ -55,7 +61,8 @@ def create_group(user_id):
     group_key = data.get('group-id')
     group = Group.query.filter_by(group_key=group_key).first()
     if not group or group.group_admin_id != user_id:
-        return jsonify({'error': 'Invalid group key'}), 403
+        flash('Invalid group identifier', "warning")
+        return redirect('/groups/'+user_id)
     
     # if int(group.max_no_users) != int(no_of_users):
     #     return jsonify({'error': f'Valid numbers of users is {group.max_no_users}'}), 403
@@ -64,21 +71,22 @@ def create_group(user_id):
     group.pass_key = group_pin
     user = User.query.get(user_id)
     if not user:
-        return jsonify({'error': 'User not found'}), 404
+        flash('You are not authorized to this page', "warning")
+        return redirect('/login-user')
 
     group.users.append(user)
     group.current_no_users += 1
 
     db.session.commit()
-    return jsonify({'message': 'Group created successfully',"act":group.activated, 'group_id': group.id}), 201
+    flash(f'{group.name} has been created successfully', "success")
+    return redirect('/groups/'+user_id)
 
 @groute_bp.route('/user/add-to-group', methods=['POST'])
 def add_user_to_group():
     if request.method == 'POST':
 
-        data = request.json
+        data = request.get_json()
 
-        # Extract group_id and user_id from the JSON data
         if not data:
             return jsonify({'error': 'No data provided'}), 400
         
@@ -91,21 +99,32 @@ def add_user_to_group():
         # Retrieve the group and check if it exists
         group = Group.query.get(group_id)
         if not group:
-            return jsonify({'error': 'Group not found'}), 404
+            flash('This group was deleted by the creator', "warning")
+            return redirect('/groups/'+user_id)
 
         # Check if the passkey matches the passkey associated with the group
         if str(pass_key) != str(group.pass_key):
-            return jsonify({'error': 'Incorrect passkey'}), 403
+            flash('Incorrect passkey', "warning")
+            return redirect('/groups/'+user_id)
 
         if group.current_no_users +1 > group.max_no_users:
-            return jsonify({'error': 'Group already filled'})
+            flash('Group already filled', "warning")
+            return redirect('/groups/'+user_id)
         # Retrieve the user and add them to the group
         user = User.query.get(user_id)
         if not user:
-            return jsonify({'error': 'User not found'}), 404
+            flash('An unknown error occured', "warning")
+            flash('You were logged out', "warning")
+            return redirect('/login-user')
+
+        if user in group.users:
+            return redirect('/groups/'+user_id)
 
         group.users.append(user)
         group.current_no_users += 1
         db.session.commit()
+        
 
-        return jsonify({'message': f'User {user_id} added to group {group_id} successfully'}), 200
+        flash('Joined group successfully', "info")
+        print('/groups/'+user_id)
+        return redirect('/groups/'+user.id)

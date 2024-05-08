@@ -5,16 +5,26 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz</title>
-    <link rel="stylesheet" href="assets/fonts/font.css">
+    <!-- <link rel="stylesheet" href="assets/fonts/font.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/pages_css/quiz.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages_css/message.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/responsive.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/animation.css') }}">   
     <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/result.css') }}">
     
 </head>
 <body>
+  <div class="messages">
+    {% for category, message in messages %}
+      <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+
+  </div>
     <main class="overflow-hidden">
         <div class="row">
             <div class="col-md-5 tab-100 order-tab tab-none">
@@ -105,11 +115,20 @@
     </main>
 
     <div id="error"></div>
-
     <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js.download') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js.download') }}"></script>
-    <script src="assets/js/Bootstrap/bootstrap.min.js"></script>
-    <script src="assets/js/jQuery/jquery-3.6.3.min.js"></script>
+    <!-- <script src="assets/js/Bootstrap/bootstrap.min.js"></script>
+    <script src="assets/js/jQuery/jquery-3.6.3.min.js"></script> -->
     <script src="{{ url_for('static', filename='js/quiz.js') }}"></script>    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        var socket = io();
+        socket.on('connect', function() {
+            socket.emit('my event', {data: 'I\'m connected!'});
+        });
+        socket.on('disconnect', () => {
+          socket.emit('user-offline', "{{user_id}}");
+        });
+    </script>
 </body>
 </html>

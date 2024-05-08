@@ -1,0 +1,9 @@
+.messages {
+    position: fixed;
+    z-index: 99999;
+    width: 100%;
+    max-width: 500px;
+    left: 50%;
+    top: 3%;
+    transform: translateX(-50%);
+}

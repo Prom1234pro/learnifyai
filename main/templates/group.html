@@ -10,8 +10,8 @@
   {% for group in user_groups %}
     <div class="col-md-12 col-sm-12 col-lg-6 col-xl-6">
         <div class="dash-widget">
-            <span class="dash-widget-bg"><i class="fa fa-stethoscope" aria-hidden="true"></i></span>
-            <div class="dash-widget-info text-right">
+            <span class="dash-widget-bg"><i class="fa fa-book" aria-hidden="true"></i></span>
+            <div class="dash-widget-info">
                 <h3>{{ group.name }}</h3>
                 <span class="widget-title1">{{group.school}}</i></span><br>
                 <span class="widget-title2">{{group.current_no_users}} members</i></span>
@@ -28,8 +28,8 @@
   {% for group in public_groups %}
     <div class="col-md-12 col-sm-12 col-lg-6 col-xl-6">
         <div class="dash-widget">
-            <span class="dash-widget-bg"><i class="fa fa-stethoscope" aria-hidden="true"></i></span>
-            <div class="dash-widget-info text-right">
+            <span class="dash-widget-bg"><i class="fa fa-book" aria-hidden="true"></i></span>
+            <div class="dash-widget-info">
               <h3>{{ group.name }}</h3>
               <span class="widget-title1">{{group.school}}</i></span><br>
               <span class="widget-title2">{{group.current_no_users}} members</i></span>
@@ -95,7 +95,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            <button type="button" id="button-pin" class="button-upload">Enter</button>
+            <button type="submit" id="button-pin" class="button-upload">Enter</button>
           </div>
         </form>
       </div>

@@ -15,6 +15,12 @@ ACTIVE_SESSIONS_FILE = 'active_sessions.json'
 
 @qroute_bp.route('/admin/create-quiz', methods=['POST'])
 def create_quiz():
+    # user = None
+    # if "user" in session:
+    #     user = session["user"]
+    # else:
+    #     flash('User needs authorization to perform this action', 'warning')
+    #     return redirect('/login-user')
     if request.method == 'POST':
         data = request.json  # Get JSON data from the request body
 
@@ -46,6 +52,6 @@ def create_quiz():
             return jsonify({'message': 'Quizzes created successfully'}), 201
 
         except Exception as e:
-            return jsonify({'error': 'An error occurred while creating quizzes: ' + str(e)}), 500
+            return jsonify({'error': 'unknown error'}), 401
 
     return jsonify({'error': 'Method not allowed'}), 405

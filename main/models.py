@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
+from sqlalchemy.orm import object_session
 import uuid
 from datetime import datetime, timedelta
 
@@ -21,6 +22,7 @@ class User(UserMixin, db.Model):
     groups = db.relationship('Group', secondary=Groups, lazy='subquery',
         backref=db.backref('users', lazy=True))
     
+    
     def update_activity_time(self):
         self.last_activity_time = datetime.utcnow()
         db.session.commit()
@@ -31,7 +33,10 @@ class User(UserMixin, db.Model):
         # Check if the difference between current time and last activity time exceeds 24 hours
         return (datetime.utcnow() - self.last_activity_time) > timedelta(hours=24)
 
-
+    @property
+    def activated_groups(self):
+        return object_session(self).query(Group).with_parent(self).filter(Group.activated == True).all()
+    
     # def set_session_id(self, session_id):
     #     self.session_id = session_id
     #     db.session.commit()
@@ -50,7 +55,7 @@ class Group(db.Model):
     school = db.Column(db.String(120))
     is_public = db.Column(db.Boolean, default=True)
     group_key = db.Column(db.String(120))
-    pass_key = db.Column(db.String(120))
+    pass_key = db.Column(db.String(120), default=1234)
 
 
 class Course(db.Model):

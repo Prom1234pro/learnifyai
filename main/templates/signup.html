@@ -3,10 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/signup.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages_css/message.css') }}">
     <title>Document</title>
 </head>
 <body>
+  <div class="messages">
+    {% for category, message in messages %}
+      <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+
+  </div>
     <div class="form">
         <ul class="tab-group">
             <li class="tab {% if page == 'signup' %} active{% endif %}"><a href="register">Sign Up</a></li>
@@ -54,11 +66,7 @@
           </div>
           
           <div id="login" class="{% if page == 'login' %} show {% else %}hide{% endif %}">   
-            {% for category, message in messages %}
-        <div class="alert alert-{{ category }}">
-            {{ message }}
-        </div>
-    {% endfor %}
+            
             <h1>Welcome Back!</h1>
             
             <form action="{% if return_url %}/login-user?return_url={{ return_url }} {% else %}/login-user{% endif %}" method="post">
@@ -68,7 +76,7 @@
                 Email Address<span class="req">*</span>
               </label>
               <input type="email" name="email" required autocomplete="off"/>
-            </div>
+            </div>                      
             
             <div class="field-wrap">
               <label>
@@ -88,6 +96,8 @@
         </div><!-- tab-content -->
         
   </div> <!-- /form -->
-  <!-- <script src="{{ url_for('static', filename='js/signup.js') }}"></script> -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

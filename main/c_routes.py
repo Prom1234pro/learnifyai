@@ -14,6 +14,12 @@ croute_bp = Blueprint('course', __name__)
 
 @croute_bp.route('/user/create-course/<string:group_id>', methods=['POST'])
 def create_course(group_id):
+    user = None
+    if "user" in session:
+        user = session["user"]
+    else:
+        flash('User needs authorization to perform this action', 'warning')
+        return redirect('/login-user')
     if request.method == 'POST':
         # Extract data from the request body
         data = request.form
@@ -35,6 +41,7 @@ def create_course(group_id):
         db.session.add(new_course)
         db.session.commit()
 
-        return jsonify({'message': 'Course created successfully'}), 201
+        flash('course created successfully', 'success')
+        return redirect(f'/courses/{user.id}/{group_id}')
 
     return jsonify({'error': 'Method not allowed'}), 405

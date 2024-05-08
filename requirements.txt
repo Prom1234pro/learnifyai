@@ -9,6 +9,7 @@ Flask-Login==0.6.3
 Flask-Script==2.0.6
 Flask-Session==0.8.0
 Flask-SQLAlchemy==3.1.1
+Flask-SocketIO==5.3.6
 Flask-UUID==0.2
 greenlet==3.0.3
 itsdangerous==2.2.0

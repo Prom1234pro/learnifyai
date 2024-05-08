@@ -6,11 +6,21 @@
         <title>{% block title %}{% endblock %}</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
         <link rel="stylesheet" href="{{ url_for('static', filename='css/pages_css/course.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/pages_css/message.css') }}">
       <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/bootstrap.min.css') }}"> -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/vendor/bootstrap.min.css') }}">
     </head>
     <body>
+        <div class="messages">
+            {% for category, message in messages %}
+              <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endfor %}
+        
+          </div>
         <!-- <ul>
             <li><a href="practice?course=course1">Take Quiz Course 1</a></li>
             <li><a href="practice?course=course2">Take Quiz Course 2</a></li>

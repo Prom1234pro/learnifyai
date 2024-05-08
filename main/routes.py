@@ -36,10 +36,13 @@ def save_active_sessions(active_sessions):
 
 @route_bp.route('register', methods=['GET', 'POST'])
 def create_user():
+    messages = get_flashed_messages(with_categories=True)
+
     if request.method == 'POST':
         data = request.form
         if not data:
-            return jsonify({'error': 'No data provided'})
+            flash('you did not provide any data', "warning")
+            return redirect('/register')
         
         username = data.get('username')
         email = data.get('email')
@@ -49,20 +52,25 @@ def create_user():
 
         existing_user = User.query.filter_by(username=username).first()
         if existing_user:
-            return jsonify({'message': 'Username already exists'}), 400
+            flash('username already exists', "warning")
+            return redirect('/register')
         existing_email = User.query.filter_by(email=email).first()
         if existing_email:
-            return jsonify({'message': 'Email already exists'}), 400
-
+            flash('email already exists', "warning")
+            flash('If you are the owner login', "success")
+            return redirect('/register')
+    
         new_user = User(username=username, email=email, password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
-        return jsonify({'message': 'Sign Up successful'}), 201
+        flash('Your account creation was successful', "success")
+        flash('Note: This is a test version of the app and your account will be deleted after 24 hours', "warning")
+        return redirect('/login-user')
     
-    return render_template('signup.html', page="signup")
+    return render_template('signup.html', messages=messages, page="signup")
 
 @route_bp.route('/login-user', methods=['GET','POST'])
-def login_user_():  
+def login_user_():
     active_sessions = load_active_sessions()
     args = request.args
     url = args.to_dict()
@@ -70,15 +78,22 @@ def login_user_():
     if request.method == 'POST':
         data = request.form
         if not data:
-            return jsonify({'error': 'No data provided'})
+            flash('you did not provide any data', "warning")
+            return redirect('/login-user')
         
         email = data.get('email')
         password = data.get('password')
 
         user = User.query.filter_by(email=email).first()
+        if user is None:
+            flash('Invalid credentials', "warning")
+            return redirect('/login-user')
+        
         is_valid = bcrypt.check_password_hash(user.password, password)
-        if not user or not is_valid:
-            return jsonify({'message': 'Invalid email or password'}), 401
+        if not is_valid:
+            flash('Invalid email or password', "warning")
+            return redirect('/login-user')
+        
         if user.id in active_sessions.keys():
             print("user.id is in active sessions")
             active_sessions = load_active_sessions()
@@ -86,24 +101,25 @@ def login_user_():
             if datetime.utcnow() - last_activity_time > SESSION_TIMEOUT:
                 del active_sessions[user.id]
                 print(active_sessions)
+            elif 'user' in session:
+                flash('Welcome Back')
             else:
-                flash('User is already logged in')
+                flash('Our system discovered an unusual login request', "warning")
+                flash('Your account will be suspended if this persist', "warning")
                 return redirect('/login-user')
     
         active_sessions[user.id] = {'email': user.email, 'last_activity': datetime.utcnow().isoformat()}
-        print(active_sessions)
         # db.session.commit()
         save_active_sessions(active_sessions)
-        print(url,"here11111111111111111111")
         session["user"] = user
         url_query = url.get('return_url', None)
-        print(url_query, "hereeeeeeeeeeeee")
         if url_query is not None:
+            flash('Welcome back! continue from where you left off', "success")
             return redirect(url_query)
     
+        flash('login successful', "success")
         return redirect(f'/groups/{user.id}')
     url_query = url.get('return_url', None)
-    print(url_query, "hereeeeeeeeeeeee")
     if url_query is not None:
         return render_template('signup.html', messages=messages, page="login", return_url=url_query)
 

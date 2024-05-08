@@ -743,6 +743,15 @@
       <script src="{{ url_for('static', filename='js/wow.min.js.download') }}"></script>
       <script src="{{ url_for('static', filename='js/main.js') }}"></script>
    
-
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+      <script type="text/javascript" charset="utf-8">
+         var socket = io();
+         socket.on('connect', function() {
+               socket.emit('my event', {data: 'I\'m connected!'});
+         });
+         socket.on('disconnect', () => {
+            console.log('Disconnected from server');
+         });
+      </script>
 </body>
 </html>

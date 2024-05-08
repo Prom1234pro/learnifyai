@@ -51,8 +51,8 @@ $(document).ready(function() {
     $(".prev").on('click', function() {
         prev();
     });
-
-    $(".submit").on('click', function() {
+    
+    function resultFunction() {
         // Perform form validation
         var allRadioInputs = $('input[type="radio"]');
         allRadioInputs.each(function() {
@@ -80,7 +80,8 @@ $(document).ready(function() {
         }
         correctOptions = [];
         wrongOptions = [];
-    });
+    }
+    $(".submit").on('click', resultFunction);
 
     // $('#resultModal').on('show.bs.modal', function() {
     //     // Calculate total score
@@ -94,7 +95,8 @@ $(document).ready(function() {
         if (count == 0) {
             clearInterval(interval);
             // Automatically submit the form when timer reaches 0
-            $("#quizForm").submit();
+            // $("#quizForm").submit();
+            // resultFunction()
         }
     }, 1000);
 });
