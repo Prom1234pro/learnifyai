@@ -4,9 +4,9 @@ from flask import (Blueprint, redirect,
     )
 import uuid
 import json
-from .models import db, User, Quiz, Option, Group
+from ..models.models import db, User, Quiz, Option, Group
 from datetime import datetime, timedelta
-from . import bcrypt 
+from .. import bcrypt 
 
 SESSION_TIMEOUT = timedelta(seconds=10)
 groute_bp = Blueprint('group', __name__)

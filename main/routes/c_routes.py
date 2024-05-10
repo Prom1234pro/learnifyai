@@ -4,13 +4,31 @@ from flask import (Blueprint, redirect,
     )
 import uuid
 import json
-from .models import db, Course
+from ..models.models import db, Course, Group, User
 from datetime import datetime, timedelta
-from . import bcrypt 
+from .. import bcrypt 
 import requests
 
+def is_auth():
+    if 'user' in session:
+        return True
+    else:
+        return False
+    
 SESSION_TIMEOUT = timedelta(seconds=10)
 croute_bp = Blueprint('course', __name__)
+
+@croute_bp.route('/courses/<string:id>/<string:group_id>')
+def course_(id, group_id):
+    group = Group.query.get_or_404(group_id)
+    user = User.query.get_or_404(id)
+    courses = group.courses
+    messages = get_flashed_messages(with_categories=True)
+    if not is_auth():
+        return redirect(f"/logout/{id}?return_url=http://localhost:5000/courses/{id}")
+    # user_activity(id)
+    return render_template('course.html', messages=messages, user=user, group_id=group_id, courses=courses)
+
 
 @croute_bp.route('/user/create-course/<string:group_id>', methods=['POST'])
 def create_course(group_id):

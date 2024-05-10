@@ -1,40 +1,18 @@
 from flask import (Blueprint, redirect, 
-    render_template, request, g,
+    render_template, request,
     jsonify, session, flash, get_flashed_messages
     )
 import uuid
 import json
-from .models import db, User, Quiz, Option, Group
+from main.utils import load_active_sessions, save_active_sessions, SESSION_TIMEOUT
+from ..models.models import db, User, Quiz, Option, Group
 from datetime import datetime, timedelta
-from . import bcrypt 
+from .. import bcrypt 
+
+a_route_bp = Blueprint('auth', __name__)
 
 
-SESSION_TIMEOUT = timedelta(hours=24)
-route_bp = Blueprint('auth', __name__)
-
-ACTIVE_SESSIONS_FILE = 'active_sessions.json'
-
-def load_active_sessions():
-    try:
-        with open(ACTIVE_SESSIONS_FILE) as file:
-            active_sessions_serializable = json.load(file)
-            # Convert ISO format strings back to datetime objects
-            return {
-                user_id: {
-                    'email': session_data['email'],
-                    'last_activity': session_data['last_activity']
-                } for user_id, session_data in active_sessions_serializable.items()
-            }
-    except FileNotFoundError:
-        return {}
-
-# Load active sessions from the JSON file when the application starts
-
-def save_active_sessions(active_sessions):
-    with open(ACTIVE_SESSIONS_FILE, 'w') as file:
-        json.dump(active_sessions, file)
-
-@route_bp.route('register', methods=['GET', 'POST'])
+@a_route_bp.route('register', methods=['GET', 'POST'])
 def create_user():
     messages = get_flashed_messages(with_categories=True)
 
@@ -69,7 +47,7 @@ def create_user():
     
     return render_template('signup.html', messages=messages, page="signup")
 
-@route_bp.route('/login-user', methods=['GET','POST'])
+@a_route_bp.route('/login-user', methods=['GET','POST'])
 def login_user_():
     active_sessions = load_active_sessions()
     args = request.args
@@ -125,8 +103,22 @@ def login_user_():
 
     return render_template('signup.html', messages=messages, page="login")
 
+@a_route_bp.route('/logout/<string:id>')
+def logout(id):
+    args = request.args
+    url = args.to_dict()
+    active_sessions = load_active_sessions()
+    active_sessions.pop(id, None)
+    save_active_sessions(active_sessions)
+    session.pop('user', None)
+    session.modified = True
+    session.clear()
+    url_query = url.get('return_url', None)
+    if url_query is not None:
+        return redirect(f'/login-user?return_url={url_query}')
+    return redirect('/login-user')
 
-@route_bp.route('/groups/remove_user', methods=['POST'])
+@a_route_bp.route('/groups/remove_user', methods=['POST'])
 def remove_user_from_group():
     data = request.get_json()
     if not data:
