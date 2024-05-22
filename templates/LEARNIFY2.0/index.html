@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Learnify AI</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="mediaqueries.css" />
   </head>
   <body>
     <header>
@@ -28,17 +29,23 @@
         <div class="home_text">
           <h2>Learnify Your Study</h2>
           <h3>The new way to us AI - for smart studying</h3>
-          <div class="g_connect" onclick="window.location.href='index.html'">
-            <div class="google_img">
-              <img src="img/google_img.png" alt="google" />
+          <div id="home_content" class="home_content">
+            <div class="g_connect" onclick="window.location.href='index.html'">
+              <div class="google_img">
+                <img src="img/google_img.png" alt="google" />
+              </div>
+              <div class="google_text">Continue with Google</div>
             </div>
-            <div class="google_text">Continue with Google</div>
+            <p>
+              By clicking “Continue with Google” you are agreeing to our <br />
+              <span>Privacy Policy</span> and <span>Terms and Conditions</span>
+            </p>
           </div>
-          <p>
-            By clicking “Continue with Google” you are agreeing to our <br />
-            <span>Privacy Policy</span> and <span>Terms and Conditions</span>
-          </p>
+          <button id="sm_btn" class="sm_btn" type="button">
+            Get Started <span>- it's free</span>
+          </button>
         </div>
+
         <div class="video_holder">
           <video
             src="vid/video-hero.mp4"
@@ -62,7 +69,7 @@
         </div>
       </section>
 
-      <section id="features_1" class="features_1">
+      <section id="features_1" class="features">
         <div class="btn_text text_1">
           <h2>Get solutions to different levels of understanding</h2>
           <p>
@@ -73,7 +80,7 @@
           </p>
           <button type="button">Get solutions</button>
         </div>
-        <div class="vid_1">
+        <div class="sm_vid" id="vid_1">
           <video
             src="vid/video-landing_motion1.mp4"
             autoplay
@@ -84,7 +91,7 @@
         </div>
       </section>
 
-      <section id="features_2" class="features_1">
+      <section id="features_2" class="features">
         <div class="btn_text text_2">
           <h2>Get solutions to different levels of understanding</h2>
           <p>
@@ -95,7 +102,7 @@
           </p>
           <button type="button">Get solutions</button>
         </div>
-        <div class="vid_2">
+        <div class="sm_vid" id="vid_2">
           <video
             src="vid/video-landing_motion2.mp4"
             autoplay
@@ -106,7 +113,7 @@
         </div>
       </section>
 
-      <section id="features_3" class="features_1">
+      <section id="features_3" class="features">
         <div class="btn_text text_3">
           <h2>Get solutions to different levels of understanding</h2>
           <p>
@@ -117,7 +124,7 @@
           </p>
           <button type="button">Get solutions</button>
         </div>
-        <div class="vid_3">
+        <div class="sm_vid" id="vid_3">
           <video
             src="vid/video-landing_motion3.mp4"
             autoplay
@@ -259,7 +266,7 @@
           <ul>
             <li><a href="#">Terms and Conditions</a></li>
             <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#"></a>copyright</li>
+            <li><a href="#">Copyright</a></li>
           </ul>
         </div>
         <div class="cs_links">

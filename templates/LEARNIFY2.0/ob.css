@@ -71,6 +71,8 @@ section#home{
     align-self: center;
     display: flex;
     flex-direction: column;
+    width: 100%;
+    max-width: 564px;
 }
 
 .text{
@@ -97,7 +99,7 @@ section#home{
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
-    width: 564px;
+    width: 100%;
     height: 250px;
     padding: 15px;
     align-self: center;

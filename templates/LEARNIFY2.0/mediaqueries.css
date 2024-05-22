@@ -1,0 +1,234 @@
+/* MEDIA QUERIES */
+:root {
+    --intr-color:#efffe2;
+    --dr-intr-color: #8faa7623;
+    --bl-color:#000000;
+    --wh-color:#ffffff;
+    --dr-gr-color:#24644B;
+    --drs-gr-color:#030f03;
+    --gr-color:#228250;
+    --brown-color:#C7BCA6;
+    --dr-br: #666666;
+    --poppins: "Poppins", sans-serif;
+   --oleo_script: "Oleo Script", system-ui;
+    --tenor_sans: "Tenor Sans", sans-serif;
+    --alice: "Alice", serif;
+    --dela_gothic: "Dela Gothic One", sans-serif;
+    --montserrat_alternates: "Montserrat Alternates", sans-serif;
+    --Podkova: "Podkova", serif;
+    --bx-sh: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+
+    --md-lg-text: ;
+    --md-md-text: ;
+    --md-sm-text: ;
+    --sm-lg-text: 3rem;
+    --sm-md-text: 2rem;
+    --sm-cta-bg-text: 1.5rem;
+    --sm-cta-small-text: 0.8rem;
+    --sm-sm-text: 1rem;
+    --smx-lg-text: 2rem;
+    --smx-md-text: 1.8rem;
+    --smx-sm-text: 0.9rem;
+}
+@media screen and (max-width: 1440px){
+
+}
+
+
+@media screen and (max-width: 1024px){
+    nav{
+        justify-content: space-between;
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+
+    .video_holder{
+        margin-left: 40px;
+        margin-right: 40px;
+    }
+
+    section#features_1,
+    section#features_2,
+    section#features_3{
+        padding-left: 40px;
+        padding-right: 40px;
+        gap: 30px;
+    }
+
+
+}
+@media screen and (max-width: 768px){
+    nav{
+        padding: 20px 20px;
+    }
+
+    .home_text h2{
+        font-size: var(--sm-md-text);
+    }
+
+    .video_holder{
+        height: 430.62px;
+        width: 688.8px;
+    
+    }
+
+    section#exams{
+        height: 300px;
+    }
+
+    section#exams h2{
+        font-size: var(--sm-md-text); 
+    }
+
+    section#exams p{
+        font-size: var(--sm-sm-text);
+    }
+
+    .text_1 h2,
+    .text_2 h2,
+    .text_3 h2{
+        font-size: 2rem;
+    }
+
+    .cta_text_box h2{
+        font-size: var(--sm-cta-bg-text);
+        text-align: left;
+    }
+
+    .cta_text_box h6{
+        font-size: var(--sm-cta-small-text);
+        text-align: left;
+    }
+
+    section#cta{
+        height: 290px;
+    }
+    
+}
+@media screen and (max-width: 431px){
+    #logo_text{
+        font-size: var(--smx-lg-text);
+        padding-left: 10px;
+        font-size: var(--smx-sm-text);
+    }
+
+    #nav_buttons.nav_buttons{
+        display: none;
+    }
+
+    .home_text h2{
+        font-size: 30px;
+        font-weight: 800;
+        margin-bottom: 10px;
+    }
+
+
+    .home_text h3{
+        font-size: var(--smx-sm-text);
+        font-weight: 500;
+    }
+
+    #home_content{
+        display: none;
+    }
+
+    #sm_btn.sm_btn{
+        display: flex;
+        padding: 8px 16px;
+        color: var(--wh-color);
+        font-size: 18px;
+        border: 1px solid var(--bl-color);
+        border-radius: 5px;
+        background-color: var(--gr-color);
+    }
+
+    #sm_btn.sm_btn span{
+        font-weight: 400;
+    }
+
+
+    .video_holder{
+        height: 218.81px;
+        width: 350px;
+    }
+
+    section#exams{
+        height: 250px;
+    }
+
+    
+    section#features_1,
+    section#features_2,
+    section#features_3{
+        height: max-content;
+        padding: 30px 30px;
+        width: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: right;
+        justify-content: space-between;
+        overflow: hidden;
+    }
+
+    .btn_text{
+        height: 320px;
+        width: 85dvw;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: left;
+    }
+
+    section#cta{
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+
+       
+    }
+
+    .cta_text_box{
+        width: 384px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .cta_text_box h2{
+        font-size: 1.5rem;
+        text-align: center;
+       } 
+
+    .cta_text_box h6{
+        font-size: 0.8rem;
+        text-align: center;
+       } 
+
+    .info h2{
+        font-size: 1.2rem;
+
+    }   
+
+    .info p{
+        font-size: 0.7rem;
+    }
+    
+    .l_links ul li a,
+    .cs_links ul li a{
+        font-size: 0.6rem;
+    }
+
+    .l_links h3,
+    .cs_links h3{
+        font-size: 1rem;
+    }
+
+    .copyright{
+        margin-top: 50px;
+        padding-top: 20px;
+    }
+}
