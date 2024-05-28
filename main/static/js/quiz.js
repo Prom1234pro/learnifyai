@@ -21,27 +21,26 @@ var interval = setInterval(function()
 
 $(document).ready(function() {
     var divs = $('.show-section section');
+    var progress = $('#progressBar');
     var now = 0;
     var correctOptions = [];
     var wrongOptions = [];
 
-    function showActiveStep() {
-        $('.step-single').removeClass('show');
-        $('.step-single').eq(now).addClass('active show');
-    }
 
     function next() {
         divs.eq(now).hide();
         now = (now + 1 < divs.length) ? now + 1 : 0;
         divs.eq(now).show();
-        showActiveStep();
+        var progressPercentage = (now + 1) / divs.length * 100;
+        progress.css('width', progressPercentage + '%');
     }
 
     function prev() {
         divs.eq(now).hide();
         now = (now > 0) ? now - 1 : divs.length - 1;
         divs.eq(now).show();
-        showActiveStep();
+        var progressPercentage = (now + 1) / divs.length * 100;
+        progress.css('width', progressPercentage + '%');
     }
 
     $(".next").on('click', function() {
@@ -50,6 +49,10 @@ $(document).ready(function() {
 
     $(".prev").on('click', function() {
         prev();
+    });
+    $("#backtocourses").on('click', function() {
+        var course_id = $(this).data('course_id');
+        window.location.href = '/courses/'+course_id; // Update the URL to your course page
     });
     
     function resultFunction() {
@@ -70,8 +73,10 @@ $(document).ready(function() {
         });
         var totalQuestions = divs.length;
         var totalCorrect = correctOptions.length;
-        var totalScore = (totalCorrect / totalQuestions) * 100;
-        $('.u_prcnt').html(totalScore + '%');
+        console.log(totalQuestions)
+        var totalScore = Math.floor((totalCorrect / totalQuestions) * 100);
+        $('.u_score').html("Your Score: "+totalCorrect);
+        $('.u_prcnt').html("Average: "+totalScore + '%');
         $('.u_result span').html(totalScore + ' Points');
     
         if (totalScore >= 80) {
@@ -83,22 +88,38 @@ $(document).ready(function() {
     }
     $(".submit").on('click', resultFunction);
 
-    // $('#resultModal').on('show.bs.modal', function() {
-    //     // Calculate total score
-    // });
+    
+    var hours = parseInt($("#hour").text());
+    var minutes = parseInt($("#minutes").text());
+    var seconds = parseInt($("#seconds").text());
 
-    // Countdown timer logic
-    var count = 60;
-    var interval = setInterval(function() {
-        count = (count > 0) ? count - 1 : 0;
-        $("#countdown-timer").text(count);
-        if (count == 0) {
+    function updateCountdown() {
+        if (seconds == 0 && minutes == 0 && hours == 0) {
             clearInterval(interval);
-            // Automatically submit the form when timer reaches 0
-            // $("#quizForm").submit();
-            // resultFunction()
+            resultFunction();
+            //disable next and submit button here
+            $(".next, .submit").prop("disabled", true);
+            $('#resultModal').modal('show');
+            return;
         }
-    }, 1000);
+        if (seconds == 0){
+            seconds = 59;
+            if(minutes == 0) {
+                hours--;
+                minutes = 59;
+            }else {
+                minutes--;
+            }
+        }else {
+            seconds--;
+        }
+        $("#hour").text(hours);
+        $("#minutes").text(minutes);
+        $("#seconds").text(seconds);
+    }
+
+    var interval = setInterval(updateCountdown, 1000); // Update every minute
+
 });
 
 

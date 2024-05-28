@@ -24,34 +24,41 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Set Up practice Mode</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Set Up Your Study Mode</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <form>
-          <div class="form-check">
-            <input type="checkbox" name="exam-mode" class="form-check-input" id="exam-mode">
-            <label for="exam-mode" class="form-check-label">Exam Mode</label>
+        <form id="practiceForm">
+          <div class="form-group">
+            <label for="studymode" class="col-form-label">Select Mode</label>
+            <select class="form-select" id="mode" aria-label="mode">
+              <option value="practice">Practice Mode</option>
+              <option value="exam">Exam Mode</option>
+            </select>
           </div>
           <div class="form-group">
+            <label for="topics" class="col-form-label">Topics</label>
+            <select multiple class="form-select" aria-label="topics" id="topics">
+              <option value="exam-1">topic 1</option>
+              <option value="exam-2">topic 2</option>
+              <option value="exam-3">topic 3</option>
+            </select>
+          </div>
+          <div class="form-group" id="minutesGroup">
+            <label for="minutes" class="col-form-label">Minutes:</label>
+            <input type="number" name="minutes" value="0" class="form-control" id="minutes" placeholder="minutes">
+          </div>
+          <div class="form-group" id="hoursGroup">
             <label for="hours" class="col-form-label">Hours:</label>
-            <input type="number" name="hours" class="form-control" id="hours" placeholder="hours">
+            <input type="number" name="hours" value="0" class="form-control" id="hours" placeholder="hours">
           </div>
-          <div class="form-group">
-            <label for="miuntes" class="col-form-label">Minutes:</label>
-            <input type="number" name="miuntes" class="form-control" id="minutes" placeholder="minutes">
-          </div>
-          <!-- <div class="form-group">
-            <label for="topics" class="col-form-label">Select Topics:</label>
-            <input type="text" name="topics" class="form-control" id="minutes" placeholder="default pin is 1234">
-          </div> -->
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            <button type="button" id="button-pin" class="button-upload">Start Practice</button>
+            <button type="submit" class="btn btn-primary" id="button-pin">Start Practice</button>
           </div>
-        </form>
+        </form>        
       </div>
     </div>
   </div>
@@ -98,20 +105,62 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script>
-
+<!-- <script>
+  document.getElementById("practiceForm").addEventListener("submit", function(event) {
+    event.preventDefault(); // Prevent default form submission
+    var mode = document.querySelector("#practiceForm select[aria-label='mode']").value;
+    var topics = Array.from(document.querySelectorAll("#practiceForm select[aria-label='topics'] option:checked")).map(option => option.value);
+    var hours = document.getElementById("hours").value;
+    var minutes = document.getElementById("minutes").value;
+    var userId = "{{ user.id }}";
+    var courseId = "{{ courseId }}";
+    
+    // Construct the URL
+    var url = `/practice/${userId}/${courseId}?mode=${mode}&topics=${topics.join(',')}&hours=${hours}&minutes=${minutes}`;
+    
+    // Redirect to the constructed URL
+    window.location.href = url;
+  });
+  </script> -->
+  <script>
+  
   $(document).ready(function () {
     let courseId;
     console.log("here")
     $('#setpractice').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget); // Button that triggered the modal
-        courseId = button.data('courseid'); // Extract group ID from data-groupid attribute
+        var button = $(event.relatedTarget);  //Button that triggered the modal
+        courseId = button.data('courseid');  //Extract group ID from data-groupid attribute
     });
-    $('#button-pin').click(function(event) {
-      console.log(courseId);
-      window.location.href = '/practice/' + "{{user.id}}/" + courseId;
+    $("#practiceForm").submit(function(event) {
+      event.preventDefault(); // Prevent default form submission
+      var mode = $("select[aria-label='mode']").val();
+      var topics = $("#topics").val() || [];
+      var hours = $("#hours").val();
+      var minutes = $("#minutes").val();
+      var userId = "{{ user.id }}";
+      
+      // Construct the URL
+      var url = `/quiz/setstudymode/${userId}/${courseId}?mode=${mode}&topics=${topics.join(',')}&hours=${hours}&minutes=${minutes}`;
+      
+      // Redirect to the constructed URL
+      window.location.href = url;
+    });
+    $('#hoursGroup').hide();
+    $('#minutesGroup').hide();
 
-  });   
-})
+    // Show or hide the hour and minutes form group based on the selected mode
+    $('#mode').change(function() {
+        var selectedMode = $(this).val();
+        if (selectedMode === 'practice') {
+            $('#hoursGroup').hide();
+            $('#minutesGroup').hide();
+            $('#button-pin').text('Start Practice');
+        } else if("exam") {
+            $('#hoursGroup').show();
+            $('#minutesGroup').show();
+            $('#button-pin').text('Start Exam');
+        }
+    });
+  })
 </script>
 {% endblock %}

@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz</title>
-    <!-- <link rel="stylesheet" href="assets/fonts/font.css"> -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages_css/quiz.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages_css/message.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/responsive.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/animation.css') }}">   
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/result.css') }}">
-    
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz</title>
+  <!-- <link rel="stylesheet" href="assets/fonts/font.css"> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/pages_css/quiz.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/pages_css/message.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/responsive.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/animation.css') }}">   
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/result.css') }}"> 
 </head>
 <body>
   <div class="messages">
@@ -30,52 +29,81 @@
             <div class="col-md-5 tab-100 order-tab tab-none">
                 <div class="side">
                     <div class="side_image">
-                        <div class="border-up"></div>
-                        <img src="{{ url_for('static', filename='images/side.jpg') }}" alt="side">
-                        <div class="border-down"></div>
+                      <div class="border-up"></div>
+                      <img src="{{ url_for('static', filename='img/side.jpg') }}" alt="side">
+                      <div class="border-down"></div>
                     </div>
                 </div>
             </div>
             <div class="col-md-7 tab-100">
+              <div class="progress">
+                <div class="progress-bar" id="progressBar" role="progressbar" style="width: 10%; background: rgb(4, 113, 55);" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
                 <!-- form start -->
                 <form id="quizForm" novalidate>
                     <div class="show-section wrapper">
                         {% for x, quiz in enum(quizzes) %}
                         <section class="steps">
                             <h3 class="quiz-question">{{ quiz.question_text }}</h3>
+                            {% if quiz.type_ == "gamma"%}
+                            <h6>Enter answer</h6>
+                            <input type="text">
+                            {% else %}
                             <fieldset id="step{{ x+1 }}">
                                 {% for i, option in enum(quiz.options) %}
                                 <div class="radio-field bounce-left delay-{{ i + 1 }}00">
-                                    <input type="radio" name="op{{ x }}" value="{{ option.id }}" data-correct="{{ option.is_correct }}">
-                                    <label class="op{{ i + 1 }}">{{ option.option_text }}</label>
+                                  <input type="radio" name="op{{ x }}" value="{{ option.id }}" data-correct="{{ option.is_correct }}">
+                                  <label class="op{{ i + 1 }}">{{ option.option_text }}</label>
                                 </div>
                                 {% endfor %}
                             </fieldset>
+                            <h1></h1>
+                            {% endif %}
                             <div class="next-prev">
-                                {% if x > 0 %}
+                              {% if x > 0 %}
                                 <button class="prev" type="button"><i class="fa-solid fa-arrow-left"></i>Last Question</button>
                                 {% endif %}
                                 {% if x + 1 < quizzes|length %}
-                                <button class="next" type="button">Next Question<i class="fas fa-arrow-right"></i></button>
+                                <button class="next" data-num="{{ x+1 }}" type="button">Next Question<i class="fas fa-arrow-right"></i></button>
                                 {% else %}
-                                <button type="button" class="submit" data-bs-toggle="modal" data-bs-target="#resultModal">Submit</button>
+                                <button type="button" data-num="{{ x+1 }}" class="submit" data-bs-toggle="modal" data-bs-target="#resultModal">Submit</button>
                                 {% endif %}
                             </div>
-                        </section>
-                        {% endfor %}
-                    </div>
-                    <div class="countdown">
-                        <h3><span id="countdown-timer">60</span> sec</h3>
-                    </div>
+                          </section>
+                          {% if mode == "exam" %}
+                          <div class="countdown">
+                            <h3><span id="hour">{{hours}}</span>:<span id="minutes">{{minutes}}</span>:<span id="seconds">00</span></h3>
+                          </div>
+                          {% else%}
+                          <div class="hint" data-bs-toggle="modal" data-bs-target="#modalHint">Hint</div>
+                          {% endif %}
+                          <div class="modal fade" id="modalHint" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="resultModalLabel">Hint</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                      {{quiz.hint}}
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Got It</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          {% endfor %}
+                        </div>
                     <div id="error" class="error"></div>
                     <!-- <button class="submit" type="button">Submit</button> -->
                 </form>
             </div>
         </div>
         <div class="footer-line"></div>
-
+        
         <!-- <div class="loadingresult">
-            <img src="{{ url_for('static', filename='images/loading.gif') }}" alt="loading">
+            <img src="{{ url_for('static', filename='img/loading.gif') }}" alt="loading">
         </div> -->
         <div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -87,7 +115,7 @@
                 <div class="modal-body">
                   <div class="u_result">
                     <div class="u_score">Your Score: </div>
-                    <div class="u_prcnt"></div>
+                    <div class="u_prcnt">Your Percent: </div>
                     <span>Points</span>
                   </div>
                   <div class="p_result">
@@ -107,7 +135,8 @@
                   </div>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-secondary" onclick="location.reload()" >Start All Over</button>
+                  <button type="button" data-course_id="{{course_id}}" id="backtocourses" class="btn btn-primary" >Back To Courses</button>
                 </div>
               </div>
             </div>

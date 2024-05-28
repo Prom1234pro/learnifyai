@@ -15,13 +15,16 @@ Groups = db.Table('groups',
 class User(UserMixin, db.Model):
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     username = db.Column(db.String(50), nullable=False)
+    is_admin = db.Column(db.Boolean, default=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
     is_logged_in = db.Column(db.Boolean, default=False)
-    last_activity_time = db.Column(db.DateTime)
+    email_verified = db.Column(db.Boolean, default=False)
+    last_activity_time = db.Column(db.DateTime)  
+    verification_token = db.Column(db.String(60))  
     groups = db.relationship('Group', secondary=Groups, lazy='subquery',
         backref=db.backref('users', lazy=True))
-    
+    is_premium_user = db.Column(db.Boolean, default=False)
     
     def update_activity_time(self):
         self.last_activity_time = datetime.utcnow()
@@ -63,13 +66,17 @@ class Course(db.Model):
     course_name = db.Column(db.String(125))
     url = db.Column(db.String(125))
     no_of_topics = db.Column(db.Integer)
+    # no_of_questions = db.Column(db.Integer, default=0)
     group_id = db.Column(db.String(36), db.ForeignKey('group.id'), nullable=False)
     group = db.relationship('Group', backref='courses', lazy=True)
 
 class Quiz(db.Model):
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
-    topic = db.Column(db.String())
+    topic = db.Column(db.String(60))
+    type_ = db.Column(db.String(60), default="obj")
     question_text = db.Column(db.Text)
+    answer = db.Column(db.Text)
+    hint = db.Column(db.Text)
     course_id = db.Column(db.String(36), db.ForeignKey('course.id'), nullable=False)
     course = db.relationship('Course', backref='quizzes', lazy=True)
 

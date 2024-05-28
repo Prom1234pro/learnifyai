@@ -168,22 +168,33 @@ form
 }
 .countdown h3
 {
-    font-size: 30px;
+    font-size: 20px;
     font-family: "Jost";
     color: rgb(255, 255, 255);
     font-weight: normal;
 }
   
 
-
+.hint {
+    color: white;
+    position: fixed;
+    background: rgb(99, 99, 104);
+    padding: 1.5em;
+    border-radius: 50%;
+    bottom: 20%;
+    cursor: pointer;
+    left: 100%;
+    transform: translate(-150%, -50%);
+    z-index: 9999;
+}
 .countdown
 {
     position: absolute;
     top: 0;
     right: 0px;
-    background-color: var(--primary-color);
-    width: 73px;
-    height: 111px;
+    background-color: rgb(249, 135, 14);
+    width: 111px;
+    height: 73px;
     display: grid;
     place-content: center;
     border-bottom-left-radius: 10px;
@@ -191,11 +202,11 @@ form
 
       
 }
-#countdown-timer
+/* #countdown-timer
 {
     display: block;
     font-weight: bold;
-}
+} */
 .wrapper
 {
     width: 71%;
@@ -298,7 +309,7 @@ fieldset
 {
     background-color: var(--primary-color);
 }
-.radio-field input:checked::before
+/* .radio-field input:checked::before
 {
     content: "";
     position: absolute;
@@ -308,8 +319,8 @@ fieldset
     background-color: var(--primary-color);
     width: 40px;
     height: 40px;
-}
-.radio-field input:checked::after
+} */
+/* .radio-field input:checked::after
 {
     content: "";
     position: absolute;
@@ -323,7 +334,7 @@ fieldset
     opacity: 0;
     z-index: 1000;
 
-}
+} */
   
 
 

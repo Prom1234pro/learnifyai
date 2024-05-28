@@ -1,0 +1,237 @@
+@import url('https://fonts.googleapis.com/css2?family=Alice&family=Dela+Gothic+One&family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Oleo+Script:wght@400;700&family=Podkova:wght@400..800&family=Poiret+One&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Tenor+Sans&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    text-decoration: none;
+}
+
+:root {
+    --intr-color:#efffe2;
+    --dr-intr-color: #8faa7623;
+    --bl-color:#000000;
+    --wh-color:#ffffff;
+    --dr-gr-color:#24644B;
+    --drs-gr-color:#030f03;
+    --gr-color:#228250;
+    --brown-color:#C7BCA6;
+    --dr-br: #666666;
+    --poppins: "Poppins", sans-serif;
+   --oleo_script: "Oleo Script", system-ui;
+    --tenor_sans: "Tenor Sans", sans-serif;
+    --alice: "Alice", serif;
+    --dela_gothic: "Dela Gothic One", sans-serif;
+    --montserrat_alternates: "Montserrat Alternates", sans-serif;
+    --Podkova: "Podkova", serif;
+    --bx-sh: 0 8px 32px 0 rgba(0, 0, 0, 0.40);
+    --grad: linear-gradient(
+        45deg,
+        #fec1c1, 
+        #8194ff, 
+        #48c484, 
+        #eeff91);
+}
+
+html,
+body{
+    color: var(--brown-color);
+    background-color: var(--drs-gr-color);
+    font-family: poppins;
+    scroll-behavior: smooth;
+}
+li{
+    list-style: none;
+}
+a{  color: inherit;
+    text-decoration: none;
+}
+
+h2 {
+    font-family: var(--montserrat_alternates);
+}
+
+
+section#home{
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 2% 5%;
+
+}
+
+.title h2{
+    font-family: var(--oleo_script);
+    margin-bottom: 20px;
+}
+
+.up_container{
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    max-width: 564px;
+}
+
+.text{
+    align-self: right;
+    width: 100%;
+    margin-bottom: 10px;
+    padding-left: 15px;
+
+}
+
+.text h3 {
+    font-size: 1.5rem;
+}
+
+.text h3 span{
+    color: var(--gr-color);
+}
+
+.text p{
+    font-size: 0.8rem;
+}
+
+.input_container{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    width: 100%;
+    height: 250px;
+    padding: 15px;
+    align-self: center;
+    justify-content: space-around;
+    align-items: flex-end;
+}
+
+.input_box{
+    padding: 12px;
+    align-self: center;
+    justify-content: space-around;
+    width: 100%;
+    height: 138px;
+    border: 1px solid rgba(255, 255, 255, 0.184);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    background-color: rgba(199, 188, 166, 0.078)
+    
+}
+
+.input_container button.input_btn{
+    justify-self: right;
+    background-color: var(--gr-color);
+    border: 1px solid var(--wh-color);
+    border-radius: 10px;
+    height: 40px;
+    width: 80px;
+    font-size: 1.25rem;
+    font-family: var(--montserrat_alternates);
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.input_container button.input_btn:disabled{
+    color: var(--drs-gr-color);
+    cursor: not-allowed;
+    background-color: var(--brown-color);
+}
+
+.bottom{
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 30px;
+    padding: 12px;
+    border-radius: 20px;
+    width: 200px;
+    height: max-content;
+    z-index: 10;
+    overflow: hidden;
+    align-items: center;
+    text-align: center;
+    border: 3px solid white;
+    background: var(--grad);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+ 
+}
+
+.bottom h5{
+    color: #000000;
+    font-size: 0.8rem;
+    z-index: 100;
+}
+
+.bottom p{
+    color: #000000;
+    font-size: 0.7rem;
+    z-index: 100;
+}
+
+
+
+
+.search-container {
+    max-width: 100%;
+    margin: 20px auto;
+    position: relative;
+    background-color: transparent;
+  }
+  
+  #search-input {
+    color: var(--wh-color);
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--wh-color);
+    box-sizing: border-box;
+    background-color: var(--drs-gr-color);
+    border-radius: 10px;
+  }
+  
+  .dropdown-content {
+    padding: 10px 12px;
+    max-height: 300px;
+    overflow-y: auto;
+    position: relative;
+    margin-top: 10px;
+    border-radius: 5px;
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--wh-color);
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    z-index: 1;
+    width: 100%;
+  }
+
+
+  
+  /* Position the Add University button at the bottom */
+  .dropdown-content button:last-child {
+    position: sticky;
+    bottom: 0;
+    background-color: white;
+    border-top: 1px solid lightgray;
+
+  }
+  .dropdown-content button {
+    font-family: var(--montserrat_alternates);
+    font-size: 18px;
+    font-weight: 500;
+    border-radius: 5px;
+    color: var(--bl-color);
+    width: 100%;
+    padding: 10px;
+    text-align: left;
+    border: none;
+    background-color: inherit;
+    cursor: pointer;
+  }
+  
+  .dropdown-content button:hover {
+    background-color: #000000;
+    color: #ffffff;
+  }
