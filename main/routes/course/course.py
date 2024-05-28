@@ -2,11 +2,7 @@ from flask import (Blueprint, redirect,
     render_template, request,
     jsonify, session, flash, get_flashed_messages
     )
-import uuid
-import json
 from ...models.models import db, Course, Group, User
-from datetime import timedelta
-from ... import bcrypt 
 import requests
 
 def is_auth():
@@ -15,7 +11,6 @@ def is_auth():
     else:
         return False
     
-SESSION_TIMEOUT = timedelta(seconds=10)
 croute_bp = Blueprint('course', __name__)
 
 @croute_bp.route('/courses/<string:course_id>')
@@ -46,9 +41,9 @@ def create_course(group_id):
         print("user-id",user.id)
         user = User.query.get_or_404(user.id)
         print(user)
-        if not user.is_premium_user:
-            flash(f'You must be an admin to upload material', "info")
-            return redirect(f'/courses/{user.id}/{group_id}')
+        # if not user.is_premium_user:
+        #     flash(f'You must be an admin to upload material', "info")
+        #     return redirect(f'/courses/{user.id}/{group_id}')
     else:
         flash('User needs authorization to perform this action', 'warning')
         return redirect('/login-user')

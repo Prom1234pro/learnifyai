@@ -41,9 +41,9 @@ def user_generate_group_key(user_id):
         no_of_users = data.get('max-occupancy')
         # group_admin_id = data.get('group_admin_id')
         user = User.query.get_or_404(user_id)
-        if not user.is_premium_user:
-            flash(f'You must be a premium user to create a private group', "info")
-            return redirect('/groups/'+user_id)
+        # if not user.is_premium_user:
+        #     flash(f'You must be a premium user to create a private group', "info")
+        #     return redirect('/groups/'+user_id)
         group_key=str(uuid.uuid4())
         group = Group(
             name = data.get('group-name'),
@@ -54,12 +54,13 @@ def user_generate_group_key(user_id):
         )
         db.session.add(group)
         db.session.commit()
-        try:
-            msg = Message(subject='Create Group', sender='contact@tpaservices.me', recipients=[user.email])
-            msg.body = f"Your ID - {group_key}"
-            mail.send(msg)
-        except:
-            return "server error"
+        # try:
+        #     msg = Message(subject='Create Group', sender='contact@tpaservices.me', recipients=[user.email])
+        #     msg.body = f"Your ID - {group_key}"
+        #     mail.send(msg)
+        # except:
+        #     return "server error"
+        flash(f"{group_key}", 'info')
         flash('You group creation is not yet complete', "info")
         flash('check your email to complete creation', "info")
         return redirect('/groups/'+user_id)

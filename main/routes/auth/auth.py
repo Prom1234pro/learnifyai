@@ -5,7 +5,6 @@ from flask import (Blueprint, redirect,
 
 # from main.utils import load_active_sessions, save_active_sessions, SESSION_TIMEOUT
 from ...models.models import db, User, Quiz, Option, Group
-from datetime import datetime, timedelta
 from flask_mail import Message
 import string, secrets
 from ... import bcrypt, mail
@@ -56,21 +55,21 @@ def create_user():
             flash('email already exists', "warning")
             flash('If you are the owner login', "success")
             return redirect('/register')
-        try:
-            verification_token = generate_verification_token() 
-            verification_link = url_for('auth.verify_email', token=verification_token)
-            msg = Message(subject='Verify Your Email Address', sender='contact@tpaservices.me', recipients=[email])
-            msg.body = f"Please click the following link to verify your email address: http://127.0.0.1:5000{verification_link}"
+        # try:
+        #     verification_link = url_for('auth.verify_email', token=verification_token)
+        #     msg = Message(subject='Verify Your Email Address', sender='contact@tpaservices.me', recipients=[email])
+        #     msg.body = f"Please click the following link to verify your email address: http://127.0.0.1:5000{verification_link}"
 
-            new_user = User(username=username, email=email, password=hashed_password, verification_token=verification_token)
-            mail.send(msg)
-            db.session.add(new_user)
-            db.session.commit()
-        except Exception as e:
-            print(f"Error sending verification email: {e}")
-            flash('Server Timeout', "danger")
-            return redirect('/register')
-        flash('A verification email has been sent to you', "success")
+        #     mail.send(msg)
+        # except Exception as e:
+        #     print(f"Error sending verification email: {e}")
+        #     flash('Server Timeout', "danger")
+        #     return redirect('/register')
+        # flash('A verification email has been sent to you', "success")
+        verification_token = generate_verification_token() 
+        new_user = User(username=username, email=email, password=hashed_password, verification_token=verification_token)
+        db.session.add(new_user)
+        db.session.commit()
         return redirect('/onboarding') #work on the verification page
     
     return render_template('signup.html', messages=messages, page="signup")
@@ -103,9 +102,9 @@ def login_user_():
             flash('Invalid credentials', "warning")
             return redirect('/login-user')
         
-        if not user.email_verified:
-            flash('Email not yet verified', "warning")
-            return redirect('/login-user')
+        # if not user.email_verified:
+        #     flash('Email not yet verified', "warning")
+        #     return redirect('/login-user')
         
         is_valid = bcrypt.check_password_hash(user.password, password)
         if not is_valid:
