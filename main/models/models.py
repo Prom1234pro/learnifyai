@@ -70,9 +70,23 @@ class Course(db.Model):
     group_id = db.Column(db.String(36), db.ForeignKey('group.id'), nullable=False)
     group = db.relationship('Group', backref='courses', lazy=True)
 
+class Topic(db.Model):
+    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    name = db.Column(db.String(50))
+    course_id = db.Column(db.String(36), db.ForeignKey('course.id'), nullable=False)
+    course = db.relationship('Course', backref='topics', lazy=True)
+
+class Summary(db.Model):
+    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    text = db.Column(db.Text)
+    keynote = db.Column(db.Text)
+    topic_id = db.Column(db.String(36), db.ForeignKey('topic.id'), nullable=False)
+    topic = db.relationship('Topic', backref='summaries', lazy=True)
+
 class Quiz(db.Model):
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
-    topic = db.Column(db.String(60))
+    topic_id = db.Column(db.String(36), db.ForeignKey('topic.id'), nullable=False)
+    topic = db.relationship('Topic', backref='quizzes', lazy=True)
     type_ = db.Column(db.String(60), default="obj")
     question_text = db.Column(db.Text)
     answer = db.Column(db.Text)

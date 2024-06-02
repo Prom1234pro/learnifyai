@@ -30,7 +30,7 @@ def course_(id, group_id):
     if not is_auth():
         return redirect(f"/logout/{id}?return_url=http://localhost:5000/courses/{id}/{group_id}")
     # user_activity(id)
-    return render_template('course.html', messages=messages, user=user, group_id=group_id, courses=courses)
+    return render_template('course.html', messages=messages, user=user, group_id=group_id, courses=courses, enum=enumerate)
 
 
 @croute_bp.route('/user/create-course/<string:group_id>', methods=['POST'])

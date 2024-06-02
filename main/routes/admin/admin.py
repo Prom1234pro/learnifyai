@@ -6,6 +6,7 @@ import uuid
 import json
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 
+from .topic import create_topic
 from main.utils import load_active_sessions, save_active_sessions, SESSION_TIMEOUT
 from ...models.models import db, User, Quiz, Option, Group
 from datetime import datetime, timedelta
@@ -78,9 +79,11 @@ def create_quiz_obj():
         try:
             quizzes = data['quizzes']
             course_id = data['course_id']
-
+            topic = data['topic']
+            summaries = data['summaries']
+            topic_id = create_topic(summaries, name=topic['topic_name'], course_id=course_id)
             for quiz_data in quizzes:
-                quiz = Quiz(topic=quiz_data['topic'],
+                quiz = Quiz(topic_id=topic_id,
                             hint=quiz_data['hint'],
                             question_text=quiz_data['question_text'],
                             course_id=course_id)
@@ -103,7 +106,7 @@ def create_quiz_obj():
     return jsonify({'error': 'Method not allowed'}), 405
 
 @ad_route_bp.route('/admin/create-quiz/gamma', methods=['POST'])
-@jwt_required()  # Require JWT token for access
+# @jwt_required()  # Require JWT token for access
 def create_quiz_gamma():
     if request.method == 'POST':
         current_user_id = get_jwt_identity()  # Get current user's ID from JWT token
@@ -118,12 +121,14 @@ def create_quiz_gamma():
         try:
             quizzes = data['quizzes']
             course_id = data['course_id']
-
+            topic = data['topic']
+            topic_id = create_topic(name=topic['topic_name'], summary=topic["summary"], course_id=course_id)
+            
             for quiz_data in quizzes:
                 # Create a new Quiz object
-                quiz = Quiz(topic=quiz_data['topic'],
+                quiz = Quiz(topic_id=topic_id,
                             answer=quiz_data['answer'],
-                            type_=quiz_data['gamma'],
+                            type_=quiz_data['type_'],
                             hint=quiz_data['hint'],
                             question_text=quiz_data['question_text'],
                             course_id=course_id)

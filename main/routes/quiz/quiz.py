@@ -4,7 +4,7 @@ from flask import (Blueprint, redirect,
     )
 import uuid
 import json
-from ...models.models import db, Quiz, Quiz, Option, Course
+from ...models.models import Quiz, Topic, db, Course
 from datetime import datetime, timedelta
 from ... import bcrypt 
 
@@ -22,12 +22,19 @@ ACTIVE_SESSIONS_FILE = 'active_sessions.json'
 @qroute_bp.route('/practice/<string:user_id>/<string:course_id>')
 def quiz(user_id, course_id):
     messages = get_flashed_messages(with_categories=True)
-    topics = request.args.get('topics')
+    topics = request.args.get('topics').split(",")
+    # print(topics)
     mode = request.args.get('mode')
-    course = Course.query.get_or_404(course_id)
+    # course = Course.query.get_or_404(course_id)
+    quizzes = Quiz.query.join(Topic).filter(
+        Quiz.topic_id == Topic.id,
+        Topic.id.in_(topics),
+        Topic.course_id == course_id
+    ).all()
+    # print(quizzes)
     if not is_auth():     
         return redirect(f"/logout/{user_id}?return_url=/practice/{user_id}")
-    return render_template('quiz.html', course_id=course_id, user_id=user_id, messages=messages, mode=mode, quizzes=course.quizzes, enum = enumerate, len=len, topics=topics)
+    return render_template('quiz.html', course_id=course_id, user_id=user_id, messages=messages, mode=mode, quizzes=quizzes, enum = enumerate, len=len, topics=topics)
 
 @qroute_bp.route('/exam/<string:user_id>/<string:course_id>')
 def exam(user_id, course_id):

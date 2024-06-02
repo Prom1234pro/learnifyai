@@ -44,56 +44,41 @@
                     <div class="show-section wrapper">
                         {% for x, quiz in enum(quizzes) %}
                         <section class="steps">
-                            <h3 class="quiz-question">{{ quiz.question_text }}</h3>
-                            {% if quiz.type_ == "gamma"%}
-                            <h6>Enter answer</h6>
-                            <input type="text">
-                            {% else %}
-                            <fieldset id="step{{ x+1 }}">
-                                {% for i, option in enum(quiz.options) %}
-                                <div class="radio-field bounce-left delay-{{ i + 1 }}00">
-                                  <input type="radio" name="op{{ x }}" value="{{ option.id }}" data-correct="{{ option.is_correct }}">
-                                  <label class="op{{ i + 1 }}">{{ option.option_text }}</label>
-                                </div>
-                                {% endfor %}
-                            </fieldset>
-                            <h1></h1>
-                            {% endif %}
-                            <div class="next-prev">
-                              {% if x > 0 %}
-                                <button class="prev" type="button"><i class="fa-solid fa-arrow-left"></i>Last Question</button>
-                                {% endif %}
-                                {% if x + 1 < quizzes|length %}
-                                <button class="next" data-num="{{ x+1 }}" type="button">Next Question<i class="fas fa-arrow-right"></i></button>
-                                {% else %}
-                                <button type="button" data-num="{{ x+1 }}" class="submit" data-bs-toggle="modal" data-bs-target="#resultModal">Submit</button>
-                                {% endif %}
-                            </div>
-                          </section>
+                          <h3 class="quiz-question">{{ quiz.question_text }}</h3>
+                          {% if quiz.type_ == "gamma"%}
+                          <h6>Enter answer</h6>
+                          <input type="text">
+                          {% else %}
+                          <fieldset id="step{{ x+1 }}">
+                              {% for i, option in enum(quiz.options) %}
+                              <div class="radio-field bounce-left delay-{{ i + 1 }}00">
+                                <input type="radio" name="op{{ x }}" value="{{ option.id }}" data-correct="{{ option.is_correct }}">
+                                <label class="op{{ i + 1 }}">{{ option.option_text }}</label>
+                              </div>
+                              {% endfor %}
+                          </fieldset>
+                          <h1></h1>
+                          {% endif %}
+                          <div class="next-prev">
+                            {% if x > 0 %}
+                              <button class="prev" type="button"><i class="fa-solid fa-arrow-left"></i>Last Question</button>
+                              {% endif %}
+                              {% if x + 1 < quizzes|length %}
+                              <button class="next" data-num="{{ x+1 }}" type="button">Next Question<i class="fas fa-arrow-right"></i></button>
+                              {% else %}
+                              <button type="button" data-num="{{ x+1 }}" class="submit" data-bs-toggle="modal" data-bs-target="#resultModal">Submit</button>
+                              {% endif %}
+                          </div>
                           {% if mode == "exam" %}
                           <div class="countdown">
                             <h3><span id="hour">{{hours}}</span>:<span id="minutes">{{minutes}}</span>:<span id="seconds">00</span></h3>
                           </div>
                           {% else%}
-                          <div class="hint" data-bs-toggle="modal" data-bs-target="#modalHint">Hint</div>
+                          <div class="hint" data-bs-toggle="modal" data-hint="{{quiz.hint}}" data-bs-target="#modalHint">Hint</div>
                           {% endif %}
-                          <div class="modal fade" id="modalHint" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                              <div class="modal-content">
-                                <div class="modal-header">
-                                  <h5 class="modal-title" id="resultModalLabel">Hint</h5>
-                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                      {{quiz.hint}}
-                                </div>
-                                <div class="modal-footer">
-                                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Got It</button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          {% endfor %}
+                        </section>
+                          
+                        {% endfor %}
                         </div>
                     <div id="error" class="error"></div>
                     <!-- <button class="submit" type="button">Submit</button> -->
@@ -101,7 +86,22 @@
             </div>
         </div>
         <div class="footer-line"></div>
-        
+        <div class="modal fade" id="modalHint" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="resultModalLabel">Hint</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <p id="hint"></p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Got It</button>
+              </div>
+            </div>
+          </div>
+        </div>
         <!-- <div class="loadingresult">
             <img src="{{ url_for('static', filename='img/loading.gif') }}" alt="loading">
         </div> -->
@@ -149,8 +149,8 @@
     <!-- <script src="assets/js/Bootstrap/bootstrap.min.js"></script>
     <script src="assets/js/jQuery/jquery-3.6.3.min.js"></script> -->
     <script src="{{ url_for('static', filename='js/quiz.js') }}"></script>    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
-    <script type="text/javascript" charset="utf-8">
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script> -->
+    <!-- <script type="text/javascript" charset="utf-8">
         var socket = io();
         socket.on('connect', function() {
             socket.emit('my event', {data: 'I\'m connected!'});
@@ -158,6 +158,15 @@
         socket.on('disconnect', () => {
           socket.emit('user-offline', "{{user_id}}");
         });
+    </script> -->
+    <script>
+      $(document).ready(function () {
+        $('#modalHint').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);  //Button that triggered the modal
+            var hint = button.data('hint');
+            $('#hint').text(hint)  //Extract group ID from data-groupid attribute
+        });
+      });
     </script>
 </body>
 </html>

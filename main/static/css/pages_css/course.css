@@ -13,6 +13,10 @@
 
 
 
+.mult-select-tag .drawer {
+    position: static;
+}
+
 .dash-widget-info h3 {
     width: 100%;
     font-size: 1em;
