@@ -4,6 +4,8 @@
 # Ignore instance folder
 /instance
 
+/temp
+
 # Ignore virtual environment
 /env/
 re.txt
