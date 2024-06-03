@@ -3,6 +3,7 @@
 
 # Ignore instance folder
 # /instance
+.git
 
 /temp
 
