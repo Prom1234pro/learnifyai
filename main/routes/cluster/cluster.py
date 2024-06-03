@@ -21,7 +21,10 @@ ACTIVE_SESSIONS_FILE = 'active_sessions.json'
 @groute_bp.route('/groups/<string:id>')
 def group(id):
     messages = get_flashed_messages(with_categories=True)
-    public_groups = Group.query.filter_by(is_public=True, activated=True).all()
+    public_groups = Group.query.filter_by(is_public=False, activated=True).all()
+    print(public_groups)
+    for pu in public_groups:
+        print(pu, "ertawere")
     user = User.query.get_or_404(id)
     user_groups = user.activated_groups
     if not is_auth():     
