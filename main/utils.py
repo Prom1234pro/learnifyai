@@ -10,7 +10,7 @@ from io import BytesIO
 import fitz
 import numpy as np
 
-pytesseract.pytesseract.tesseract_cmd = "C:\\Program Files\\Tesseract-OCR\\tesseract"
+pytesseract.pytesseract.tesseract_cmd = "tesseract"
 
 
 
