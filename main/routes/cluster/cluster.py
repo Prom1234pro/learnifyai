@@ -4,7 +4,7 @@ from flask import (Blueprint, redirect,
     )
 import uuid
 import json
-from ...models.models import db, User, Quiz, Option, Group
+from ...models.models import Performance, db, User, Quiz, Option, Group
 from datetime import datetime, timedelta
 from ... import bcrypt 
 from flask_mail import Message
@@ -114,8 +114,8 @@ def add_user_to_group():
         group_id = data.get('group_id')
         user_id = data.get('user_id')
         pass_key = data.get('group_pin')
+        course_id = data.get('course_id')  # Ensure course_id is provided in the request
         
-
         # Retrieve the group and check if it exists
         group = Group.query.get(group_id)
         if not group:
@@ -127,9 +127,10 @@ def add_user_to_group():
             flash('Incorrect passkey', "warning")
             return redirect('/groups/'+user_id)
 
-        if group.current_no_users +1 > group.max_no_users:
+        if group.current_no_users + 1 > group.max_no_users:
             flash('Group already filled', "warning")
             return redirect('/groups/'+user_id)
+        
         # Retrieve the user and add them to the group
         user = User.query.get(user_id)
         if not user:
@@ -142,9 +143,14 @@ def add_user_to_group():
 
         group.users.append(user)
         group.current_no_users += 1
-        db.session.commit()
-        
 
-        flash('Joined group successfully', "info")
-        print('/groups/'+user_id)
-        return redirect('/groups/'+user.id)
+        # Create a new Performance object for the user
+        for course in group.courses:
+            new_performance = Performance(user_id=user.id, course_id=course.id, score=0, average=0, progress=0)
+            db.session.add(new_performance)
+        
+        # Commit all changes to the database
+        db.session.commit()
+
+        flash('Joined group successfully and performance created', "info")
+        return redirect('/groups/' + user.id)

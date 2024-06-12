@@ -1,8 +1,8 @@
-"""First Migrations
+"""First migration
 
-Revision ID: ace8f144bc95
+Revision ID: b78e25b83482
 Revises: 
-Create Date: 2024-06-03 21:35:17.810860
+Create Date: 2024-06-11 14:09:16.641859
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'ace8f144bc95'
+revision = 'b78e25b83482'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -61,6 +61,17 @@ def upgrade():
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('group_id', 'user_id')
     )
+    op.create_table('performance',
+    sa.Column('id', sa.String(length=36), nullable=False),
+    sa.Column('score', sa.Integer(), nullable=True),
+    sa.Column('average', sa.Integer(), nullable=True),
+    sa.Column('progress', sa.Integer(), nullable=True),
+    sa.Column('user_id', sa.String(length=36), nullable=False),
+    sa.Column('course_id', sa.String(length=36), nullable=False),
+    sa.ForeignKeyConstraint(['course_id'], ['course.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
     op.create_table('topic',
     sa.Column('id', sa.String(length=36), nullable=False),
     sa.Column('name', sa.String(length=50), nullable=True),
@@ -105,6 +116,7 @@ def downgrade():
     op.drop_table('summary')
     op.drop_table('quiz')
     op.drop_table('topic')
+    op.drop_table('performance')
     op.drop_table('groups')
     op.drop_table('course')
     op.drop_table('user')

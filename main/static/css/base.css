@@ -6219,7 +6219,7 @@ textarea.is-invalid.tt-hint {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  height: 1rem;
+  height: 5px;
   overflow: hidden;
   font-size: 0.75rem;
   background-color: #e9ecef;

@@ -56,11 +56,12 @@ $(document).ready(function() {
     });
     
     function resultFunction() {
-        // Perform form validation
+        var correctOptions = [];
+        var wrongOptions = [];
         var allRadioInputs = $('input[type="radio"]');
         allRadioInputs.each(function() {
             var checkedRadio = $(this);
-            console.log("submit clicked here")
+            console.log("submit clicked here");
             var optionId = checkedRadio.val();
             var correct = checkedRadio.data('correct');
             if (checkedRadio.prop('checked')) {
@@ -71,21 +72,44 @@ $(document).ready(function() {
                 }
             }
         });
-        var totalQuestions = divs.length;
+        var totalQuestions = allRadioInputs.length;
         var totalCorrect = correctOptions.length;
-        console.log(totalQuestions)
+        console.log(totalQuestions);
         var totalScore = Math.floor((totalCorrect / totalQuestions) * 100);
-        $('.u_score').html("Your Score: "+totalCorrect);
-        $('.u_prcnt').html("Average: "+totalScore + '%');
+        $('.u_score').html("Your Score: " + totalCorrect);
+        $('.u_prcnt').html("Average: " + totalScore + '%');
         $('.u_result span').html(totalScore + ' Points');
     
         if (totalScore >= 80) {
             $('.pass_check').html('<i class="fa-solid fa-check pass"></i> You Passed!');
             $('.result_msg').html('You passed the test!');
         }
+    
         correctOptions = [];
         wrongOptions = [];
+    
+        // Update the performance score via AJAX
+        var performanceId = 'YOUR_PERFORMANCE_ID'; // Replace with the actual performance ID
+        $.ajax({
+            url: '/updateperformance/' + performanceId,
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                score: totalCorrect,
+                average: totalScore,
+                progress: 'some_progress_value' // Replace with actual progress value if needed
+            }),
+            success: function(response) {
+                console.log('Performance updated:', response);
+                // Optionally, handle the response, show success message, etc.
+            },
+            error: function(error) {
+                console.error('Error updating performance:', error);
+                // Optionally, handle the error, show error message, etc.
+            }
+        });
     }
+    
     $(".submit").on('click', resultFunction);
 
     

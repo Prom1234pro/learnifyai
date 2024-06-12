@@ -1,0 +1,70 @@
+Generate 10 multiple choice questions from the material above in the following format below.
+Provide Summary from the above material and key note in the summaries. Each summary text should not be more than 200 words. The number of summaries should be determined based on the content length. Include keynotes with each summary to add additional knowledge. Provide a short hint for each question based on the material to guide towards the correct answer, without explicitly giving the answer.
+{
+    "course_id": "a5831af6-54ca-4f05-8adf-60f5e4039ca2",
+    "topic": {
+        "topic_name": "Sample Topic",
+    },
+    "summaries": [
+        {
+            "text": "Summary text 1",
+            "keynote": "Here is the first key note"
+        },
+        {
+            "text": "Summary text 2",
+            "keynote": "Here is the second key note"
+        }
+    ],
+    "quizzes": [
+        {
+            "hint": "Hint for the first question",
+            "question_text": "What is the capital of France?",
+            "options": [
+                {
+                    "option_text": "Paris",
+                    "is_correct": true
+                },
+                {
+                    "option_text": "London",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Berlin",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Madrid",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "hint": "Hint for the second question",
+            "question_text": "What is 2 + 2?",
+            "options": [
+                {
+                    "option_text": "3",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "4",
+                    "is_correct": true
+                },
+                {
+                    "option_text": "5",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "6",
+                    "is_correct": false
+                }
+
+            ]
+        }
+    ]
+}
+
+Things to note while generating my output
+1. I only need json format don't add any pre text like "Here is the requested format" As it will alter the function of my code base.
+2. I am saving this output to a json file so any other response text before or after the json format is not needed anymore
+3. I don't need any text output after the json response. If not this will break my code

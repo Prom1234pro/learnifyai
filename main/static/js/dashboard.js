@@ -53,8 +53,9 @@
 		}
 
 		if ($(".dashboard-progress-3").length) {
+			var progressValue = parseFloat($('.dashboard-progress-3').data('progress'))/100
 			$('.dashboard-progress-3').circleProgress({
-				value: 0.90,
+				value: progressValue,
 				size: 125,
 				thickness: 15,
 				startAngle: 10,

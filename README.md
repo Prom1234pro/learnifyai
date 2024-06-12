@@ -1,4 +1,4 @@
-# Delivery App Backend
+# Learnify AI App Backend
 
 ## Description
 Deliver services across schools in Nigeria.

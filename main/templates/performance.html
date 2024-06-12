@@ -1,18 +1,17 @@
 {% extends 'base.html' %}
 
-{% block title %} Groups {% endblock %}
-{% block text %}<button class="btn btn-primary btn-space" data-toggle="modal" data-target="#exampleModal">
-Create Cluster</button>{%endblock%}
+{% block title %} Performance {% endblock %}
+
 {% block tags %}
 <ul class="nav nav-tabs tab-transparent" role="tablist">
     <li class="nav-item">
-      <a class="nav-link active" id="home-tab"  href="#">Clusters</a>
+      <a class="nav-link" id="home-tab"  href="/groups/{{user.id}}">Clusters</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" id="business-tab" href="#">Courses</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" id="performance-tab"  href="/performances">Performance</a>
+      <a class="nav-link active" id="performance-tab" href="#">Performance</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" id="conversion-tab" href="#">Summaries</a>
@@ -22,64 +21,50 @@ Create Cluster</button>{%endblock%}
 {% block content%}
 <div class="row">
 
-    <!-- {% if user_groups %}
-    {% for group in user_groups %}
-    <div class="col-xl-6 col-lg-6 col-sm-6 grid-margin stretch-card">
-        <div class="card">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-              <div>
-                  <h1 class="mb-2 text-dark font-weight-bold">{{group.name}}</h1>
-                  <span >{{group.school}}</span>
-                  <span >{{group.current_no_users}} members</span>
-              </div>
-              
-            </div>
-            <div class="d-flex justify-content-between mt-4">
-                <button class="btn btn-primary btn-space view-courses"  data-groupid="{{group.id}}">View Courses</button>
-            </div>
-        </div>
-    </div>
-</div>
-{% endfor %}
-{% endif %}
-</div> -->
 
-{% if public_groups %}
-{% for group in public_groups %}
+{% if performances%}
+{% for performance in performances %}
 <div class="col-xl-6 col-lg-6 col-sm-6 grid-margin stretch-card">
   <div class="card">
       <div class="card-body">
           <div class="d-flex justify-content-between align-items-center">
               <div>
-                  <h1 class="mb-2 text-dark font-weight-bold">{{group.name}}</h1>
-                  <span >{{group.school}}</span>
-                  <span >{{group.current_no_users}} members</span>
+                  <h1 class="mb-2 text-dark">{{performance.course.course_name}}</h1>
+                  <h1></h1>
+                  <h1></h1>
+                  
                   <!-- <p class="mt-2 mb-0 text-left text-dark font-weight-bold">6 Completed</p> -->
-              </div>
-              <!-- <div class="dashboard-progress dashboard-progress-3 d-flex align-items-center justify-content-center item-parent">
-                  <span class="absolute-center">Your Progress <div>50%</div></span>
-              </div> -->
+                </div>
+                <div class="dashboard-progress dashboard-progress-3 d-flex align-items-center justify-content-center item-parent" data-performance-id="{{ performance.id }}" data-progress="{{ performance.score }}">
+                    <span class="absolute-center">Total Score <div>{{performance.score}}%</div></span>
+                </div>
+            </div>
+            <h1></h1>
+            <h1></h1>
+            <span>Your reading progress</span>
+            <div class="progress">
+              <div class="progress-bar bg-success" role="progressbar" style="width: {{performance.progress}}%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <h5 class="mt-4 text-dark">Topics</h5>
+          <div class="d-flex justify-content-between mt-4">
+            {% for topic in performance.course.topics %}
+
+            <div>
+                <span>{{topic.name}}</span>
+                <div class="progress">
+                  <div class="progress-bar bg-primary" role="progressbar" style="width: {{performance.progress}}%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+            {% endfor %}
+            <button class="btn btn-secondary" data-toggle="modal" data-target="#setpractice-{{performance.progress}}" data-courseid="{{performance.id}}">Take Quiz</button>
           </div>
-          {% if user in group.users %}
-            <!-- {{group.users[0].id}} -->
-            <div class="d-flex justify-content-between mt-4">
-              <button class="start-quiz btn btn-primary view-courses" data-groupid="{{group.id}}" >View Courses</button>
-            </div>
-            <!-- <button class="btn btn-primary btn-space "  data-groupid="{{group.id}}">View Cluster Content</button> -->
-            {% else %}
-            <!-- <button class="start-quiz button-upload" data-toggle="modal" data-target="#joingroup" data-groupid="{{group.id}}" data-groupkey="{{group.pass_key}}">Join Group</button> -->
-            <div class="d-flex justify-content-between mt-4">
-              <button class="btn btn-primary btn-space"  data-toggle="modal" data-target="#joingroup" data-groupid="{{group.id}}" data-groupkey="{{group.pass_key}}">Join Cluster</button>
-            </div>
-            {% endif %}
-      </div>
+        </div>
   </div>
 </div>
 {% endfor %}
 {% endif %}
 
-<div class="modal fade" id="joingroup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="joingroup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -150,7 +135,7 @@ Create Cluster</button>{%endblock%}
           </div>
         </div>
       </div>
-  </div>
+  </div> -->
   {% endblock content%}
   {% block script%}
     <script>
