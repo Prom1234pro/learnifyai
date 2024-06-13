@@ -5,6 +5,7 @@ from main.models.models import User, Group, Course, db
 from main.routes import register_routes
 # from main.routes.routes import load_active_sessions, save_active_sessions
 from flask_mail import Message
+from script import setup_tesseract
 # from flask_socketio import SocketIO
 # from flask_login import LoginManager, login_user, current_user, logout_user
 
@@ -52,5 +53,6 @@ def landing_page():
     # db.session.commit()
 
 if __name__ == '__main__':
+    setup_tesseract()
     app.run(debug=True)
     # socketio.run(app, debug=True)
