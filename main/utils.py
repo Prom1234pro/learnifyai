@@ -2,7 +2,7 @@ import json
 from datetime import timedelta
 from flask import session
 import numpy as np
-import PyPDF2
+import requests
 import cv2
 from PIL import Image
 from io import BytesIO
@@ -44,9 +44,9 @@ def is_auth():
         return False
     
 
-def scanned_pdf_to_text(pdf_bytes):
+def scanned_pdf_to_text(pdf_bytes, api_url, username, apikey):
     text = ""
-    reader = easyocr.Reader(['en'])  # Initialize EasyOCR reader
+    headers = {"username": username, "apikey": apikey}
     doc = fitz.open(stream=pdf_bytes, filetype="pdf")
     
     for page_num in range(len(doc)):
@@ -68,21 +68,39 @@ def scanned_pdf_to_text(pdf_bytes):
                 # Convert to grayscale
                 gray = cv2.cvtColor(image_np, cv2.COLOR_BGR2GRAY)
                 
-                # Use EasyOCR to extract text from the image
-                result = reader.readtext(gray)
+                # Convert grayscale image back to bytes
+                _, buffer = cv2.imencode('.png', gray)
+                image_bytes = BytesIO(buffer).getvalue()
                 
-                # Extract text from the result
-                page_text = ' '.join([res[1] for res in result])
-                text += page_text + '\n'
+                # Call the API to extract text from the image
+                files = {'file': ('image.png', image_bytes, 'image/png')}
+                data = {'mode': 'all'}
+                response = requests.post(api_url, headers=headers, files=files, data=data)
+                
+                if response.status_code == 200:
+                    result = response.json()
+                    # Extract text from the result
+                    page_text = ' '.join([res['text'] for res in result])
+                    text += page_text + '\n'
+                else:
+                    print(f"Error in API call for image {image_index} on page {page_num}: {response.status_code}")
+            
             except Exception as e:
                 print(f"Error processing image {image_index} on page {page_num}: {e}")
-        
-        # Optionally, you can remove the break statement if you want to process all pages
-        # break
     
     return text
 
+# Example usage
+api_url = "https://jaided.ai/api/outputs"
+username = "promise"
+apikey = "VjDvTvWPiZqFAFi463alNbHNq1QuM7zf"
+pdf_path = "test.jpg"
 
+with open(pdf_path, "rb") as f:
+    pdf_bytes = f.read()
+
+text = scanned_pdf_to_text(pdf_bytes, api_url, username, apikey)
+print(text)
 def read_files(file):
     return np.fromstring(file.read(), np.uint8)
 
