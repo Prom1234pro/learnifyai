@@ -5,29 +5,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Learnify AI</title>
-    <!-- plugins:css -->
-    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='img/logo.png') }}">
-    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='vendors/mdi/css/materialdesignicons.min.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.0.1/dist/css/multi-select-tag.css">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/pages_css/course.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/pages_css/message.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='vendors/flag-icon-css/css/flag-icon.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='vendors/css/vendor.bundle.base.css') }}">
-    <!-- endinject -->
-    <!-- Plugin css for this page -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='vendors/font-awesome/css/font-awesome.min.css') }}" />
-    <!-- End plugin css for this page -->
-    <!-- inject:css -->
-    <!-- endinject -->
-    <!-- Layout styles -->
-    <!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> -->
-    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='vendors/bootstrap-datepicker/bootstrap-datepicker.min.css') }}"> -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/vendor/bootstrap.min.css') }}">
-    <!-- End layout styles -->
-    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.png') }}" />
+    <link rel="icon" href="{{ url_for('static', filename='img/logo.png') }}">
+    {% block link %}
+    {% endblock %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages_css/course.css') }}">
     <style>
         .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl {
             width: 100%;
@@ -66,25 +50,6 @@
     
       </div>
     <div class="container-scroller">
-      <div class="row p-0 m-0 d-none" id="proBanner">
-        <div class="col-md-12 p-0 m-0">
-          <div class="card-body card-body-padding d-flex align-items-center justify-content-between">
-            <div class="ps-lg-1">
-              <div class="d-flex align-items-center justify-content-between">
-                <p class="mb-0 font-weight-medium me-3 buy-now-text">Free 24/7 customer support, updates, and more with this template!</p>
-                <a href="#" class="btn me-2 buy-now-btn border-0">Get Pro</a>
-              </div>
-            </div>
-            <div class="d-flex align-items-center justify-content-between">
-              <a href="#"><i class="mdi mdi-home me-3 text-white"></i></a>
-              <button id="bannerClose" class="btn border-0 p-0">
-                <i class="mdi mdi-close text-white me-0"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- partial:partials/_navbar.html -->
       <nav class="navbar">
         <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
           <div class="navbar-brand brand-logo"><img src="{{ url_for( 'static', filename='img/logo.png') }}" width="100" height="100" alt="logo" /></div>
@@ -304,24 +269,24 @@
           <ul class="nav">
             <li class="nav-item nav-category">Main</li>
             <li class="nav-item">
-              <a class="nav-link" href="#">
-                <span class="icon-bg"><i class="mdi mdi-cube menu-icon"></i></span>
+              <a class="nav-link" href="/performances">
+                <span class="icon-bg"><i class="mdi mdi-view-dashboard menu-icon"></i></span>
                 <span class="menu-title">Dashboard</span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" data-bs-toggle="collapse" href="#" aria-expanded="false" aria-controls="ui-basic">
-                <span class="icon-bg"><i class="mdi mdi-crosshairs-gps menu-icon"></i></span>
+              <a class="nav-link" href="/groups/{{user.id}}" >
+                <span class="icon-bg"><i class="mdi mdi-account-group menu-icon"></i></span>
                 <span class="menu-title">Clusters</span>
                 <i class="menu-arrow"></i>
               </a>
-              <div class="collapse" id="ui-basic">
+              <!-- <div class="collapse" id="ui-basic">
                 <ul class="nav flex-column sub-menu">
                   <li class="nav-item"> <a class="nav-link" href="#">CPE</a></li>
                   <li class="nav-item"> <a class="nav-link" href="#">Learnify AI</a></li>
                   <li class="nav-item"> <a class="nav-link" href="#"># General</a></li>
                 </ul>
-              </div>
+              </div> -->
             </li>
             <!-- <li class="nav-item">
               <a class="nav-link" href="pages/icons/mdi.html">
@@ -337,13 +302,13 @@
             </li> -->
             <li class="nav-item">
               <a class="nav-link" href="#">
-                <span class="icon-bg"><i class="mdi mdi-chart-bar menu-icon"></i></span>
-                <span class="menu-title">General Test</span>
+                <span class="icon-bg"><i class="mdi mdi-pencil-box menu-icon"></i></span>
+                <span class="menu-title">Take Test</span>
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">
-                <span class="icon-bg"><i class="mdi mdi-table-large menu-icon"></i></span>
+                <span class="icon-bg"><i class="mdi mdi-calendar menu-icon"></i></span>
                 <span class="menu-title">Learning Schedules</span>
               </a>
             </li>
@@ -368,7 +333,7 @@
                 <span class="icon-bg">
                   <i class="mdi mdi-file-document-box menu-icon"></i>
                 </span>
-                <span class="menu-title">Create Cluster</span>
+                <button class="menu-title button-green">Create Cluster</button>
               </a>
             </li>
             <li class="nav-item sidebar-user-actions">
@@ -413,10 +378,12 @@
         <div class="main-panel">
           <div class="content-wrapper">
             <div class="d-flex justify-content-between align-items-start">
-              <h2 class="text-dark font-weight-bold mb-2"> Dashboard </h2>
+              {% block breadcrumb %}{%endblock%}
+              
               <div class="d-sm-flex justify-content-xl-between align-items-center mb-2">
+                {% if user.is_admin%}
                 {% block text %}{%endblock%}
-
+                {% endif %}
                 <div class="dropdown ms-0 ml-md-4 mt-2 mt-lg-0">
                   <!-- <button class="btn bg-white dropdown-toggle p-3 d-flex align-items-center" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="mdi mdi-calendar me-1"></i>24 Mar 2019 - 24 Mar 2019 </button> -->
                   <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton1">

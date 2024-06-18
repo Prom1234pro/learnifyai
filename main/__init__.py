@@ -4,7 +4,9 @@ from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
 
 import main.config
-from .models.models import db
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
 from flask import Flask
 from flask_mail import Mail
 from flask_jwt_extended import JWTManager

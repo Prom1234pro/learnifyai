@@ -90,17 +90,6 @@ def scanned_pdf_to_text(pdf_bytes, api_url, username, apikey):
     
     return text
 
-# Example usage
-api_url = "https://jaided.ai/api/outputs"
-username = "promise"
-apikey = "VjDvTvWPiZqFAFi463alNbHNq1QuM7zf"
-pdf_path = "test.jpg"
-
-with open(pdf_path, "rb") as f:
-    pdf_bytes = f.read()
-
-text = scanned_pdf_to_text(pdf_bytes, api_url, username, apikey)
-print(text)
 def read_files(file):
     return np.fromstring(file.read(), np.uint8)
 

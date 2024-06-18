@@ -91,12 +91,30 @@
     align-items: center;
 }
 
-.button-upload {
+.button-green {
     /* display: inline-block; */
     align-self: center;
     background-color: rgb(18, 141, 77);
     border-radius: .2em;
-    color: white;
+    color: rgb(240, 240, 240);
     padding : 8px 1.5em;
+    padding: 10px 3em;
     border: none;
 }
+
+.button-outline-green {
+    align-self: center;
+    background-color: rgb(255, 255, 255);
+    border-radius: .2em;
+    color: rgb(18, 141, 77);
+    padding : 8px 1.5em;
+    /* padding: 10px 3em; */
+    border: 2px solid rgb(18, 141, 77);
+}
+
+.profile-pic {
+    width: 150px;  /* Set a fixed width */
+    height: 150px; /* Set a fixed height */
+    object-fit: cover; /* Ensures the image covers the area without distortion */
+    /* border-radius: 50%; Optional: makes the image circular */
+  }
