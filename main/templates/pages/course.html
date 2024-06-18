@@ -40,7 +40,7 @@ Upload Course</button>{%endblock%}
           <div class="d-flex justify-content-between align-items-center">
             <div>
               <h1 class="mb-2 text-dark font-weight-bold">{{course.course_name}}</h1>
-              <span>{{course.no_of_topics}} topics</span>
+              <span>1 topic</span>
             </div>
             {% for performance in course.performances %}
             {% if performance.user_id == user.id %}
