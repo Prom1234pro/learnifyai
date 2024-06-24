@@ -27,26 +27,24 @@
         
         <div class="tab-content">
           <div id="signup" class="{% if page == 'signup' %} show {% else %}hide{% endif %}">   
-            <h1>Sign Up for Free</h1>          
+            <h1>Create An Account</h1>          
             <form action="/register" method="post">            
-            <div class="top-row">
               <div class="field-wrap">
-                <input type="text" name="username" placeholder="First Name *" required autocomplete="off" />
+                <input type="text" name="username" placeholder="first name *" required autocomplete="off" />
               </div>
           
               <div class="field-wrap">
-                <input type="text"required placeholder="Last Name *" autocomplete="off"/>
+                <input type="text"required placeholder="last name *" autocomplete="off"/>
               </div>
-            </div>
   
             <div class="field-wrap">
               
-              <input type="email" name="email" placeholder="Email Address *" required autocomplete="off"/>
+              <input type="email" name="email" placeholder="email address *" required autocomplete="off"/>
             </div>
             
             <div class="field-wrap">
               
-              <input type="password" name="password" placeholder="Set Password *" required autocomplete="off"/>
+              <input type="password" name="password" placeholder="password *" required autocomplete="off"/>
             </div>
             
             <button type="submit" class="button button-block">Get Started</button>
@@ -62,11 +60,11 @@
             <form action="{% if return_url %}/login-user?return_url={{ return_url }} {% else %}/login-user{% endif %}" method="post">
             
               <div class="field-wrap">
-                <input type="email" name="email" placeholder="Email Address *" required autocomplete="off"/>
+                <input type="email" name="email" placeholder="email *" required autocomplete="off"/>
               </div>                      
             
             <div class="field-wrap">
-              <input type="password" name="password" placeholder="Enter Password *" required autocomplete="off"/>
+              <input type="password" name="password" placeholder="password *" required autocomplete="off"/>
             </div>
             
             <p class="forgot"><a href="#">Forgot Password?</a></p>

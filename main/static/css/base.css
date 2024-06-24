@@ -1786,10 +1786,17 @@
 @media (prefers-reduced-motion: no-preference) {
   :root {
     scroll-behavior: smooth; } }
-
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
 body {
   margin: 0;
   font-family: var(--bs-body-font-family);
+  font-family: 'Poppins', sans-serif;
   font-size: var(--bs-body-font-size);
   font-weight: var(--bs-body-font-weight);
   line-height: var(--bs-body-line-height);
@@ -2539,11 +2546,11 @@ progress {
     -ms-flex: 0 0 auto;
     flex: 0 0 auto;
     width: 41.66667%; }
-  .col-sm-6 {
+  /* .col-sm-6 {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 auto;
     flex: 0 0 auto;
-    width: 50%; }
+    width: 50%; } */
   .col-sm-7 {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 auto;
@@ -11368,9 +11375,8 @@ address p {
   font-size: 1rem; }
 
 /* Miscellanoeous */
-body,
-html {
-  overflow-x: hidden;
+body {
+  overflow: hidden;
   padding-right: 0 !important; }
 
 *:-moz-full-screen,
@@ -14982,6 +14988,8 @@ dl {
   padding: 2.875rem 2.875rem 0 2.875rem;
   width: 100%;
   -webkit-box-flex: 1;
+  overflow-y: scroll;
+  height: 500px;
   -ms-flex-positive: 1;
   flex-grow: 1; }
   @media (max-width: 991px) {

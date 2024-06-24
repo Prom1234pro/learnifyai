@@ -92,7 +92,6 @@
 }
 
 .button-green {
-    /* display: inline-block; */
     align-self: center;
     background-color: rgb(18, 141, 77);
     border-radius: .2em;
@@ -101,16 +100,27 @@
     padding: 10px 3em;
     border: none;
 }
-
 .button-outline-green {
     align-self: center;
     background-color: rgb(255, 255, 255);
     border-radius: .2em;
     color: rgb(18, 141, 77);
     padding : 8px 1.5em;
-    /* padding: 10px 3em; */
     border: 2px solid rgb(18, 141, 77);
 }
+
+@media (max-width: 796px) {
+    .button-green {
+        font-size: 12px;
+        padding: 7px 1.2em;
+    }
+    .button-outline-green {
+        font-size: 12px;
+        padding : 5px 1.2em;
+        
+    }
+}
+
 
 .profile-pic {
     width: 150px;  /* Set a fixed width */

@@ -51,6 +51,7 @@ body{
 
 .info_box{
     width: 540px;
+    max-width: 95%;
     background: #fff;
     border-radius: 5px;
     transform: translate(-50%, -50%) scale(0.9);
@@ -109,6 +110,7 @@ body{
 
 .quiz_box{
     width: 550px;
+    max-width: 95%;
     background: #fff;
     border-radius: 5px;
     transform: translate(-50%, -50%) scale(0.9);
@@ -134,6 +136,7 @@ body{
     font-size: 20px;
     font-weight: 600;
 }
+
 
 .quiz_box header .timer{
     color: #00854b;
@@ -186,6 +189,33 @@ section .que_text{
     font-weight: 600;
 }
 
+@media (max-width: 680px) {
+    .quiz_box header .title {
+        font-size: 15px;
+    }
+    section .que_text{
+        font-size: 18px;
+    }
+    .quiz_box header .timer .time_left_txt{
+        font-weight: 400;
+        font-size: 15px;
+        user-select: none;
+    }
+
+}
+@media (max-width: 570px) {
+    .quiz_box header .title {
+        font-size: 13px;
+    }
+    section .que_text{
+        font-size: 15px;
+    }
+    .quiz_box header .timer .time_left_txt{
+        font-size: 12px;
+        user-select: none;
+    }
+
+}
 section .option_list{
     padding: 20px 0px;
     display: block;   
