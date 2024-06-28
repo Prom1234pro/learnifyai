@@ -7,7 +7,7 @@ import json
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 
 from .topic import create_topic
-from main.utils import load_active_sessions, save_active_sessions, SESSION_TIMEOUT
+# from main.utils import load_active_sessions, save_active_sessions, SESSION_TIMEOUT
 from .models import db, Quiz, Option
 from main.cluster.models import Group
 from main.authentication.models import User

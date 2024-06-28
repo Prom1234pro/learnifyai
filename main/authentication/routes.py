@@ -80,9 +80,6 @@ def onboarding():
 
 @a_route_bp.route('/login-user', methods=['GET','POST'])
 def login_user_():
-    # active_sessions = load_active_sessions()
-    args = request.args
-    url = args.to_dict()
     messages = get_flashed_messages(with_categories=True)
     user = session.get('user')
     # if user:
@@ -110,53 +107,20 @@ def login_user_():
         if not is_valid:
             flash('Invalid email or password', "warning")
             return redirect('/login-user')
-        
-        # if user.id in active_sessions.keys():
-        #     print("user.id is in active sessions")
-        #     active_sessions = load_active_sessions()
-        #     last_activity_time = datetime.fromisoformat(active_sessions[user.id]['last_activity'])
-        #     if datetime.utcnow() - last_activity_time > SESSION_TIMEOUT:
-        #         del active_sessions[user.id]
-        #         print(active_sessions)
-        #     elif user.is_logged_in:
-        #         return redirect(f'/groups/{user.id}')
-        #     else:
-        #         flash('Our system discovered an unusual login request', "warning")
-        #         flash('Your account will be suspended if this persist', "warning")
-        #         return redirect('/login-user')
-    
-        # active_sessions[user.id] = {'email': user.email, 'last_activity': datetime.utcnow().isoformat()}
-        # # db.session.commit()
-        # save_active_sessions(active_sessions)
         session["user"] = user
         user.is_logged_in = True
         db.session.commit()
-        url_query = url.get('return_url', None)
-        if url_query is not None:
-            flash('Welcome back! continue from where you left off', "success")
-            return redirect(url_query)
 
         flash('login successful', "success")
         return redirect(f'/groups/{user.id}')
-    url_query = url.get('return_url', None)
-    if url_query is not None:
-        return render_template('account/signup.html', messages=messages, page="login", return_url=url_query)
 
     return render_template('account/signup.html', messages=messages, page="login")
 
 @a_route_bp.route('/logout/<string:id>')
 def logout(id):
-    args = request.args
-    url = args.to_dict()
-    # active_sessions = load_active_sessions()
-    # active_sessions.pop(id, None)
-    # save_active_sessions(active_sessions)
     session.pop('user', None)
     session.modified = True
     session.clear()
-    url_query = url.get('return_url', None)
-    if url_query is not None:
-        return redirect(f'/login-user?return_url={url_query}')
     return redirect('/login-user')
 
 @a_route_bp.route('/groups/remove_user', methods=['POST'])
