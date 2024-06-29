@@ -1,2 +1,1 @@
-release: ./setup.sh
-web: bin/start-nginx gunicorn manage:app
+eb: bin/start-nginx gunicorn manage:app
