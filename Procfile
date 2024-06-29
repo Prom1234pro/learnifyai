@@ -1,1 +1,1 @@
-eb: bin/start-nginx gunicorn manage:app
+web: bin/start-nginx gunicorn manage:app
