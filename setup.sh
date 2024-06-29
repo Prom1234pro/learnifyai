@@ -1,11 +1,16 @@
 #!/bin/bash
 
-# Add Microsoft repository key and list
+sudo su 
 curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
-curl https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/prod.list > /etc/apt/sources.list.d/mssql-release.list
 
-# Update packages list
+#Download appropriate package for the OS version
+#Choose only ONE of the following, corresponding to your OS version
+
+
+#Ubuntu 16.04
+curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
+
+
+exit
 sudo apt-get update
-
-# Install the ODBC driver
-sudo ACCEPT_EULA=Y apt-get install -y msodbcsql17
+sudo ACCEPT_EULA=Y apt-get install msodbcsql17
