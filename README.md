@@ -1,7 +1,7 @@
 # Learnify AI App Backend
 
 ## Description
-Deliver services across schools in Nigeria.
+Learnify AI is an innovative platform that empowers students to upload their study materials and get practice questions. 
 
 ## Installation
 Follow these steps to set up and run the project:
@@ -27,10 +27,10 @@ Follow these steps to set up and run the project:
    - Run `python app.py`.
 
 ## Usage
-This application is only for testing purposes.
+For official use only.
 
 ## Credits
-Acknowledge to UNIBEN-TECH team that took out time to work on this backend project in the person of Promise and Timothy.
+Acknowledge to God who gave us the wisdom to work on this project.
 
 ## License
 License.

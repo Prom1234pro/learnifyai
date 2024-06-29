@@ -1,6 +1,7 @@
 import os
 from datetime import timedelta
 from dotenv import load_dotenv
+import urllib
 
 load_dotenv()
 
@@ -34,10 +35,24 @@ class DevConfig(BaseConfig):
 
 
 class ProductionConfig(BaseConfig):
-    FLASK_ENV = 'production'
-    SQLALCHEMY_DATABASE_URI = 'postgresql://db_user:db_password@db-postgres:5432/flask-deploy'
-    CELERY_BROKER = 'pyamqp://rabbit_user:rabbit_password@broker-rabbitmq//'
-    CELERY_RESULT_BACKEND = 'rpc://rabbit_user:rabbit_password@broker-rabbitmq//'
+    FLASK_ENV = os.environ.get("FLASK_ENV")
+    # Database configuration
+    DATABASE_SERVER_URL = os.environ.get("DATABASE_SERVER_URL")
+    DATABASE_NAME = os.environ.get("DATABASE_NAME")
+    USER = F"{os.environ.get("USER")}@{os.environ.get("DATABASE_NAME")}"
+    PASSWORD = os.environ.get("PASSWORD")
+
+    # Create the connection string
+    params = urllib.parse.quote_plus(
+        f'''DRIVER={{ODBC Driver 18 for SQL Server}};SERVER=tcp:{DATABASE_SERVER_URL},1433;DATABASE={DATABASE_NAME};UID={USER};PWD={PASSWORD};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;'''
+    )
+    conn_str = f'mssql+pyodbc:///?odbc_connect={params}'
+
+    SESSION_TYPE = 'filesystem'
+
+    SQLALCHEMY_DATABASE_URI = conn_str
+    # CELERY_BROKER = 'pyamqp://rabbit_user:rabbit_password@broker-rabbitmq//'
+    # CELERY_RESULT_BACKEND = 'rpc://rabbit_user:rabbit_password@broker-rabbitmq//'
 
 
 class TestConfig(BaseConfig):

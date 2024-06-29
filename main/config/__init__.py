@@ -4,7 +4,7 @@ from .settings import DevConfig, ProductionConfig, TestConfig
 
 # Determine the appropriate configuration class
 APP_ENV = os.environ.get('APP_ENV', 'Dev')
-
+print(APP_ENV)
 if APP_ENV == 'Production':
     ConfigClass = ProductionConfig
 elif APP_ENV == 'Test':

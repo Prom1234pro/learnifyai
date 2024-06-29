@@ -31,6 +31,6 @@ class Option(db.Model):
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     option_text = db.Column(db.Text)
     is_correct = db.Column(db.Boolean, default=False)
-    quiz_id = db.Column(db.Integer, db.ForeignKey('quiz.id'), nullable=False)
+    quiz_id = db.Column(db.String(36), db.ForeignKey('quiz.id'), nullable=False)
     quiz = db.relationship('Quiz', backref='options', lazy=True)
 
