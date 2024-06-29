@@ -38,9 +38,11 @@ class ProductionConfig(BaseConfig):
     FLASK_ENV = os.environ.get("FLASK_ENV")
     # Database configuration
     DATABASE_SERVER_URL = os.environ.get("DATABASE_SERVER_URL")
+    PERMANENT_SESSION_LIFETIME = timedelta(hours=6)
     SECRET_KEY = os.environ.get('SECRET_KEY')
     DATABASE_NAME = os.environ.get("DATABASE_NAME")
     USER = F"{os.environ.get("USER")}@{os.environ.get("DATABASE_NAME")}"
+    UPLOAD_FOLDER = 'main\\static\\media'
     PASSWORD = os.environ.get("PASSWORD")
 
     # Create the connection string
