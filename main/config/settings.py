@@ -13,7 +13,7 @@ class BaseConfig():
 
 
 class DevConfig(BaseConfig):
-    FLASK_ENV = 'development'
+    FLASK_ENV = 'production'
     DEBUG = True
     UPLOAD_FOLDER = 'main\\static\\media'
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'this'
@@ -30,8 +30,8 @@ class DevConfig(BaseConfig):
     MAIL_USE_TLS = False
     MAIL_USE_SSL = True
     # SQLALCHEMY_DATABASE_URI = 'postgresql://db_user:db_password@db-postgres:5432/flask-deploy'
-    CELERY_BROKER = 'pyamqp://rabbit_user:rabbit_password@broker-rabbitmq//'
-    CELERY_RESULT_BACKEND = 'rpc://rabbit_user:rabbit_password@broker-rabbitmq//'
+    # CELERY_BROKER = 'pyamqp://rabbit_user:rabbit_password@broker-rabbitmq//'
+    # CELERY_RESULT_BACKEND = 'rpc://rabbit_user:rabbit_password@broker-rabbitmq//'
 
 
 class ProductionConfig(BaseConfig):
