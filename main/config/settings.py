@@ -47,7 +47,7 @@ class ProductionConfig(BaseConfig):
 
     # Create the connection string
     params = urllib.parse.quote_plus(
-        f'''DRIVER={{ODBC Driver 18 for SQL Server}};SERVER=tcp:{DATABASE_SERVER_URL},1433;DATABASE={DATABASE_NAME};UID={USER};PWD={PASSWORD};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;'''
+        f'''DRIVER={{ODBC Driver 17 for SQL Server}};SERVER=tcp:{DATABASE_SERVER_URL},1433;DATABASE={DATABASE_NAME};UID={USER};PWD={PASSWORD};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;'''
     )
     conn_str = f'mssql+pyodbc:///?odbc_connect={params}'
 
