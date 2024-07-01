@@ -146,6 +146,11 @@ def add_user_to_group():
         
         # Retrieve the user and add them to the group
         user = User.query.get(user_id)
+
+        if not user.is_premium_user:
+            flash('Please upgrade to a premium account', "warning")
+            return redirect('/groups/'+user_id)
+
         if not user:
             flash('An unknown error occured', "warning")
             flash('You were logged out', "warning")
