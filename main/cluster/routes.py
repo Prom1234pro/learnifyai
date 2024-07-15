@@ -1,14 +1,14 @@
 from flask import (Blueprint, redirect, 
-    render_template, request, g,
-    jsonify, session, flash, get_flashed_messages
+    render_template, request,
+    jsonify, flash, get_flashed_messages
     )
 import uuid
 from werkzeug.utils import secure_filename
 import os
 from flask import current_app
-import json
 
 from main.course.models import Performance
+from main.utils import user_required
 from .models import db, Group
 from ..authentication.models import User
 from datetime import datetime, timedelta
@@ -24,6 +24,7 @@ ACTIVE_SESSIONS_FILE = 'active_sessions.json'
 
   
 @groute_bp.route('/groups/<string:id>')
+@user_required
 def group(id):
     messages = get_flashed_messages(with_categories=True)
     public_groups = Group.query.filter_by(is_public=False, activated=True).all()
@@ -39,6 +40,7 @@ def group(id):
 
 
 @groute_bp.route('/user/create-group-key/<string:user_id>', methods=['POST'])
+@user_required
 def user_generate_group_key(user_id):
     if request.method == 'POST':
         data = request.form
@@ -69,11 +71,13 @@ def user_generate_group_key(user_id):
         # except:
         #     return "server error"
         flash(f"{group_key}", 'info')
+        print(group_key)
         flash('You group creation is not yet complete', "info")
         flash('check your email to complete creation', "info")
         return redirect('/groups/'+user_id)
     
 @groute_bp.route('/user/create-group/<string:user_id>', methods=['POST'])
+@user_required
 def create_group(user_id):
     if not is_auth():     
         return redirect(f"/logout/{user_id}")
@@ -115,6 +119,7 @@ def create_group(user_id):
     return redirect('/groups/'+user_id)
 
 @groute_bp.route('/user/add-to-group', methods=['POST'])
+@user_required
 def add_user_to_group():
     if request.method == 'POST':
 

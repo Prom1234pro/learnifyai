@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/bootstrap.min.css') }}">
+        <!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> -->
+        <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/bootstrap.min.css') }}"> -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/signup.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/pages_css/message.css') }}">
     <title>Sign Up | Login • Page</title>
@@ -28,13 +28,14 @@
         <div class="tab-content">
           <div id="signup" class="{% if page == 'signup' %} show {% else %}hide{% endif %}">   
             <h1>Create An Account</h1>          
-            <form action="/register" method="post">            
+            <form action="{{ url_for('auth.create_user') }}" method="post">
+              <input type="hidden" name="referrer" value="{{ request.args.get('referrer') }}">           
               <div class="field-wrap">
-                <input type="text" name="username" placeholder="First name *" required autocomplete="off" />
+                <input type="text" name="username" placeholder="Username *" required autocomplete="off" />
               </div>
           
               <div class="field-wrap">
-                <input type="text"required placeholder="Last name *" autocomplete="off"/>
+                <input type="text"required name="fullname" placeholder="Full Name *" autocomplete="off"/>
               </div>
   
             <div class="field-wrap">

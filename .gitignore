@@ -3,10 +3,13 @@
 
 # Ignore instance folder
 /flask_sessions/
+/odbc_debs
 .git
-# /instance/
+/instancess/
 /mytesting/
 /.github/
+app2.py
+app3.py
 
 /temp
 

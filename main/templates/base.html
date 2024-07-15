@@ -6,11 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Learnify AI</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='vendors/mdi/css/materialdesignicons.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendors/bootstrap.min.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendors/dataTables.bootstrap4.min.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='img/logo.png') }}">
     {% block link %}
     {% endblock %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/pages_css/course.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/pages_css/modal.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/pages_css/message.css') }}">
@@ -38,11 +44,18 @@
         } 
         .progress {
           height: 5px;
-        }    
+        }   
+        .custom-table tr {
+          background-color: #fff;
+          box-shadow: 0 0 3px #e5e5e5;
+      }
+      .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #ffffff; 
+    }       
     </style>
   </head>
   <body>
-    <div class="messages">
+    <!-- <div class="messages">
         {% for category, message in messages %}
           <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
             {{ message }}
@@ -50,7 +63,7 @@
           </div>
         {% endfor %}
     
-      </div>
+      </div> -->
     <div class="container-scroller">
       <nav class="navbar">
         <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
@@ -61,7 +74,7 @@
           <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
             <span class="mdi mdi-menu"></span>
           </button>
-          <div class="search-field d-none d-xl-block">
+          <!-- <div class="search-field d-none d-xl-block">
             <form class="d-flex align-items-center h-100" action="#">
               <div class="input-group">
                 <div class="input-group-prepend bg-transparent">
@@ -70,7 +83,7 @@
                 <input type="text" class="form-control bg-transparent border-0" placeholder="Search">
               </div>
             </form>
-          </div>
+          </div> -->
           <ul class="navbar-nav navbar-nav-right">
             <!-- <li class="nav-item  dropdown d-none d-md-block">
               <a class="nav-link dropdown-toggle" id="reportDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false"> Reports </a>
@@ -127,18 +140,18 @@
             <li class="nav-item nav-profile dropdown">
               <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
                 <div class="nav-profile-img">
-                  <img src="{{ url_for( 'static', filename='faces/face28.png') }}" alt="image">
+                  <img src="{{ url_for( 'static', filename='faces/avatar-icon.svg') }}" alt="image">
                 </div>
                 <div class="nav-profile-text">
-                  <p class="mb-1 text-black">Promise Pro</p>
+                  <p class="mb-1 text-black">{{user.username}}</p>
                 </div>
               </a>
               <div class="dropdown-menu navbar-dropdown dropdown-menu-right p-0 border-0 font-size-sm" aria-labelledby="profileDropdown" data-x-placement="bottom-end">
                 <div class="p-3 text-center bg-primary">
-                  <img class="img-avatar img-avatar48 img-avatar-thumb" src="{{ url_for( 'static', filename='faces/face28.png') }}" alt="">
+                  <img class="img-avatar img-avatar48 img-avatar-thumb" src="{{ url_for( 'static', filename='faces/avatar-icon.svg') }}" alt="">
                 </div>
                 <div class="p-2">
-                  <h5 class="dropdown-header text-uppercase ps-2 text-dark">User Options</h5>
+                  <!-- <h5 class="dropdown-header text-uppercase ps-2 text-dark">User Options</h5>
                   <a class="dropdown-item py-1 d-flex align-items-center justify-content-between" href="#">
                     <span>Inbox</span>
                     <span class="p-0">
@@ -152,18 +165,18 @@
                       <span class="badge badge-success">1</span>
                       <i class="mdi mdi-account-outline ms-1"></i>
                     </span>
-                  </a>
-                  <a class="dropdown-item py-1 d-flex align-items-center justify-content-between" href="javascript:void(0)">
-                    <span>Settings</span>
-                    <i class="mdi mdi-settings"></i>
-                  </a>
-                  <div role="separator" class="dropdown-divider"></div>
+                  </a> -->
                   <h5 class="dropdown-header text-uppercase  ps-2 text-dark mt-2">Actions</h5>
-                  <a class="dropdown-item py-1 d-flex align-items-center justify-content-between" href="#">
-                    <span>Lock Account</span>
-                    <i class="mdi mdi-lock ms-1"></i>
+                  <div role="separator" class="dropdown-divider"></div>
+                  <a data-toggle="modal" data-target="#premium" class="dropdown-item py-1 d-flex align-items-center justify-content-between" href="#">
+                    <span>Premium</span>
+                    <i class="fas fa-crown"></i>
                   </a>
-                  <a class="dropdown-item py-1 d-flex align-items-center justify-content-between" href="#">
+                  <a data-toggle="modal" data-target="#refer" class="dropdown-item py-1 d-flex align-items-center justify-content-between" href="#">
+                    <span>Refer</span>                    
+                    <i class="bi bi-person-plus ms-1"></i>
+                  </a>
+                  <a class="dropdown-item py-1 d-flex align-items-center justify-content-between" href="/logout">
                     <span>Log Out</span>
                     <i class="mdi mdi-logout ms-1"></i>
                   </a>
@@ -309,7 +322,7 @@
             <li class="nav-item">
               <a class="nav-link" href="#">
                 <span class="icon-bg"><i class="mdi mdi-pencil-box menu-icon"></i></span>
-                <span class="menu-title">Take Test</span>
+                <span class="menu-title">Compete</span>
               </a>
             </li>
             <li class="nav-item">
@@ -348,10 +361,10 @@
                   <div>
                     <div class="d-flex align-items-center">
                       <div class="sidebar-profile-img">
-                        <img src="{{ url_for( 'static', filename='faces/face28.png') }}" alt="image">
+                        <img src="{{ url_for( 'static', filename='faces/avatar-icon.svg') }}" alt="image">
                       </div>
                       <div class="sidebar-profile-text">
-                        <p class="mb-1">Promise Pro</p>
+                        <p class="mb-1">{{user.username}}</p>
                       </div>
                     </div>
                   </div>
@@ -387,9 +400,7 @@
               {% block breadcrumb %}{%endblock%}
               
               <div class="d-sm-flex justify-content-xl-between align-items-center mb-2">
-                {% if user.is_admin%}
                 {% block text %}{%endblock%}
-                {% endif %}
                 <div class="dropdown ms-0 ml-md-4 mt-2 mt-lg-0">
                   <!-- <button class="btn bg-white dropdown-toggle p-3 d-flex align-items-center" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="mdi mdi-calendar me-1"></i>24 Mar 2019 - 24 Mar 2019 </button> -->
                   <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton1">
@@ -420,6 +431,27 @@
               </div>
             </div>
           </div>
+          <div class="modal fade" id="premium" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Info</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p>Upgrade your account</p>
+                  <p>Contact us <a href="https://wa.me/+2349131840662?text=Hello%20Learnify%20AI%20my%20username%20and%20email%20are%20{{user.username}}%20and%20{{user.email}}%20I%20want%20to%20upgrade%20my%20account">here </a>
+                    via whatsapp to upgrade to premium as low as #1000</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>      
+            </div>
+          </div> 
           <!-- content-wrapper ends -->
           <!-- partial:partials/_footer.html -->
           <!-- <footer class="footer">
@@ -443,16 +475,19 @@
     <!-- Plugin js for this page -->
     <script src="{{ url_for('static', filename='vendors/js/Chart.min.js.download') }}"></script>
     <script src="{{ url_for('static', filename='vendors/js/circle-progress.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendors/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/jquery.cookie.js.download') }}" type="text/javascript"></script>
     <!-- End plugin js for this page -->
     <!-- inject:js -->
     <script src="{{ url_for('static', filename='js/off-canvas.js.download') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/hoverable-collapse.js.download') }}"></script>
     <script src="{{ url_for('static', filename='js/misc.js.download') }}"></script>
     <!-- endinject -->
     <!-- Custom js for this page -->
     <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
    {% block script %}{% endblock %}
+  
     <!-- End custom js for this page -->
   </body>
 </html>

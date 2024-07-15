@@ -1,3 +1,4 @@
+from datetime import datetime
 import uuid
 
 from main import db
@@ -15,4 +16,6 @@ class Group(db.Model):
     group_key = db.Column(db.String(120))
     pass_key = db.Column(db.String(120), default=1234)
     image_filename = db.Column(db.String(120), nullable=True)
-
+    date_created = db.Column(db.DateTime, default=datetime.utcnow)
+    date_updated = db.Column(db.DateTime, default=datetime.utcnow)
+    

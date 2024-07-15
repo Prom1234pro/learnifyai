@@ -171,7 +171,6 @@ textarea {
   background: var(--green-color);
   color: var(--white-color);
   transition: all 0.5s ease;
-  -webkit-appearance: none;
 }
 .button:hover, .button:focus {
   background: var(--darker-green);
@@ -192,4 +191,16 @@ textarea {
 }
 .hide {
   display: none;
+}
+
+@media (max-width: 470px) {
+  h1 {
+    font-size: 7vw; /* Adjust the font size as needed */
+  }
+  .tab-group li a{
+    font-size: 4.5vw;
+  }
+  .button {
+    font-size: 6vw;
+  }
 }

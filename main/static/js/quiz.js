@@ -26,11 +26,11 @@ continue_btn.onclick = ()=>{
     quiz_box.classList.add("activeQuiz"); //show quiz box
     showQuetions(0); //calling showQestions function
     queCounter(1); //passing 1 parameter to queCounter
-    startTimer(9); //calling startTimer function
+    startTimer(timeLimit); //calling startTimer function
     startTimerLine(0); //calling startTimerLine function
 }
 
-let timeValue =  9;
+let timeValue =  timeLimit;
 let que_count = 0;
 let que_numb = 1;
 let userScore = 0;
@@ -45,7 +45,7 @@ const quit_quiz = result_box.querySelector(".buttons .quit");
 restart_quiz.onclick = ()=>{
     quiz_box.classList.add("activeQuiz"); //show quiz box
     result_box.classList.remove("activeResult"); //hide result box
-    timeValue = 9; 
+    timeValue = timeLimit; 
     que_count = 0;
     que_numb = 1;
     userScore = 0;
@@ -146,11 +146,37 @@ function optionSelected(answer){
     next_btn.classList.add("show"); //show the next button if user selected any option
 }
 
+// Example function in your frontend JavaScript to send the score to the backend
+function sendScoreToBackend(score) {
+    const url = `/updateperformance/${performanceID}`;
+    const data = { score: score };
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+        // Handle success message or update UI accordingly
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        // Handle error message or update UI accordingly
+    });
+}
+
+
 function showResult(){
     info_box.classList.remove("activeInfo"); //hide info box
     quiz_box.classList.remove("activeQuiz"); //hide quiz box
     result_box.classList.add("activeResult"); //show result box
     const scoreText = result_box.querySelector(".score_text");
+    const score = (userScore / questions.length * 100).toFixed(2);
+    sendScoreToBackend(score)
     if (userScore > 3){ // if user scored more than 3
         //creating a new span tag and passing the user score number and total question number
         let scoreTag = '<span>and congrats! 🎉, You got <p>'+ userScore +'</p> out of <p>'+ questions.length +'</p></span>';
@@ -173,7 +199,7 @@ function startTimer(time){
     function timer(){
         timeCount.textContent = time; //changing the value of timeCount with time value
         time--; //decrement the time value
-        if(time < 9){ //if timer is less than 9
+        if(time < 9){ //if timer is less than timeLimit
             let addZero = timeCount.textContent; 
             timeCount.textContent = "0" + addZero; //add a 0 before time value
         }
@@ -198,11 +224,11 @@ function startTimer(time){
 }
 
 function startTimerLine(time){
-    counterLine = setInterval(timer, 50/1.5);
+    counterLine = setInterval(timer, 1000/50);
     function timer(){
-        time += 0.5/1.5; //upgrading time value with 1
+        time += (100/timeValue)/50; //upgrading time value with 1
         time_line.style.width = time + "%"; //increasing width of time_line with px by time value
-        if(time > 100){ //if time value is greater than 549
+        if(time > 100){ //if time value is greater than 54timeLimit
             clearInterval(counterLine); //clear counterLine
         }
     }

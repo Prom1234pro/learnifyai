@@ -50,15 +50,19 @@
 		}
 
 		if ($(".dashboard-progress-3").length) {
-			var progressValue = parseFloat($('.dashboard-progress-3').data('progress'))/100
-			$('.dashboard-progress-3').circleProgress({
-				value: progressValue,
-				size: 125,
-				thickness: 15,
-				startAngle: 10,
-				fill: {
-					gradient: ["#5211c2", "#5211c2"]
-				}
+			$(".dashboard-progress-3").each(function() {
+				var $this = $(this);
+				var progressValue = parseFloat($this.data('progress')) / 100; // Convert percentage to a value between 0 and 1
+	
+				$this.circleProgress({
+					value: progressValue,
+					size: 125,
+					thickness: 15,
+					startAngle: 10,
+					fill: {
+						gradient: ["#5211c2", "#5211c2"]
+					}
+				});
 			});
 		}
 		if ($(".dashboard-progress-3-dark").length) {

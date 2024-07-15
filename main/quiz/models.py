@@ -1,3 +1,4 @@
+from datetime import datetime
 import uuid
 
 from main import db
@@ -8,14 +9,18 @@ class Topic(db.Model):
     name = db.Column(db.String(50))
     course_id = db.Column(db.String(36), db.ForeignKey('course.id'), nullable=False)
     course = db.relationship('Course', backref='topics', lazy=True)
-
+    date_created = db.Column(db.DateTime, default=datetime.utcnow)
+    date_updated = db.Column(db.DateTime, default=datetime.utcnow)
+    
 class Summary(db.Model):
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     text = db.Column(db.Text)
     keynote = db.Column(db.Text)
     topic_id = db.Column(db.String(36), db.ForeignKey('topic.id'), nullable=False)
     topic = db.relationship('Topic', backref='summaries', lazy=True)
-
+    date_created = db.Column(db.DateTime, default=datetime.utcnow)
+    date_updated = db.Column(db.DateTime, default=datetime.utcnow)
+    
 class Quiz(db.Model):
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     topic_id = db.Column(db.String(36), db.ForeignKey('topic.id'), nullable=False)
@@ -24,13 +29,19 @@ class Quiz(db.Model):
     question_text = db.Column(db.Text)
     answer = db.Column(db.Text)
     hint = db.Column(db.Text)
+    instructions = db.Column(db.Text)
+    img = db.Column(db.String(120), nullable=True)
     course_id = db.Column(db.String(36), db.ForeignKey('course.id'), nullable=False)
     course = db.relationship('Course', backref='quizzes', lazy=True)
-
+    date_created = db.Column(db.DateTime, default=datetime.utcnow)
+    date_updated = db.Column(db.DateTime, default=datetime.utcnow)
+    
 class Option(db.Model):
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     option_text = db.Column(db.Text)
     is_correct = db.Column(db.Boolean, default=False)
     quiz_id = db.Column(db.String(36), db.ForeignKey('quiz.id'), nullable=False)
     quiz = db.relationship('Quiz', backref='options', lazy=True)
-
+    date_created = db.Column(db.DateTime, default=datetime.utcnow)
+    date_updated = db.Column(db.DateTime, default=datetime.utcnow)
+    

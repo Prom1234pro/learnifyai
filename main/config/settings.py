@@ -23,7 +23,7 @@ class DevConfig(BaseConfig):
     # SESSION_PERMANENT = False
     PERMANENT_SESSION_LIFETIME = timedelta(hours=6)
     SESSION_TYPE = 'filesystem'
-    MAIL_SERVER = os.environ.get("MAIL_SERVER")
+    MAIL_SERVER = os.environ.get('MAIL_SERVER')
     MAIL_PORT = 465
     MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
     MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
@@ -37,23 +37,22 @@ class DevConfig(BaseConfig):
 class ProductionConfig(BaseConfig):
     FLASK_ENV = os.environ.get("FLASK_ENV")
     # Database configuration
-    DATABASE_SERVER_URL = os.environ.get("DATABASE_SERVER_URL")
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
     PERMANENT_SESSION_LIFETIME = timedelta(hours=6)
     SECRET_KEY = os.environ.get('SECRET_KEY')
     DATABASE_NAME = os.environ.get("DATABASE_NAME")
-    USER = F"{os.environ.get("USER")}@{os.environ.get("DATABASE_NAME")}"
-    UPLOAD_FOLDER = 'main\\static\\media'
+    UPLOAD_FOLDER = 'main/static/media'
+    MAIL_SERVER = os.environ.get("MAIL_SERVER")
+    MAIL_PORT = 465
+    MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
+    MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
+    MAIL_USE_TLS = False
+    MAIL_USE_SSL = True
     PASSWORD = os.environ.get("PASSWORD")
 
     # Create the connection string
-    params = urllib.parse.quote_plus(
-        f'''DRIVER={{ODBC Driver 17 for SQL Server}};SERVER=tcp:{DATABASE_SERVER_URL},1433;DATABASE={DATABASE_NAME};UID={USER};PWD={PASSWORD};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;'''
-    )
-    conn_str = f'mssql+pyodbc:///?odbc_connect={params}'
-
     SESSION_TYPE = 'filesystem'
 
-    SQLALCHEMY_DATABASE_URI = conn_str
     # CELERY_BROKER = 'pyamqp://rabbit_user:rabbit_password@broker-rabbitmq//'
     # CELERY_RESULT_BACKEND = 'rpc://rabbit_user:rabbit_password@broker-rabbitmq//'
 

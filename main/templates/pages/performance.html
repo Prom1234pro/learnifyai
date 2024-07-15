@@ -8,21 +8,21 @@
       <a class="nav-link" id="home-tab"  href="/groups/{{user.id}}">Clusters</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" id="business-tab" href="#">Courses</a>
+      <a class="nav-link" id="business-tab" href="/courses/{{user.id}}">Courses</a>
     </li>
     <li class="nav-item">
       <a class="nav-link active" id="performance-tab" href="#">Performance</a>
     </li>
-    <li class="nav-item">
+    <!-- <li class="nav-item">
       <a class="nav-link" id="conversion-tab" href="#">Summaries</a>
-    </li>
+    </li> -->
 </ul>
 {% endblock %}
 {% block content%}
 <div class="row">
 
 
-{% if performances%}
+<!-- {% if performances%}
 {% for performance in performances %}
 <div class="col-xl-6 col-lg-6 col-sm-6 grid-margin stretch-card">
   <div class="card rounded shadow">
@@ -33,7 +33,6 @@
                   <h1></h1>
                   <h1></h1>
                   
-                  <!-- <p class="mt-2 mb-0 text-left text-dark font-weight-bold">6 Completed</p> -->
                 </div>
                 <div class="dashboard-progress dashboard-progress-3 d-flex align-items-center justify-content-center item-parent" data-performance-id="{{ performance.id }}" data-progress="{{ performance.score }}">
                     <span class="absolute-center">Total Score <div>{{performance.score}}%</div></span>
@@ -62,8 +61,63 @@
   </div>
 </div>
 {% endfor %}
-{% endif %}
+{% endif %} -->
 
+<div class="row">
+  <div class="col-md-12">
+      <div class="table-responsive">
+          <table class="table table-border table-striped custom-table mb-0">
+              <thead>
+                  <tr>
+                      <th>Course</th>
+                      <th>Test 1</th>
+                      <th>Test 2</th>
+                      <th>Test 3</th>
+                      <th>Test 4</th>
+                      <th>Test 5</th>
+                      <th class="text-right">Action</th>
+                  </tr>
+              </thead>
+              <tbody>
+                {% for performance in performances %}
+                  <tr>
+                      <td>{{ performance.course.course_name }}</td>
+                      {% for score in performance.scores %}
+                      <td>{{ score.score }}%</td>
+                      {% endfor %}
+                      {% for _ in range(5 - performance.scores|length) %}
+                      <td>-</td>
+                      {% endfor %} 
+                      <!-- <td>10:00 AM - 7:00 PM</td> -->
+                      <!-- <td><span class="custom-badge status-green">Active</span></td> -->
+                      <td class="text-right">
+                        <i class="bi bi-trash" data-performanceid="{{performance.id}}" style="cursor: pointer;" onclick="deleteItem(this)"></i>
+                      </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+          </table>
+      </div>
+</div>
+</div>
+<div class="modal fade" id="refer" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Refer</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="text" id="referralLink" class="form-control" value="{{user.referral_link}}" readonly>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="copyToClipboard()" data-dismiss="modal">Copy</button>
+      </div>
+    </div>      
+  </div>
+</div> 
 <!-- <div class="modal fade" id="joingroup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -229,6 +283,24 @@
             });
         });
       });
+    </script>
+    <script>
+      function deleteItem(element) {
+        var performanceID = $(element).data('performanceid');
+        if (confirm('Are you sure you want to reset performance?')) {
+          $.ajax({
+            url: `/deleteperformance/${performanceID}`,
+            type: 'POST',
+            success: function(response) {
+              alert('Performance reset was successful');
+            },
+            error: function(error) {
+              alert('An error occurred while resetting the performance');
+              console.error('Error:', error);
+            }
+          });
+        }
+      }
     </script>
   {% endblock %}
   

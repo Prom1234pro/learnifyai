@@ -3,35 +3,43 @@ from flask import (Blueprint, redirect,
     render_template, request, g,
     jsonify, session, flash, get_flashed_messages
     )
+from sqlalchemy.sql import func
+
+from main.utils import user_required
 
 from .models import Quiz, Topic, db
-from main.course.models import Course
+from main.course.models import Course, Performance
 from datetime import timedelta
 # from ... import bcrypt 
 
 SESSION_TIMEOUT = timedelta(seconds=10)
 qroute_bp = Blueprint('practice', __name__)
-
-def is_auth():
-    if 'user' in session:
-        return True
-    else:
-        return False
     
 ACTIVE_SESSIONS_FILE = 'active_sessions.json'
 
 @qroute_bp.route('/practice/<string:user_id>/<string:course_id>')
+@user_required
 def quiz(user_id, course_id):
     messages = get_flashed_messages(with_categories=True)
     topics = request.args.get('topics').split(",")
-    # print(topics)
     mode = request.args.get('mode')
+    time = int(request.args.get('time', 10))  # Default to 10 seconds
+    num_questions = int(request.args.get('num_questions')) 
+    order = request.args.get('order', 'orderly') 
     # course = Course.query.get_or_404(course_id)
     quizzes = Quiz.query.join(Topic).filter(
         Quiz.topic_id == Topic.id,
         Topic.id.in_(topics),
         Topic.course_id == course_id
-    ).all()
+    )
+    if order == 'shuffled':
+        quizzes = quizzes.order_by(func.random())
+    
+    if num_questions > 0:
+        quizzes = quizzes.limit(num_questions)
+
+    performance = Performance.query.filter_by(user_id=user_id, course_id=course_id).first()
+    quizzes = quizzes.all()
     # print(quizzes)
     quizzes_data = [
         {
@@ -49,11 +57,10 @@ def quiz(user_id, course_id):
     ]
     quizzes_json = json.dumps(quizzes_data)
 
-    if not is_auth():     
-        return redirect(f"/logout/{user_id}")
-    return render_template('pages/quiz.html', course_id=course_id, user_id=user_id, messages=messages, mode=mode, quizzes=quizzes_json, enum = enumerate, len=len, topics=topics)
+    return render_template('pages/quiz.html', time=time, performance_id=performance.id, course_id=course_id, user_id=user_id, messages=messages, mode=mode, quizzes=quizzes_json, enum = enumerate, len=len, topics=topics)
 
 @qroute_bp.route('/exam/<string:user_id>/<string:course_id>')
+@user_required
 def exam(user_id, course_id):
     messages = get_flashed_messages(with_categories=True)
     topics = request.args.get('topics')
@@ -62,11 +69,10 @@ def exam(user_id, course_id):
     minutes = request.args.get('minutes')
 
     course = Course.query.get_or_404(course_id)
-    if not is_auth():     
-        return redirect(f"/logout/{user_id}")
     return render_template('pages/quiz.html', course_id=course_id, user_id=user_id, messages=messages, quizzes=course.quizzes, enum = enumerate,  mode=mode, topics=topics, hours=hours, minutes=minutes)
 
 @qroute_bp.route('/quiz/setstudymode/<string:user_id>/<string:course_id>')
+@user_required
 def set_studymode(user_id, course_id):
     mode = request.args.get('mode')
     topics = request.args.get('topics')

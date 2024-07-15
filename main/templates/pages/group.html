@@ -19,13 +19,13 @@ Create Cluster</button>{%endblock%}
       <a class="nav-link active" id="home-tab"  href="#">Clusters</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" id="business-tab" href="#">Courses</a>
+      <a class="nav-link" id="business-tab" href="/courses/{{user.id}}">Courses</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" id="performance-tab"  href="/performances">Performance</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" id="conversion-tab" href="#">Summaries</a>
+      <!-- <a class="nav-link" id="conversion-tab" href="#">Summaries</a> -->
     </li>
 </ul>
 {% endblock %}
@@ -57,7 +57,7 @@ Create Cluster</button>{%endblock%}
 
 {% if public_groups %}
 {% for group in public_groups %}
-<div class="col-xl-4 col-6 col-xs-12" >
+<div class="col-xl-4 col-6 desktop-view" >
   <div class="card rounded shadow">
     <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
       {% if group.image_filename %}
@@ -65,9 +65,7 @@ Create Cluster</button>{%endblock%}
       {% else %}
         <img src="{{ url_for('static', filename='img/jamb.png') }}" alt="image" class="profile-pic mb-3">
       {% endif %}<h3 class="mb-2 text-dark font-weight-bold">{{group.name}}</h3>
-      <!-- <span>{{group.school}}</span>
-      <span>{{group.current_no_users}} members</span> -->
-      
+      <button class="button-green cbt" data-groupid="{{group.id}}" data-toggle="modal" data-target="#cbt">CBT EXAM</button>
       {% if user in group.users %}
         <div class="mt-4">
           <button class="button-green view-courses" data-groupid="{{group.id}}">Start Learning</button>
@@ -82,8 +80,45 @@ Create Cluster</button>{%endblock%}
 </div>
 
 
+    <div class="mobile-view outter-container">
+      <div class="left-container">
+        {% if group.image_filename %}
+          <img src="{{ url_for('static', filename='media/' + group.image_filename) }}" alt="image" class="profile-pic">
+        {% else %}
+          <img src="{{ url_for('static', filename='img/jamb.png') }}" alt="image" class="profile-pic">
+        {% endif %}
+        <h3 class="ext-dark font-weight-bold text-center">{{group.name}}</h3>
+      </div>
+      <div class="right-container">
+        <div class="button-container">
+          <button class="button-course cbt" data-groupid="{{group.id}}" data-toggle="modal" data-target="#cbt">CBT EXAM</button>
+          {% if user in group.users %}
+          <button class="button-course view-courses" data-groupid="{{group.id}}">Start Learning</button>
+          {% else %}
+          <button class="button-course" data-toggle="modal" data-target="#joingroup" data-groupid="{{group.id}}" data-groupkey="{{group.pass_key}}">Join Cluster</button>
+          {% endif %}
+        </div>
+        <div class="bottom-right">
+          <span>
+            <i class="bi bi-person-fill"></i><span> 20K</span>
+          </span>
+          <span>
+            <i class="bi bi-book-half"></i><span> 5</span>
+          </span>
+          <span>
+            <i class="bi bi-bar-chart-line"></i>
+          </span>
+          <span>
+            <i class="bi bi-heart-fill"></i><span> 5</span>
+          </span>
+          
+        </div>
+      </div>
+    </div>
+
 {% endfor %}
 {% endif %}
+
 
 <div class="modal fade" id="joingroup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -111,14 +146,14 @@ Create Cluster</button>{%endblock%}
       {% else %}
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Error</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Info</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
           <p>User must be a premium user to join a reading cluster</p>
-          <p>Contact us via whatsapp to upgrade to premium</p>
+          <p>Contact us <a href="https://wa.me/+2349131840662?text=Hello%20Learnify%20AI%20my%20username%20and%20email%20are%20{{user.username}}%20and%20{{user.email}}%20I%20want%20to%20upgrade%20my%20account">here </a> via whatsapp to upgrade to premium as low as #1000</p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -126,7 +161,46 @@ Create Cluster</button>{%endblock%}
       </div>      
       {% endif %}
     </div>
-  </div> 
+</div> 
+<div class="modal fade" id="cbt" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">CBT Coming soon</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button type="button" id="button-pin2" class="button-green">Start Learning</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div> 
+<div class="modal fade" id="refer" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Refer</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="text" id="referralLink" class="form-control" value="{{user.referral_link}}" readonly>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="copyToClipboard()" data-dismiss="modal">Copy</button>
+      </div>
+    </div>      
+  </div>
+</div> 
   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -223,6 +297,26 @@ Create Cluster</button>{%endblock%}
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        $('#cbt').on('show.bs.modal', function (event) {
+          var button = $(event.relatedTarget); // Button that triggered the modal
+          var groupId = button.data('groupid'); // Extract info from data-* attributes
+          console.log('Group ID:', groupId); // Now you can use the groupId as needed
+          
+          // Update the modal's content.
+          var modal = $(this);
+          modal.find('.modal-footer #button-pin2').data('groupid', groupId); // Set the group ID to the button inside the modal
+        });
+      
+        $('#button-pin2').click(function() {
+          var groupId = $(this).data('groupid');
+          console.log('Group ID:', groupId); // Now you can use the groupId as needed
+          window.location.href = '/courses/' + "{{user.id}}/" + groupId;
+        });
+      });
+      </script>
+      
+    <script>
   
       $(document).ready(function () {
         let groupId, groupKey;
@@ -275,5 +369,14 @@ Create Cluster</button>{%endblock%}
         });
       });
     </script>
+    <script>
+      function copyToClipboard() {
+          var copyText = document.getElementById("referralLink");
+          copyText.select();
+          copyText.setSelectionRange(0, 99999); /* For mobile devices */
+          document.execCommand("copy");
+          alert("Copied the link: " + copyText.value);
+      }
+  </script>
   {% endblock %}
   

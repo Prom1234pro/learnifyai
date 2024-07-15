@@ -14,6 +14,12 @@ from flask_jwt_extended import JWTManager
 
 app = Flask(__name__)
 app.config.update(main.config.as_dict())
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'promiseimadonmwinyi@gmail.com'
+app.config['MAIL_PASSWORD'] = 'pdvmtnuuqktbuhbi'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
