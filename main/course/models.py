@@ -24,7 +24,6 @@ class Performance(db.Model):
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     score = db.Column(db.Integer, default=0)
     average = db.Column(db.Integer, default=0)
-    # progress = db.Column(db.Integer, default=0)
     user_id = db.Column(db.String(36), db.ForeignKey('user.id'), nullable=False)
     user = db.relationship('User', backref='performances', lazy=True)
     course_id = db.Column(db.String(36), db.ForeignKey('course.id'), nullable=False)
@@ -35,10 +34,9 @@ class Performance(db.Model):
     
     @property
     def progress(self):
-        print("this fuction as called", len(self.scores))
-        print((len(self.scores) / 5) * 100)
         return float(len(self.scores) / 5) * 100
     
+  
     def add_score(self, new_score_value):
         # Create a new score
         new_score = Score(score=new_score_value, performance_id=self.id)

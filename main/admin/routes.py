@@ -91,6 +91,13 @@ def admin_login():
     return abort(404)
 
 
+@admin_bp.route('/admin/groups')
+@admin_required
+def group():
+    all_groups = Group.query.all()
+    all_groups_data = [{'id': group.id, 'name': group.name, 'image_filename': group.image_filename} for group in all_groups]
+    return jsonify({'all_groups': all_groups_data}), 200
+
 @admin_bp.route('/ailearnify/update/<user_id>', methods=['PUT'])
 @admin_required
 def update_user(user_id):
@@ -294,8 +301,7 @@ def generate_group_key(user_id):
 @admin_required
 def download_file(filename):
     try:
-        # Make sure to provide the correct path to your file directory
-        path = f'instance/{filename}'
+        path = f'../instance/{filename}'
         return send_file(path, as_attachment=True)
     except Exception as e:
         return str(e)

@@ -92,7 +92,7 @@ def create_course(group_id):
         
         # Create a Performance object for the user and the new course
         for user in group.users:
-            new_performance = Performance(user_id=user.id, course_id=new_course.id, score=0, average=0, progress=0)
+            new_performance = Performance(user_id=user.id, course_id=new_course.id, score=0)
             db.session.add(new_performance)
         # Commit both the new course and performance to the database
         db.session.commit()
@@ -140,8 +140,6 @@ def update_performance(id):
     if request.method == 'POST':
         data = request.get_json()
         score = data.get('score')
-        average = data.get('average', performance.average)
-        progress = data.get('progress', performance.progress)
         
         if score is not None:
             new_score_value = float(score)
