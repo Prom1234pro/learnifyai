@@ -123,20 +123,22 @@ def create_group():
 @user_required
 def add_user_to_group():
     if request.method == 'POST':
-
-        data = request.get_json()
-
+        # Check if Content-Type is JSON
+        if request.content_type == 'application/json':
+            data = request.get_json()
+        else:
+            data = request.form
+        
         if not data:
             return jsonify({'error': 'No data provided'}), 400
         
-        # Extract data from JSON
+        # Extract data from request
         group_id = data.get('group_id')
         user_id = session.get('user_id')
-        pass_key = data.get('group_pin')
+        pass_key = data.get('group_pin') or "1234"
         
         # Retrieve the group and check if it exists
         group = Group.query.get(group_id)
-        print(group.id, "asdfasdfasdfasdfasdfasd")
         if not group:
             flash('This group was deleted by the creator', "warning")
             return redirect('/groups/'+user_id)
@@ -153,18 +155,13 @@ def add_user_to_group():
         # Retrieve the user and add them to the group
         user = User.query.get(user_id)
 
-        # if not user.is_premium_user:
-        #     print("here")
-        #     flash('Please upgrade to a premium account', "warning")
-        #     return redirect('/groups/'+user_id)
-
         if not user:
-            flash('An unknown error occured', "warning")
+            flash('An unknown error occurred', "warning")
             flash('You were logged out', "warning")
             return redirect('/login-user')
 
         if user in group.users:
-            return jsonify({"error": "user already in group"}), 200
+            return jsonify({"error": "User already in group"}), 200
 
         group.users.append(user)
         group.current_no_users += 1
@@ -178,8 +175,14 @@ def add_user_to_group():
         db.session.commit()
 
         flash('Joined group successfully and performance created', "info")
-        return jsonify({"success": f"{user.username} user added to {group.name}"})
+        if request.content_type == 'application/json':
+
+            return jsonify({"success": f"{user.username} added to {group.name}"})
+        else:
+            return redirect(request.referrer or '/clusters/'+user_id)
+    
     return abort(404)
+
 
 @groute_bp.route('/join-cluster/<cluster_id>', methods=['GET','POST'])
 @user_required

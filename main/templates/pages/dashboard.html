@@ -245,68 +245,59 @@
       <ul class="p-0 m-0">
         {% for cluster in public_groups %}
           <li class="d-flex mb-4 pb-1">
-            <a href="{{ url_for('course.get_all_user_group_courses', group_id=cluster.id) }}" class="d-flex w-100 text-decoration-none text-reset">
-              <div class="avatar flex-shrink-0 me-3">
-                  <span class="avatar-initial rounded bg-label-primary">
-                      <i class="bx bx-mobile-alt"></i>
-                  </span>
-              </div>
-              <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                  <div class="me-2">
-                      <h6 class="mb-0">{{ cluster.name }}</h6>
-                      <small class="text-muted">{{ cluster.motto }}</small>
-                  </div>
-                  <div class="user-progress">
-                      <small class="fw-semibold">{{ cluster.current_no_users }}</small>
-                  </div>
-              </div>
-          </a>
+            {% if user in cluster.users %}
+                        <a href="{{ url_for('course.get_all_user_group_courses', group_id=cluster.id) }}" class="d-flex w-100 text-decoration-none text-reset">
+                            <div class="avatar flex-shrink-0 me-3">
+                                <span class="avatar-initial rounded bg-label-primary">
+                                    <i class="bx bx-mobile-alt"></i>
+                                </span>
+                            </div>
+                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                <div class="me-2">
+                                    <h6 class="mb-0">{{ cluster.name }}</h6>
+                                    <small class="text-muted">{{ cluster.motto }}</small>
+                                </div>
+                                <div class="user-progress">
+                                    <small class="fw-semibold">{{ cluster.current_no_users }}</small>
+                                </div>
+                            </div>
+                        </a>
+                        {% else %} 
+                        <a href="javascript:void(0);" class="d-flex w-100 text-decoration-none text-reset"
+                        data-bs-toggle="popover"
+                        data-bs-offset="0,14"
+                        data-bs-placement="top"
+                        data-bs-html="true"
+                        data-bs-content="<form method='POST' action='/user/add-to-group'>
+                        <div class='pb-3'>Join <b>{{cluster.name}}</b> cluster</div>
+                        <div class='form-group'>
+                            <input type='text' hidden class='form-control' id='group_id' value={{cluster.id}} name='group_id' required>
+                        </div>
+                        <div class='form-group'>
+                            <input type='password' hidden class='form-control' value={{cluster.pass_key}} id='group_pin' name='group_pin' placeholder='Enter group PIN' required>
+                        </div>
+                        <button type='submit' class='btn btn-primary'>Join Cluster</button>
+                        </form>"
+                        title="Join the cluster"
+                        >
+                            <div class="avatar flex-shrink-0 me-3">
+                                <span class="avatar-initial rounded bg-label-primary">
+                                    <i class="bx bx-mobile-alt"></i>
+                                </span>
+                            </div>
+                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                <div class="me-2">
+                                    <h6 class="mb-0">{{ cluster.name }}</h6>
+                                    <small class="text-muted">{{ cluster.motto }}</small>
+                                </div>
+                                <div class="user-progress">
+                                    <small class="fw-semibold">{{ cluster.current_no_users }}</small>
+                                </div>
+                            </div>
+                        </a>
+                        {% endif %}
           </li>
-          <!-- <li class="d-flex mb-4 pb-1">
-          <div class="avatar flex-shrink-0 me-3">
-              <span class="avatar-initial rounded bg-label-success"><i class="bx bx-closet"></i></span>
-          </div>
-          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-              <div class="me-2">
-              <h6 class="mb-0">Boiling Point</h6>
-              <small class="text-muted">tutorial that hots</small>
-              </div>
-              <div class="user-progress">
-              <small class="fw-semibold">23.8k</small>
-              </div>
-          </div>
-          </li>
-          <li class="d-flex mb-4 pb-1">
-          <div class="avatar flex-shrink-0 me-3">
-              <span class="avatar-initial rounded bg-label-info"><i class="bx bx-home-alt"></i></span>
-          </div>
-          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-              <div class="me-2">
-              <h6 class="mb-0">Gifted Hands</h6>
-              <small class="text-muted">LLorem Ipsum</small>
-              </div>
-              <div class="user-progress">
-              <small class="fw-semibold">849k</small>
-              </div>
-          </div>
-          </li>
-          <li class="d-flex">
-          <div class="avatar flex-shrink-0 me-3">
-              <span class="avatar-initial rounded bg-label-secondary"
-              ><i class="bx bx-football"></i
-              ></span>
-          </div>
-          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-              <div class="me-2">
-              <h6 class="mb-0">Uniben Tutorial</h6>
-              <small class="text-muted">Lorem ipsum, dolor sit amet consectetur adipisicing elit</small>
-              </div>
-              <div class="user-progress">
-              <small class="fw-semibold">99</small>
-              </div>
-          </div>
-          </li> -->
-        {% endfor %}
+          {% endfor %}
       </ul>
       </div>
   </div>
