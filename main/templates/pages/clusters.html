@@ -1,6 +1,6 @@
 {% extends 'pages/base.html' %}
-{% block title %}{{user.username}} - group{% endblock %}
-{% block heading %}group{% endblock %}
+{% block title %}{{user.username}} - Cluster{% endblock %}
+{% block heading %}Cluster{% endblock %}
 
 {% block style %}
 <style>
@@ -45,19 +45,19 @@
     <div class="col-lg-4 order-lg-1 d-lg-block">
       <div class="card">
           <div class="card-header d-flex align-items-center justify-content-between">
-            <h5 class="card-title m-0 me-2">Join A group</h5>
+            <h5 class="card-title m-0 me-2">Join A cluster</h5>
           </div>
           <div class="card-body text-center">
           <input
           type="text"
           class="form-control"
           id="defaultFormControlInput"
-          placeholder="Enter group Link"
+          placeholder="Enter Cluster Link"
           aria-describedby="defaultFormControlHelp"
           />
-              <a href="javascript:void(0);" class="btn btn-primary w-75 d-grid mx-auto mt-3 mb-3">Join group</a>
+              <a href="javascript:void(0);" class="btn btn-primary w-75 d-grid mx-auto mt-3 mb-3">Join Cluster</a>
               <div id="defaultFormControlHelp" class="form-text">
-                  Join your favorite groups to gain access to reading materials
+                  Join your favorite clusters to gain access to reading materials
               </div>
           </div>
       </div>
@@ -67,7 +67,7 @@
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between pb-0">
             <div class="card-title mb-4">
-                <h5 class="m-0 me-2">groups you are in</h5>
+                <h5 class="m-0 me-2">Clusters you are in</h5>
                 <!-- <small class="text-muted">42.82k Total Sales</small> -->
             </div>
             <div class="dropdown">
@@ -83,10 +83,10 @@
                 </button>
                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="orederStatistics">
                         <a class="dropdown-item" href="javascript:void(0);">No Function</a>
-                    <!-- <a class="dropdown-item" href="/groups/{{user.id}}">view all</a> -->
+                    <!-- <a class="dropdown-item" href="/clusters/{{user.id}}">view all</a> -->
                     <!-- <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
-                    data-bs-target="#joingroup">Join group</a>
-                    <a class="dropdown-item" href="javascript:void(0);">Leave group</a>
+                    data-bs-target="#joinCluster">Join Cluster</a>
+                    <a class="dropdown-item" href="javascript:void(0);">Leave Cluster</a>
                     <a class="dropdown-item" href="javascript:void(0);">Share</a> -->
                 </div>
             </div>
@@ -94,25 +94,25 @@
             {% if not user_groups%}
             <div class="card-body text-center">
             
-                <p>You are not in any group yet.</p>
+                <p>You are not in any cluster yet.</p>
                 <input
             type="text"
             class="form-control"
             id="defaultFormControlInput"
-            placeholder="Enter group Link"
+            placeholder="Enter Cluster Link"
             aria-describedby="defaultFormControlHelp"
             />
-                <a href="javascript:void(0);" class="btn btn-primary w-75 d-grid mx-auto mt-3 mb-3">Join group</a>
+                <a href="javascript:void(0);" class="btn btn-primary w-75 d-grid mx-auto mt-3 mb-3">Join Cluster</a>
                 <div id="defaultFormControlHelp" class="form-text">
-                    groups you join will show here
+                    Clusters you join will show here
                 </div>
             </div>
             {% else %}
             <div class="card-body">
                 <ul class="p-0 mb-1">
-                    {% for group in user_groups %}
+                    {% for cluster in user_groups %}
                     <li class="d-flex mb-4 pb-1">
-                        <a href="{{ url_for('course.get_all_user_group_courses', group_id=group.id) }}" class="d-flex w-100 text-decoration-none text-reset">
+                        <a href="{{ url_for('course.get_all_user_group_courses', group_id=cluster.id) }}" class="d-flex w-100 text-decoration-none text-reset">
                             <div class="avatar flex-shrink-0 me-3">
                                 <span class="avatar-initial rounded bg-label-primary">
                                     <i class="bx bx-mobile-alt"></i>
@@ -120,11 +120,11 @@
                             </div>
                             <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                                 <div class="me-2">
-                                    <h6 class="mb-0">{{ group.name }}</h6>
-                                    <small class="text-muted">{{ group.motto }}</small>
+                                    <h6 class="mb-0">{{ cluster.name }}</h6>
+                                    <small class="text-muted">{{ cluster.motto }}</small>
                                 </div>
                                 <div class="user-progress">
-                                    <small class="fw-semibold">{{ group.current_no_users }}</small>
+                                    <small class="fw-semibold">{{ cluster.current_no_users }}</small>
                                 </div>
                             </div>
                         </a>
@@ -134,11 +134,11 @@
             </div>
             
       {% endif %}
-            <div class="modal fade" id="joingroup" tabindex="-1" aria-hidden="true">
+            <div class="modal fade" id="joinCluster" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                    <h5 class="modal-title" id="joingroupTitle">Join A group</h5>
+                    <h5 class="modal-title" id="joinClusterTitle">Join A Cluster</h5>
                     <button
                         type="button"
                         class="btn-close"
@@ -151,12 +151,12 @@
                         type="text"
                         class="form-control"
                         id="defaultFormControlInput"
-                        placeholder="Enter group Link"
+                        placeholder="Enter Cluster Link"
                         aria-describedby="defaultFormControlHelp"
                     />
-                        <a href="javascript:void(0);" class="btn btn-primary w-75 d-grid mx-auto mt-3 mb-3">Join group</a>
+                        <a href="javascript:void(0);" class="btn btn-primary w-75 d-grid mx-auto mt-3 mb-3">Join Cluster</a>
                         <div id="defaultFormControlHelp" class="form-text">
-                            Join your favorite groups to gain access to reading materials
+                            Join your favorite clusters to gain access to reading materials
                             </div>
                     </div>
                     <div class="modal-footer">
@@ -185,7 +185,7 @@
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between pb-0">
                 <div class="card-title mb-4">
-                    <h5 class="m-0 me-2">Popular groups</h5>
+                    <h5 class="m-0 me-2">Popular Clusters</h5>
                     <!-- <small class="text-muted">42.82k Total Sales</small> -->
                 </div>
                 <div class="dropdown">
@@ -203,17 +203,17 @@
                         <a class="dropdown-item" href="javascript:void(0);">No Function</a>
                         <!-- <a class="dropdown-item" href="javascript:void(0);">Select All</a>
                         <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
-                        data-bs-target="#joingroup">Join group</a>
-                        <a class="dropdown-item" href="javascript:void(0);">Leave group</a>
+                        data-bs-target="#joinCluster">Join Cluster</a>
+                        <a class="dropdown-item" href="javascript:void(0);">Leave Cluster</a>
                         <a class="dropdown-item" href="javascript:void(0);">Share</a> -->
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="joingroup" tabindex="-1" aria-hidden="true">
+            <div class="modal fade" id="joinCluster" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                    <h5 class="modal-title" id="joingroupTitle">Join A group</h5>
+                    <h5 class="modal-title" id="joinClusterTitle">Join A Cluster</h5>
                     <button
                         type="button"
                         class="btn-close"
@@ -226,12 +226,12 @@
                         type="text"
                         class="form-control"
                         id="defaultFormControlInput"
-                        placeholder="Enter group Link"
+                        placeholder="Enter Cluster Link"
                         aria-describedby="defaultFormControlHelp"
                     />
-                        <a href="javascript:void(0);" class="btn btn-primary w-75 d-grid">Join group</a>
+                        <a href="javascript:void(0);" class="btn btn-primary w-75 d-grid">Join Cluster</a>
                         <div id="defaultFormControlHelp" class="form-text">
-                            Join your favorite groups to gain access to reading materials
+                            Join your favorite clusters to gain access to reading materials
                             </div>
                     </div>
                     <div class="modal-footer">
@@ -252,9 +252,9 @@
                     <div id="orderStatisticsChart"></div>
                 </div> -->
                 <ul class="p-0 m-0">
-                  {% for group in public_groups %}
+                  {% for cluster in public_groups %}
                     <li class="d-flex mb-4 pb-1">
-                        <a href="{{ url_for('course.get_all_user_group_courses', group_id=group.id) }}" class="d-flex w-100 text-decoration-none text-reset">
+                        <a href="{{ url_for('course.get_all_user_group_courses', group_id=cluster.id) }}" class="d-flex w-100 text-decoration-none text-reset">
                             <div class="avatar flex-shrink-0 me-3">
                                 <span class="avatar-initial rounded bg-label-primary">
                                     <i class="bx bx-mobile-alt"></i>
@@ -262,11 +262,11 @@
                             </div>
                             <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                                 <div class="me-2">
-                                    <h6 class="mb-0">{{ group.name }}</h6>
-                                    <small class="text-muted">{{ group.motto }}</small>
+                                    <h6 class="mb-0">{{ cluster.name }}</h6>
+                                    <small class="text-muted">{{ cluster.motto }}</small>
                                 </div>
                                 <div class="user-progress">
-                                    <small class="fw-semibold">{{ group.current_no_users }}</small>
+                                    <small class="fw-semibold">{{ cluster.current_no_users }}</small>
                                 </div>
                             </div>
                         </a>
