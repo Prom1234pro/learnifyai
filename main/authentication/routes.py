@@ -3,10 +3,10 @@ from flask import (Blueprint, redirect,
     jsonify, session, flash, get_flashed_messages, url_for
     )
 
-from main.utils import user_required
+from main.utils import onboarding_required, user_required
 
 # from main.utils import load_active_sessions, save_active_sessions, SESSION_TIMEOUT
-from .models import db, User, Group
+from .models import Profile, db, User, Group
 from flask_mail import Message
 import string, secrets
 from main import bcrypt, mail
@@ -30,8 +30,12 @@ def verify_email(token):
     else:
 
         flash('Invalid or expired verification token. Please try again.', 'danger')
+        return  render_template('account/verify-email-error.html')
+    return redirect(f'/verify-email-successful?email={user.email}')
 
-    return redirect("/login-user")
+@a_route_bp.route('/request-activation-link', methods=['GET', 'POST'])
+def request_activation_link():
+    return render_template('account/request-activation-link.html')
 
 @a_route_bp.route('register', methods=['GET', 'POST'])
 def create_user():
@@ -58,12 +62,10 @@ def create_user():
         if existing_email:
             flash('Email already exists', "warning")
             flash('If you are the owner, please log in', "success")
+            print("exist")
             return redirect('/register')
         
         verification_token = generate_verification_token()  # Ensure this function generates a token for the email
-        new_user = User(username=username, email=email, full_name=fullname, password=hashed_password, verification_token=verification_token)
-        db.session.add(new_user)
-        db.session.commit()
         
         if referrer:
             referrer_user = User.query.filter_by(username=referrer).first()
@@ -78,25 +80,80 @@ def create_user():
             msg = Message(subject='Verify Your Email Address', sender='your_email@example.com', recipients=[email])
             msg.body = f"Please click the following link to verify your email address: {verification_link}"
             mail.send(msg)
-            flash('A verification email has been sent to you', "success")
+            new_user = User(username=username, email=email, full_name=fullname, password=hashed_password, verification_token=verification_token)
+            
+            db.session.add(new_user)
+            db.session.commit()
+            session["onboarding_id"] = new_user.id
+            return redirect(f'/onboarding')
 
         except Exception as e:
             print(f"Error sending verification email: {e}")
             flash('Server timeout. Please try again later.', "danger")
             return redirect('/register')
         
-        return redirect('/onboarding')
     
-    return render_template('account/signup.html', messages=messages, page="signup")
+    return render_template('account/auth-signup.html', messages=messages, page="signup")
 
-@a_route_bp.route('/onboarding')
+@a_route_bp.route('/resend-email/<email>')
+def resend_email(email):
+    try:
+        print(email)
+        verification_token = generate_verification_token()
+        user = User.query.filter_by(email=email.strip()).first()
+        verification_link = url_for('auth.verify_email', token=verification_token, _external=True)
+        msg = Message(subject='Verify Your Email Address', sender='your_email@example.com', recipients=[email])
+        msg.body = f"Please click the following link to verify your email address: {verification_link}"
+        mail.send(msg)
+        print("sent mail")
+        print(user)
+        user.verification_token = verification_token
+        db.session.commit()
+        return redirect(f'/verification-email-sent?email={email}')
+
+    except Exception as e:
+        print(f"Error sending verification email: {e}")
+        flash('Server timeout. Please try again later.', "danger")
+        return redirect('/register')
+
+@a_route_bp.route('/verify-email-successful')
+def verify_email_successful():
+    email = request.args.get("email")
+    return render_template('account/verify-email-successful.html', email=email)
+
+@a_route_bp.route('/onboarding', methods=['GET', 'POST'])
+@onboarding_required
 def onboarding():
-    return render_template('pages/ob.html')
+    if request.method == 'POST':
+        user = User.query.get(session.get('onboarding_id'))
+        full_name = request.form.get('full_name')
+        date_of_birth = request.form.get('date_of_birth')
+        university = request.form.get('university')
+        course = request.form.get('course')
+        bio = request.form.get('bio')
+        profile = Profile(full_name=full_name,
+        user_id=user.id,
+        date_of_birth=date_of_birth,
+        university=university,
+        course=course,
+        bio=bio
+        )
+        db.session.add(profile)
+        db.session.commit()
+        
+        return redirect(f'/verification-email-sent?email={user.email}')
+    
+    return render_template('account/onboarding.html')
+
+
+@a_route_bp.route('/verification-email-sent')
+def verification_email_sent():
+    email = request.args.get("email")
+    return render_template('account/verification-email-sent.html', email=email)
 
 @a_route_bp.route('/login-user', methods=['GET','POST'])
 def login_user_():
     messages = get_flashed_messages(with_categories=True)
-    user = session.get('user')
     # if user:
     #     return redirect(f'/groups/{user.id}')
 
@@ -121,21 +178,34 @@ def login_user_():
         if not is_valid:
             flash('Invalid email or password', "warning")
             return redirect('/login-user')
-        session["user"] = user
+        session["user_id"] = user.id
+        
         user.is_logged_in = True
         db.session.commit()
 
         flash('login successful', "success")
-        return redirect(f'/groups/{user.id}')
+        print("redirect success ===============")
+        return redirect(f'/dashboard/{user.id}')
 
-    return render_template('account/signup.html', messages=messages, page="login")
+    return render_template('account/auth-login.html', messages=messages, page="login")
+
+@a_route_bp.route('forgot-password')
+def forgot_password():
+    #todo later
+    return render_template('account/auth-forgot-password.html', messages="messages", page="login")
+
+@a_route_bp.route('verification-email')
+def verification_email():
+    #todo later
+    return render_template('account/verification-email-sent.html', messages="messages", page="login")
 
 @a_route_bp.route('/logout')
 def logout():
-    user = session.get('user')
+    user_id = session.get('user_id')
+    user = User.query.get_or_404(user_id)
     user.is_logged_in = False
     db.session.commit()
-    session.pop('user', None)
+    session.pop('user_id', None)
     session.modified = True
     session.clear()
     return redirect('/login-user')

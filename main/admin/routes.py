@@ -2,7 +2,7 @@ import uuid
 from flask import Blueprint, request, jsonify, send_file, url_for, abort, session
 from main.authentication.models import User, db
 from main.course.models import Course
-from main.utils import admin_required
+from main.utils import admin_required, user_required
 from flask_mail import Message
 from main import bcrypt, mail
 
@@ -90,11 +90,19 @@ def admin_login():
             return jsonify({"error": "Invalid credentials"}), 401
     return abort(404)
 
+@admin_bp.route('/make_admin/<user_id>', methods=['POST'])
+def make_admin(user_id):
+    if request.method == 'POST':
+        user = User.query.get_or_404(user_id)
+        user.is_admin = True
+        db.session.commit()
+        return jsonify({"success":"user made an admin"})
+    return abort(404)
 
 @admin_bp.route('/admin/groups')
 @admin_required
 def group():
-    all_groups = Group.query.all()
+    all_groups =Group.query.all()
     all_groups_data = [{'id': group.id, 'name': group.name, 'image_filename': group.image_filename} for group in all_groups]
     return jsonify({'all_groups': all_groups_data}), 200
 
@@ -184,6 +192,8 @@ def get_courses_by_group(group_id):
 
     return abort(404)
 
+
+
 @admin_bp.route('/admin/create-quiz/obj', methods=['POST'])
 @admin_required
 def create_quiz_obj():
@@ -209,7 +219,7 @@ def create_quiz_obj():
                 topic_id = create_topic(summaries, name=topic['topic_name'], course_id=course_id)
             for quiz_data in quizzes:
                 quiz = Quiz(topic_id=topic_id,
-                            hint=quiz_data['hint'],
+                            hint="No hint",
                             instructions=quiz_data['instructions'],
                             question_text=quiz_data['question_text'],
                             course_id=course_id)
@@ -219,6 +229,8 @@ def create_quiz_obj():
                     for option_data in options_data:
                         option = Option(option_text=option_data['option_text'], is_correct=option_data['is_correct'], quiz=quiz)
                         quiz.options.append(option)
+                        if option_data['is_correct']:
+                            quiz.answer = option_data['option_text']
 
                 db.session.add(quiz)
 
@@ -271,7 +283,7 @@ def create_quiz_gamma():
     return abort(404)
 
 
-@admin_bp.route('/admin/create-group-key/<string:user_id>', methods=['POST'])
+@admin_bp.route('/admin/create/<string:user_id>', methods=['POST'])
 @admin_required
 def generate_group_key(user_id):
     if request.method == 'POST':

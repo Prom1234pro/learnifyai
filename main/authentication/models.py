@@ -1,4 +1,4 @@
-from flask import url_for
+from flask import session, url_for
 from flask_login import UserMixin
 from sqlalchemy.orm import object_session
 import uuid
@@ -14,7 +14,7 @@ Groups = db.Table('groups',
 
 class User(UserMixin, db.Model):
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
-    username = db.Column(db.String(50), nullable=False)
+    username = db.Column(db.String(50), unique=True, nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
@@ -34,6 +34,14 @@ class User(UserMixin, db.Model):
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
     date_updated = db.Column(db.DateTime, default=datetime.utcnow)
     
+    @property
+    def get_referral(self):
+        user_id = session["user_id"]
+        user = User.query.get_or_404(user_id)
+        referral_link = url_for('auth.create_user', referrer=user.username, _external=True)
+        return referral_link
+
+
     def update_activity_time(self):
         self.last_activity_time = datetime.utcnow()
         db.session.commit()
@@ -81,3 +89,17 @@ class Referral(db.Model):
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
     date_updated = db.Column(db.DateTime, default=datetime.utcnow)
     
+
+class Profile(db.Model):
+    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    user_id = db.Column(db.String(36), db.ForeignKey('user.id'), nullable=False)
+    full_name = db.Column(db.String(100))
+    bio = db.Column(db.Text, nullable=True)
+    profile_picture = db.Column(db.String(200), nullable=True)
+    date_of_birth = db.Column(db.String(200), nullable=True)
+    university = db.Column(db.String(100), nullable=True)
+    course = db.Column(db.String(100), nullable=True)
+    date_created = db.Column(db.DateTime, default=datetime.utcnow)
+    date_updated = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    user = db.relationship('User', backref=db.backref('profile', uselist=False))
