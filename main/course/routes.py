@@ -44,6 +44,17 @@ def get_all_user_courses(user_id):
     # } for course in courses]    
     return render_template('pages/course.html', messages=messages, user=user, courses=courses, enum=enumerate)
 
+@croute_bp.route('/cluster-courses/<string:group_id>')
+@user_required
+def get_all_user_group_courses(group_id):
+    group = Group.query.get(group_id)
+    messages = get_flashed_messages(with_categories=True)
+
+    user_id = session.get('user_id')
+    user = User.query.get(user_id)
+      
+    return render_template('pages/courses.html', messages=messages, group=group, user=user)
+
 
 @croute_bp.route('/courses/<string:id>/<string:group_id>')
 @user_required
@@ -54,82 +65,64 @@ def course_(id, group_id):
     messages = get_flashed_messages(with_categories=True)
     # user_activity(id)
     return render_template('pages/course.html', messages=messages, user=user, group_id=group_id, courses=courses, enum=enumerate)
+    # return render_template('pages/course.html', messages=messages, user=user, enum=enumerate)
 
 
 @croute_bp.route('/user/create-course/<string:group_id>', methods=['POST'])
 @user_required
 def create_course(group_id):
-    user = None
-    if "user" in session:
-        user = session["user"]
-        print("user-id", user.id)
-        user = User.query.get_or_404(user.id)
-        print(user)
-        # if not user.is_premium_user:
-        #     flash(f'You must be an admin to upload material', "info")
-        #     return redirect(f'/courses/{user.id}/{group_id}')
-    else:
-        flash('User needs authentication to perform this action', 'warning')
-        return redirect('/login-user')
-        
     if request.method == 'POST':
+        user_id = session.get('user_id')
+        user = User.query.get_or_404(user_id)
         # Extract data from the request body
-        data = request.form
-        course_name = data.get('course-name')
+        data = request.get_json()
+        course_name = data.get('course_name')
         url = data.get('url')
-        # try:
-        #     response = requests.head(url)
-        #     response.raise_for_status()  # Raise an exception for non-successful status codes
-        # except requests.exceptions.RequestException as e:
-        #     return jsonify({'error': 'Error checking URL: ' + str(e)}), 400
+        _for = data.get('_for')
+        description = data.get('description', '')  # Default to an empty string if not provided
+        progress = data.get('progress', 0)  # Default to 0 if not provided
         
-        # Create a new Course object
         group = Group.query.get_or_404(group_id)
-        new_course = Course(course_name=course_name, url=url, group_id=group_id)
+        new_course = Course(
+            course_name=course_name,
+            url=url,
+            _for=_for,
+            description=description,
+            progress=progress,
+            group_id=group_id
+        )
         
-        # Add the new course to the database session
         db.session.add(new_course)
         
         # Create a Performance object for the user and the new course
         for user in group.users:
             new_performance = Performance(user_id=user.id, course_id=new_course.id, score=0)
             db.session.add(new_performance)
+        
         # Commit both the new course and performance to the database
         db.session.commit()
         
         flash('Course created successfully', 'success')
         
+        return jsonify({"message": "success", "course_id": new_course.id})
 
-        # create_quiz(resp)
-        return redirect(f'/courses/{user.id}/{group_id}')
+    return abort(404)
 
-    return jsonify({'error': 'Method not allowed'}), 405
 
 @croute_bp.route('/performances', methods=['GET'])
 @user_required
 def show_performances():
-    user = None
-    if "user" in session:
-        user = session["user"]
-        print("user-id", user.id)
-        user = User.query.get_or_404(user.id)
-        print(user)
-        # if not user.is_premium_user:
-        #     flash(f'You must be an admin to upload material', "info")
-        #     return redirect(f'/courses/{user.id}/{group_id}')
-    else:
-        flash('User needs authentication to perform this action', 'warning')
-        return redirect('/login-user')
-    # Query the database for performances by user ID
+    user_id = session.get("user_id")
+    user = User.query.get_or_404(user_id)
     performances = Performance.query.filter_by(user_id=user.id).all()
     
     # Render the performance.html template and pass the performances data
-    return render_template('pages/performance.html', user=user, performances=performances)
+    return render_template('pages/performances.html', user=user, performances=performances)
 
 
-@croute_bp.route('/updateperformance/<string:id>', methods=['POST'])
+@croute_bp.route('/updateperformance/<string:id>/<score>', methods=['POST'])
 @user_required
-def update_performance(id):
+def update_performance(id, score):
     user = User.query.get_or_404(session["user"].id)
     performance = Performance.query.get_or_404(id)
 
@@ -139,7 +132,6 @@ def update_performance(id):
     
     if request.method == 'POST':
         data = request.get_json()
-        score = data.get('score')
         
         if score is not None:
             new_score_value = float(score)

@@ -1,0 +1,367 @@
+<!DOCTYPE html><html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+
+    <title>{% block title %}{% endblock %}</title>
+
+    <meta name="description" content="" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.ico" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='assets/img/favicon/favicon.png') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Icons. Uncomment required icon fonts -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/fonts/boxicons.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='vendors/font-awesome/css/font-awesome.min.css') }}" />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/css/core.css') }}" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/css/theme-default.css') }}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/demo.css') }}" />
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/libs/apex-charts/apex-charts.css') }}" />
+
+    <!-- Page CSS -->
+    {% block style %}{% endblock %}
+    <style>
+      .truncate-text {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
+        max-width: 100px; /* Ensure the element behaves as a block-level element */
+      }
+      span h5.heading {
+        margin-top: 12px;
+      }
+      .layout-page {
+        overflow-y: scroll;
+        height: 100vh;
+      }
+      .cap {
+        text-transform: capitalize;
+      }
+    </style>
+    <!-- Helpers -->
+    <script src="{{ url_for('static', filename='assets/vendor/js/helpers.js') }}"></script>
+
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="{{ url_for('static', filename='assets/js/config.js') }}"></script>
+  </head>
+
+  <body>
+    <!-- Layout wrapper -->
+    <div class="layout-wrapper layout-content-navbar">
+      <div class="layout-container">
+        <!-- Menu -->
+
+        <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+          <div class="app-brand demo">
+            <a href="javascript:void(0);" class="app-brand-link">
+              <span class="app-brand-logo demo">
+                <img width="50" height="50" src="{{ url_for('static', filename='assets/img/favicon/logo.png') }}" alt="">
+              </span>
+              <span class="app-brand-text demo menu-text fw-bolder ms-2">Learnify AI</span>
+            </a>
+
+            <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+              <i class="bx bx-chevron-left bx-sm align-middle"></i>
+            </a>
+          </div>
+
+          <div class="menu-inner-shadow"></div>
+
+          <ul class="menu-inner py-1">
+            <!-- Dashboard -->
+            <li class="menu-item">
+                <a href="/dashboard/{{user.id}}" class="menu-link">
+                    <i class="menu-icon fa fa-tachometer"></i>
+                    <div data-i18n="Analytics">Dashboard</div>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="/groups/{{user.id}}" class="menu-link">
+                    <i class="menu-icon fa fa-clone"></i>
+                    <div data-i18n="Analytics">groups</div>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="/performances" class="menu-link">
+                    <i class="menu-icon fa fa-line-chart"></i>
+                    <div data-i18n="Analytics">Performance</div>
+                </a>
+            </li>
+            <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">Actions</span>
+            </li>
+            <li class="menu-item">
+                <a href="javascript:void(0);" data-bs-toggle="modal"
+                   data-bs-target="#referModal" class="menu-link">
+                    <i class="menu-icon fa fa-users"></i>
+                    <div data-i18n="Account Settings">Refer</div>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="/account-settings" class="menu-link">
+                    <i class="menu-icon bx bx-cog me-2"></i>
+                    <div data-i18n="Account Settings">Account Settings</div>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="/logout" class="menu-link">
+                    <i class="menu-icon fa fa-sign-out"></i>
+                    <div data-i18n="Account Settings">Logout</div>
+                </a>
+            </li>
+          </ul>
+        
+        
+        </aside>
+        <div class="layout-page">
+
+          <nav
+            class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+            id="layout-navbar"
+          >
+            <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+              <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                <i class="bx bx-menu bx-sm"></i>
+              </a>
+            </div>
+
+            <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+              <!-- Search -->
+              <div class="navbar-nav align-items-center">
+                <div class="nav-item d-flex align-items-center">
+                  <span><h5 class="heading">{% block heading %}{% endblock %}</h5></span>
+                </div>
+              </div>
+              <!-- /Search -->
+
+              <ul class="navbar-nav flex-row align-items-center ms-auto">
+                <!-- Place this tag where you want the button to render. -->
+                <!-- <li class="nav-item lh-1 me-3">
+                  <a
+                    class="github-button"
+                    href="https://github.com/themeselection/sneat-html-admin-template-free"
+                    data-icon="octicon-star"
+                    data-size="large"
+                    data-show-count="true"
+                    aria-label="Star themeselection/sneat-html-admin-template-free on GitHub"
+                    >Star</a
+                  >
+                </li> -->
+
+                <!-- User -->
+                <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                  <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                    <div class="avatar avatar-online">
+                      <img src="{{ url_for('static', filename='assets/img/avatars/student.svg') }}" alt class="w-px-40 h-auto rounded-circle" />
+                    </div>
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                      <a class="dropdown-item" href="/account-profile">
+                        <div class="d-flex">
+                          <div class="flex-shrink-0 me-3">
+                            <div class="avatar avatar-online">
+                              <img src="{{ url_for('static', filename='assets/img/avatars/student.svg') }}" alt class="w-px-40 h-auto rounded-circle" />
+                            </div>
+                          </div>
+                          <div class="flex-grow-1">
+                            <span class="fw-semibold d-block cap">{{ user.username }}</span>
+                            <small class="text-muted">Student</small>
+                          </div>
+                        </div>
+                      </a>
+                    </li>
+                    <li>
+                      <div class="dropdown-divider"></div>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="/account-profile">
+                        <i class="bx bx-user me-2"></i>
+                        <span class="align-middle">My Profile</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="/account-settings">
+                        <i class="bx bx-cog me-2"></i>
+                        <span class="align-middle">Settings</span>
+                      </a>
+                    </li>
+                    <!-- <li>
+                      <a class="dropdown-item" href="#">
+                        <span class="d-flex align-items-center align-middle">
+                          <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
+                          <span class="flex-grow-1 align-middle">Billing</span>
+                          <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
+                        </span>
+                      </a>
+                    </li> -->
+                    <li>
+                      <div class="dropdown-divider"></div>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="/logout">
+                        <i class="bx bx-power-off me-2"></i>
+                        <span class="align-middle">Log Out</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <!--/ User -->
+              </ul>
+            </div>
+          </nav>
+          <div class="content-wrapper">
+
+            <div class="container-xxl flex-grow-1 container-p-y">
+              {% block content %}{% endblock %}
+            </div>
+            <div class="modal fade hide" id="referModal" tabindex="-1" aria-modal="true" role="dialog">
+              <div class="modal-dialog modal-lg modal-simple modal-refer-and-earn">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="text-center mb-6">
+                      <h4 class="mb-2">Refer &amp; Earn</h4>
+                      <p class="text-center mb-12 m-auto">Invite your friends to Learnify AI. If they sign up and join a group, both you and your friend will get 10% off your next purchase!</p>
+                    </div>
+                    <div class="row row-gap-6">
+                      <div class="col-12 col-lg-4 px-6">
+                        <div class="d-flex justify-content-center mb-4">
+                          <div class="modal-refer-and-earn-step bg-label-primary">
+                            <i class="bx bx-message-square-dots"></i>
+                          </div>
+                        </div>
+                        <div class="text-center">
+                          <h5 class="mb-2">Send Invitation 👍🏻</h5>
+                          <p class="mb-lg-0">Send your referral link to your friends</p>
+                        </div>
+                      </div>
+                      <div class="col-12 col-lg-4 px-6">
+                        <div class="d-flex justify-content-center mb-4">
+                          <div class="modal-refer-and-earn-step bg-label-primary">
+                            <i class="bx bx-detail"></i>
+                          </div>
+                        </div>
+                        <div class="text-center">
+                          <h5 class="mb-2">Registration 😎</h5>
+                          <p class="mb-lg-0">Let them register and join a group</p>
+                        </div>
+                      </div>
+                      <div class="col-12 col-lg-4 px-6">
+                        <div class="d-flex justify-content-center mb-4">
+                          <div class="modal-refer-and-earn-step bg-label-primary">
+                            <i class="bx bx-gift"></i>
+                          </div>
+                        </div>
+                        <div class="text-center">
+                          <h5 class="mb-2">Get Reward 🎉</h5>
+                          <p class="mb-0">You and your friend get 10% off</p>
+                        </div>
+                      </div>
+                    </div>
+                    <hr class="mt-12 mb-6">
+                    <h5 class="my-6">Share the referral link</h5>
+                    <form class="row g-4" onsubmit="return false">
+                      <div class="col-lg-9">
+                        <label class="form-label" for="modalRnFLink">You can also copy and send it or share it on your social media. 🚀</label>
+                        <div class="input-group input-group-merge">
+                          <input type="text" id="modalRnFLink" class="form-control" value="{{ user.get_referral }}">
+                          <span class="input-group-text text-primary cursor-pointer" id="basic-addon33">Copy link</span>
+                        </div>
+                      </div>
+                      <div class="col-lg-3 d-flex align-items-end">
+                        <div class="btn-social d-flex justify-content-lg-between w-100 gap-lg-0 gap-4">
+                          <a href="https://www.facebook.com/sharer/sharer.php?u={{ user.get_referral }}" target="_blank" class="btn btn-icon btn-facebook">
+                            <i class="tf-icons bx bxl-facebook bx-md"></i>
+                          </a>
+                          <a href="https://twitter.com/intent/tweet?url={{ user.get_referral }}&text=Join Learnify AI and get 10% off your next purchase!" target="_blank" class="btn btn-icon btn-twitter">
+                            <i class="tf-icons bx bxl-twitter bx-md"></i>
+                          </a>
+                          <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ user.get_referral }}" target="_blank" class="btn btn-icon btn-linkedin">
+                            <i class="tf-icons bx bxl-linkedin bx-md"></i>
+                          </a>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="content-backdrop fade"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Overlay -->
+      <div class="layout-overlay layout-menu-toggle"></div>
+    </div>
+    <!-- / Layout wrapper -->
+
+    <!-- <div class="buy-now">
+      <a
+        href="https://themeselection.com/products/sneat-bootstrap-html-admin-template/"
+        target="_blank"
+        class="btn btn-danger btn-buy-now"
+        >Upgrade to Pro</a
+      >
+    </div> -->
+
+    <!-- Core JS -->
+    <!-- build:js assets/vendor/js/core.js -->
+    <script src="{{ url_for('static', filename='assets/vendor/libs/jquery/jquery.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/vendor/libs/popper/popper.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/vendor/js/bootstrap.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='assets/vendor/js/menu.js') }}"></script>
+    <!-- endbuild -->
+
+    <!-- Vendors JS -->
+    <script src="{{ url_for('static', filename='assets/vendor/libs/apex-charts/apexcharts.js') }}"></script>
+
+    <!-- Main JS -->
+    <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+
+    <!-- Page JS -->
+    <script src="{{ url_for('static', filename='assets/js/ui-popover.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/dashboards-analytics.js') }}"></script>
+
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script>
+      document.getElementById('basic-addon33').addEventListener('click', function() {
+        var copyText = document.getElementById('modalRnFLink');
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); // For mobile devices
+        document.execCommand('copy');
+        alert('Referral link copied: ' + copyText.value);
+      });
+    </script>
+    {% block script %}
+    {% endblock %}
+  </body>
+</html>

@@ -1,36 +1,18 @@
-{% extends 'base.html' %}
-{% block link %}
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.0.1/dist/css/multi-select-tag.css">
-{% endblock %}
-{% block title %} Courses {% endblock %}
-{% block breadcrumb %}
-<nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="/groups/{{user.id}}">Cluster</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Course</li>
-  </ol>
-</nav>
-{% endblock %}
-{% block text %}<button class="btn menu-title button-green btn-space" data-toggle="modal" data-target="#exampleModal">
-Upload Course</button>{%endblock%}
-{% block tags %}
-<ul class="nav nav-tabs tab-transparent" role="tablist">
-    <li class="nav-item">
-      <a class="nav-link" id="home-tab"  href="/groups/{{user.id}}">Clusters</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link active" id="business-tab" data-bs-toggle="tab" href="#">Courses</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" id="performance-tab" href="/performances">Performance</a>
-    </li>
-    <!-- <li class="nav-item">
-      <a class="nav-link" id="conversion-tab" href="#">Summaries</a>
-    </li> -->
-</ul>
-{% endblock %}
-{% block content%}
-<div class="row">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- <link rel="stylesheet" href="{{ url_for('static', filename='vendors/mdi/css/materialdesignicons.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}"> -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+  <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> -->
+  <
+  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div class="row">
     {% if courses %}
     {% for x, course in enum(courses) %}
     <div class="col-xl-6 col-lg-6 col-sm-6 grid-margin stretch-card">
@@ -205,145 +187,9 @@ Upload Course</button>{%endblock%}
     </div>
 </div>
 </div>
-{% endblock content%}
+</body>
 
-{% block script %}
-<script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.0.1/dist/js/multi-select-tag.js"></script>
-
-{% if courses %}
-{% for x, course in enum(courses) %}
-<script>
-//  new MultiSelectTag('topics')   
-  new MultiSelectTag('topics-{{course.id}}', {
-    rounded: true,    // default true
-    shadow: true,      // default false
-    placeholder: 'Search',  // default Search...
-    tagColor: {
-        //textColor: '#327b2c',
-        //borderColor: '#92e681',
-        //bgColor: '#eaffe6',
-    },
-    onChange: function(values) {
-        console.log(values)
-    }
-})
-</script>
-{% endfor %}
-{% endif %}
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<!-- <script>
-  document.getElementById("practiceForm").addEventListener("submit", function(event) {
-    event.preventDefault(); // Prevent default form submission
-    var mode = document.querySelector("#practiceForm select[aria-label='mode']").value;
-    var topics = Array.from(document.querySelectorAll("#practiceForm select[aria-label='topics'] option:checked")).map(option => option.value);
-    var hours = document.getElementById("hours").value;
-    var minutes = document.getElementById("minutes").value;
-    var userId = "{{ user.id }}";
-    var courseId = "{{ courseId }}";
-    
-    // Construct the URL
-    var url = `/practice/${userId}/${courseId}?mode=${mode}&topics=${topics.join(',')}&hours=${hours}&minutes=${minutes}`;
-    
-    // Redirect to the constructed URL
-    window.location.href = url;
-  });
-  </script> -->
-  <script>
-  $(document).ready(function () {
-    let courseId;
-    
-    $('.modal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget);  //Button that triggered the modal
-        courseId = button.data('courseid');  //Extract course ID from data-courseid attribute
-        console.log(courseId, "sadfasdf"); //
-      });
-    
-    
-    
-    $('.minutesGroup, .hoursGroup').hide();
-  
-    // Show or hide the hour and minutes form group based on the selected mode
-    $(document).on('change', '.mode', function() {
-      var selectedMode = $(this).val();
-      var courseId = $(this).data('courseid');
-      console.log(courseId)
-      if (selectedMode === 'practice') {
-        $('#hoursGroup-' + courseId).hide();
-        $('#minutesGroup-' + courseId).hide();
-        $('#button-pin-' + courseId).text('Start Practice');
-      } else if (selectedMode === 'exam') {
-        $('#hoursGroup-' + courseId).show();
-        $('#minutesGroup-' + courseId).show();
-        $('#button-pin-' + courseId).text('Start Exam');
-      }
-    });
-  });
-</script>
-  
-<script>
-  $(document).ready(function () {
-    $('.modal').each(function () {
-      const modal = $(this);
-      const courseId = modal.attr('id').split('-')[1];
-      let currentSummaryIndex = 0;
-      const summaryItems = modal.find('.summary-item');
-      const prevBtn = modal.find('.prev-btn');
-      const nextBtn = modal.find('.next-btn');
-      const performanceID = $('.dashboard-progress-3').data('performance-id');
-
-      function updateProgressBar() {
-        const currentItem = $(summaryItems[currentSummaryIndex]);
-        const progressBar = currentItem.find('.progress-bar');
-        const totalSummaries = parseInt(progressBar.data('summary-length'));
-        const percentage = ((currentSummaryIndex % totalSummaries) + 1) / totalSummaries * 100;
-        progressBar.css('width', `${percentage}%`);
-        progressBar.attr('aria-valuenow', percentage);
-      }
-
-      function showSummary(index) {
-        summaryItems.each(function (idx) {
-          $(this).toggle(idx === index);
-        });
-        updateProgressBar();
-      }
-
-      prevBtn.click(function () {
-        if (currentSummaryIndex > 0) {
-          currentSummaryIndex--;
-          showSummary(currentSummaryIndex);
-        }
-      });
-
-      nextBtn.click(function () {
-        if (currentSummaryIndex < summaryItems.length - 1) {
-          currentSummaryIndex++;
-          showSummary(currentSummaryIndex);
-        }
-      });
-
-      modal.on('hidden.bs.modal', function () {
-        const progress = ((currentSummaryIndex + 1) / summaryItems.length) * 100;
-        $.ajax({
-          url: `/updateperformance/${performanceID}`,
-          method: 'POST',
-          data: {
-            progress: progress,
-          },
-          success: function (response) {
-            console.log('Performance updated successfully');
-          },
-          error: function (xhr, status, error) {
-            console.error('Error updating performance:', error);
-          }
-        });
-      });
-
-      // Initial display
-      showSummary(currentSummaryIndex);
-    });
-  });
-</script>
-
-{% endblock %}
+    <script src="{{ url_for('static', filename='vendors/js/vendor.bundle.base.js.download') }}"></script>
+   <script src="{{ url_for('static', filename='vendors/js/circle-progress.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</html>

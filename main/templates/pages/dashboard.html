@@ -1,0 +1,435 @@
+{% extends 'pages/base.html' %}
+{% block title %} Dashboard {% endblock %}
+{% block heading %} Boost Your Knowledge Daily {% endblock %}
+{% block style %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+  ul.prog {
+    padding-left: 0;
+  }
+  .absolute-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    transform: translate(-40%, -57%);
+    font-weight: bold;
+    font-size: 12px;
+    margin: auto;
+  }  
+
+  .dashboard-progress {
+    position: relative;
+    margin-right: 10px;
+  }
+</style>
+{% endblock %}
+{% block content %}
+<div class="row d-flex align-items-start">
+  <div class="col-lg-8 col-md-7 mb-4 order-md-0">
+    <div class="card mb-6">
+      <div class="d-flex align-items-end row">
+        <div class="col-sm-7">
+          <div class="card-body">
+            <h5 class="card-title text-primary">Hey {{user.username}}! 👋🏻</h5>
+            <p class="mb-4">
+              Let's help <span class="fw-bold">you</span> test your knowledge today.
+            </p>
+
+            <button 
+              type="button"
+              class="btn btn-sm btn-outline-primary"
+              data-bs-toggle="popover"
+              data-bs-offset="0,14"
+              data-bs-placement="right"
+              data-bs-html="true"
+              data-bs-content="<p>Oops you don't have any active quiz to continue.</p>"
+              title="Continue Quiz"
+            >Continue Quiz</button>
+          </div>
+        </div>
+        <div class="col-sm-5 text-center text-sm-left">
+          <div class="card-body pb-0 px-0 px-md-4">
+            <img
+              src="{{ url_for('static', filename='assets/img/illustrations/man-with-laptop-light.png') }}"
+              height="140"
+              alt="View Badge User"
+              data-app-dark-img="illustrations/man-with-laptop-dark.png"
+              data-app-light-img="illustrations/man-with-laptop-light.png"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card mb-6">
+      <div class="card-header d-flex align-items-center justify-content-between pb-0">
+      <div class="card-title mb-4">
+          <h5 class="m-0 me-2">Clusters you are in</h5>
+          <!-- <small class="text-muted">42.82k Total Sales</small> -->
+      </div>
+      <div class="dropdown">
+          <button
+          class="btn p-0"
+          type="button"
+          id="orederStatistics"
+          data-bs-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+          >
+          <i class="bx bx-dots-vertical-rounded"></i>
+          </button>
+          <div class="dropdown-menu dropdown-menu-end" aria-labelledby="orederStatistics">
+              <a class="dropdown-item" href="/clusters/{{user.id}}">view all</a>
+              <!-- <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
+              data-bs-target="#joinCluster">Join Cluster</a>
+              <a class="dropdown-item" href="javascript:void(0);">Leave Cluster</a>
+              <a class="dropdown-item" href="javascript:void(0);">Share</a> -->
+          </div>
+      </div>
+      </div>
+      {% if not user_groups%}
+      <div class="card-body text-center">
+      
+          <p>You are not in any cluster yet.</p>
+          <input
+        type="text"
+        class="form-control"
+        id="defaultFormControlInput"
+        placeholder="Enter Cluster Link"
+        aria-describedby="defaultFormControlHelp"
+      />
+          <a href="javascript:void(0);" class="btn btn-primary w-75 d-grid mx-auto mt-3 mb-3">Join Cluster</a>
+          <div id="defaultFormControlHelp" class="form-text">
+              Join your favorite clusters to gain access to reading materials
+          </div>
+      </div>
+      {% else %}
+      <div class="card-body">
+        <ul class="p-0 mb-1">
+          {% for cluster in user_groups%}
+          <li class="d-flex mb-4 pb-1">
+            <a href="{{ url_for('course.get_all_user_group_courses', group_id=cluster.id) }}" class="d-flex w-100 text-decoration-none text-reset">
+              <div class="avatar flex-shrink-0 me-3">
+                  <span class="avatar-initial rounded bg-label-primary">
+                      <i class="bx bx-mobile-alt"></i>
+                  </span>
+              </div>
+              <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                  <div class="me-2">
+                      <h6 class="mb-0">{{ cluster.name }}</h6>
+                      <small class="text-muted">{{ cluster.motto }}</small>
+                  </div>
+                  <div class="user-progress">
+                      <small class="fw-semibold">{{ cluster.current_no_users }}</small>
+                  </div>
+              </div>
+          </a>
+          </li>
+        <!-- <li class="d-flex mb-4 pb-1">
+        <div class="avatar flex-shrink-0 me-3">
+            <span class="avatar-initial rounded bg-label-success"><i class="bx bx-closet"></i></span>
+        </div>
+        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+            <div class="me-2">
+            <h6 class="mb-0">Boiling Point</h6>
+            <small class="text-muted">tutorial that hots</small>
+            </div>
+            <div class="user-progress">
+            <small class="fw-semibold">23.8k</small>
+            </div>
+        </div>
+        </li>
+        <li class="d-flex mb-4 pb-1">
+        <div class="avatar flex-shrink-0 me-3">
+            <span class="avatar-initial rounded bg-label-info"><i class="bx bx-home-alt"></i></span>
+        </div>
+        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+            <div class="me-2">
+            <h6 class="mb-0">Gifted Hands</h6>
+            <small class="text-muted">LLorem Ipsum</small>
+            </div>
+            <div class="user-progress">
+            <small class="fw-semibold">849k</small>
+            </div>
+        </div>
+        </li>
+        <li class="d-flex">
+        <div class="avatar flex-shrink-0 me-3">
+            <span class="avatar-initial rounded bg-label-secondary"
+            ><i class="bx bx-football"></i
+            ></span>
+        </div>
+        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+            <div class="me-2">
+            <h6 class="mb-0">Uniben Tutorial</h6>
+            <small class="text-muted">Lorem ipsum, dolor sit amet consectetur adipisicing elit</small>
+            </div>
+            <div class="user-progress">
+            <small class="fw-semibold">99</small>
+            </div>
+        </div>
+        </li> -->
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+      <hr>
+      <div class="card-header d-flex align-items-center justify-content-between pb-0">
+      <div class="card-title mb-4">
+          <h5 class="m-0 me-2">Popular Clusters</h5>
+          <!-- <small class="text-muted">42.82k Total Sales</small> -->
+      </div>
+      <div class="dropdown">
+          <button
+          class="btn p-0"
+          type="button"
+          id="orederStatistics"
+          data-bs-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+          >
+          <i class="bx bx-dots-vertical-rounded"></i>
+          </button>
+          <div class="dropdown-menu dropdown-menu-end" aria-labelledby="orederStatistics">
+              <a class="dropdown-item" href="/clusters/{{user.id}}">view all</a>
+              <!-- <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
+              data-bs-target="#joinCluster">Join Cluster</a>
+              <a class="dropdown-item" href="javascript:void(0);">Leave Cluster</a>
+              <a class="dropdown-item" href="javascript:void(0);">Share</a> -->
+          </div>
+      </div>
+      </div>
+      <div class="modal fade" id="joinCluster" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="joinClusterTitle">Join A Cluster</h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body text-center">
+                  <input
+                  type="text"
+                  class="form-control"
+                  id="defaultFormControlInput"
+                  placeholder="Enter Cluster Link"
+                  aria-describedby="defaultFormControlHelp"
+                />
+                    <a href="javascript:void(0);" class="btn btn-primary w-75 d-grid mx-auto mt-3 mb-3">Join Cluster</a>
+                    <div id="defaultFormControlHelp" class="form-text">
+                        Join your favorite clusters to gain access to reading materials
+                      </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                  Close
+                </button>
+                <button type="button" class="btn btn-primary">Join</button>
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="card-body">
+      <!-- <div class="d-flex justify-content-between align-items-center mb-3">
+          <div class="d-flex flex-column align-items-center gap-1">
+          <h2 class="mb-2">8,258</h2>
+          <span>Total Orders</span>
+          </div>
+          <div id="orderStatisticsChart"></div>
+      </div> -->
+      <ul class="p-0 m-0">
+        {% for cluster in public_groups %}
+          <li class="d-flex mb-4 pb-1">
+            <a href="{{ url_for('course.get_all_user_group_courses', group_id=cluster.id) }}" class="d-flex w-100 text-decoration-none text-reset">
+              <div class="avatar flex-shrink-0 me-3">
+                  <span class="avatar-initial rounded bg-label-primary">
+                      <i class="bx bx-mobile-alt"></i>
+                  </span>
+              </div>
+              <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                  <div class="me-2">
+                      <h6 class="mb-0">{{ cluster.name }}</h6>
+                      <small class="text-muted">{{ cluster.motto }}</small>
+                  </div>
+                  <div class="user-progress">
+                      <small class="fw-semibold">{{ cluster.current_no_users }}</small>
+                  </div>
+              </div>
+          </a>
+          </li>
+          <!-- <li class="d-flex mb-4 pb-1">
+          <div class="avatar flex-shrink-0 me-3">
+              <span class="avatar-initial rounded bg-label-success"><i class="bx bx-closet"></i></span>
+          </div>
+          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+              <div class="me-2">
+              <h6 class="mb-0">Boiling Point</h6>
+              <small class="text-muted">tutorial that hots</small>
+              </div>
+              <div class="user-progress">
+              <small class="fw-semibold">23.8k</small>
+              </div>
+          </div>
+          </li>
+          <li class="d-flex mb-4 pb-1">
+          <div class="avatar flex-shrink-0 me-3">
+              <span class="avatar-initial rounded bg-label-info"><i class="bx bx-home-alt"></i></span>
+          </div>
+          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+              <div class="me-2">
+              <h6 class="mb-0">Gifted Hands</h6>
+              <small class="text-muted">LLorem Ipsum</small>
+              </div>
+              <div class="user-progress">
+              <small class="fw-semibold">849k</small>
+              </div>
+          </div>
+          </li>
+          <li class="d-flex">
+          <div class="avatar flex-shrink-0 me-3">
+              <span class="avatar-initial rounded bg-label-secondary"
+              ><i class="bx bx-football"></i
+              ></span>
+          </div>
+          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+              <div class="me-2">
+              <h6 class="mb-0">Uniben Tutorial</h6>
+              <small class="text-muted">Lorem ipsum, dolor sit amet consectetur adipisicing elit</small>
+              </div>
+              <div class="user-progress">
+              <small class="fw-semibold">99</small>
+              </div>
+          </div>
+          </li> -->
+        {% endfor %}
+      </ul>
+      </div>
+  </div>
+  </div>
+  <div class="col-12 col-lg-4 col-md-5 mb-4">
+    <div class="card">
+        <div class="card-header d-flex align-items-center justify-content-between">
+        <h5 class="card-title m-0 me-2">Your course progress</h5>
+        <!-- <div class="dropdown">
+            <button
+                class="btn p-0"
+                type="button"
+                id="transactionID"
+                data-bs-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+            >
+                <i class="bx bx-dots-vertical-rounded"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="transactionID">
+                <a class="dropdown-item" href="javascript:void(0);">Last 28 Days</a>
+                <a class="dropdown-item" href="javascript:void(0);">Last Month</a>
+                <a class="dropdown-item" href="javascript:void(0);">Last Year</a>
+            </div>
+        </div> -->
+        </div>
+        {% if courses %}
+        <div class="card-body">
+          <ul id="courses-list" class="prog" data-courses='{{ courses | tojson | safe }}'>
+            {% for course in courses %}
+            <li class="d-flex mb-4 pb-1 justify-content-between">
+              
+              
+              <!-- <canvas id="circularProgress{{ loop.index }}" width="50" height="50"></canvas> -->
+              <a href="/{%if course.has_summary%}course-lessons{% else %}course-quiz{% endif %}/{{course.id}}" class="row w-100 align-items-center">
+                <div class="col-9 d-flex">
+                  <div class="dashboard-progress dashboard-progress-3 item-parent" data-performance-id="{{ course.performance.id }}" data-progress="{{ course.performance.progress }}">
+                    <span class="absolute-center">{{course.performance.progress}}%</span>
+                  </div>
+                  <div class="me-2">
+                    <h6 class="mb-1 truncate-text">{{ course.course_name }}</h6>
+                    <p class="mb-0 truncate-text">{{ course.group_name }}</p>
+                  </div>
+                </div>
+                <div class="col-3 text-end">
+                  <button type="button" class="btn btn-sm btn-icon btn-label-secondary">
+                    <i class="bx bx-chevron-right scaleX-n1-rtl"></i>
+                  </button>
+                </div>
+              </a>
+              <a href="/{%if course.has_summary%}course-lessons{% else %}course-quiz{% endif %}/{{course.id}}" class="resize-triggers">
+                <div class="expand-trigger">
+                  <div style="width: 242px; height: 96px;"></div>
+                </div>
+                <div class="contract-trigger"></div>
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+          
+        </div>
+        {% else %}
+        <div class="card-body text-center">
+          
+          <p>You are not in any cluster yet</p>
+          
+          <!-- <a href="javascript:void(0);" class="btn btn-primary w-75 d-grid mx-auto mt-3 mb-3">Join Cluster</a> -->
+          <div id="defaultFormControlHelp" class="form-text">
+            View all your course progress here
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<!-- <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+    document.head.appendChild(script);
+  
+    script.onload = function() {
+      const coursesListElement = document.getElementById('courses-list');
+      const courses = JSON.parse(coursesListElement.getAttribute('data-courses'));
+  
+      courses.forEach((course, index) => {
+        new Chart(document.getElementById(`circularProgress${index + 1}`), {
+          type: 'doughnut',
+          data: {
+            datasets: [{
+              data: [course.performance.progress, 100 - course.performance.progress],
+              backgroundColor: [course.color, '#e3e3e3']
+            }]
+          },
+          options: {
+            circumference: Math.PI * 2,
+            rotation: -Math.PI / 2,
+            cutout: '80%',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: { enabled: false }
+            },
+            layout: {
+              padding: {
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 0
+              }
+            },
+            aspectRatio: 1
+          }
+        });
+      });
+    };
+  });
+  
+</script> -->
+    <script src="{{ url_for('static', filename='vendors/js/circle-progress.min.js') }}"></script>
+     <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

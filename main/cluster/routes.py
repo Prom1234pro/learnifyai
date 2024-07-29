@@ -1,122 +1,123 @@
-from flask import (Blueprint, redirect, 
+from flask import (Blueprint, abort, redirect, 
     render_template, request,
-    jsonify, flash, get_flashed_messages
+    jsonify, flash, get_flashed_messages, session
     )
 import uuid
 from werkzeug.utils import secure_filename
 import os
 from flask import current_app
 
-from main.course.models import Performance
-from main.utils import user_required
+from main.course.models import Performance, Course
+from main.utils import admin_required, user_required
 from .models import db, Group
 from ..authentication.models import User
 from datetime import datetime, timedelta
 # from ... import bcrypt 
 # from ... import mail
 from .utils import is_auth
-
+from itertools import cycle
 SESSION_TIMEOUT = timedelta(hours=6)
 groute_bp = Blueprint('group', __name__)
 
 ACTIVE_SESSIONS_FILE = 'active_sessions.json'
 
+ 
+@groute_bp.route('/dashboard/<string:id>')
+@user_required
+def dashboard(id):
+    messages = get_flashed_messages(with_categories=True)
+    public_groups = Group.query.filter_by(is_public=True, activated=True).all()
+    user = User.query.get_or_404(id)
+    courses = []
+    for group in user.groups:
+        courses.extend(group.courses)
+    user_groups = user.activated_groups
+    colors = ['primary', 'success', 'danger', 'info', 'warning']
+    index = 0
+    for course in courses:
+        if index > 4:
+            index = 0
+        course.color = colors[index]
+        index += 1
+    courses_dict = [course.to_dict() for course in courses]
+    
+    
+    # user_activity(id)
+    return render_template('pages/dashboard.html', messages=messages, user=user, user_groups=user_groups, public_groups=public_groups, courses=courses_dict)
+
 
   
-@groute_bp.route('/groups/<string:id>')
+@groute_bp.route('/clusters/<string:id>')
 @user_required
 def group(id):
     messages = get_flashed_messages(with_categories=True)
-    public_groups = Group.query.filter_by(is_public=False, activated=True).all()
+    public_groups = Group.query.filter_by(is_public=True, activated=True).all()
     print(public_groups)
     for pu in public_groups:
         print(pu, "ertawere")
     user = User.query.get_or_404(id)
     user_groups = user.activated_groups
-    if not is_auth():     
-        return redirect(f"/logout/{id}")
-    # user_activity(id)
-    return render_template('pages/group.html', messages=messages, user=user, user_groups=user_groups, public_groups=public_groups)
+    
+    return render_template('pages/clusters.html', messages=messages, user=user, user_groups=user_groups, public_groups=public_groups)
 
-
-@groute_bp.route('/user/create-group-key/<string:user_id>', methods=['POST'])
-@user_required
-def user_generate_group_key(user_id):
+    
+@groute_bp.route('/admin/create-group', methods=['POST'])
+@admin_required
+def create_group():
     if request.method == 'POST':
         data = request.form
         if not data:
-            flash('No data provided', "warning")
-            return redirect('/groups/'+user_id)
-        
+            return jsonify({'error': 'No data provided'})
+
+        user_id = session["user_id"]
         no_of_users = data.get('max-occupancy')
-        # group_admin_id = data.get('group_admin_id')
-        user = User.query.get_or_404(user_id)
-        # if not user.is_premium_user:
-        #     flash(f'You must be a premium user to create a private group', "info")
-        #     return redirect('/groups/'+user_id)
-        group_key=str(uuid.uuid4())
+        group_name = data.get('group-name')
+        school = data.get('school')
+        group_pin = data.get('group-pin')
+        group_key = str(uuid.uuid4())
+        motto = data.get('motto')
+        description = data.get('description')
+        
+        # Ensure required fields are provided
+        if not group_name or not no_of_users or not group_pin:
+            return jsonify({'error': 'Required fields are missing'}), 400
+
+        # Create the group object
         group = Group(
-            name = data.get('group-name'),
-            school = data.get('school'),
-            max_no_users=no_of_users,
+            name=group_name,
+            school=school,
+            max_no_users=int(no_of_users),
             group_admin_id=user_id,
+            cluster_handle = str(uuid.uuid4()),
             group_key=group_key,
+            pass_key=group_pin,
+            motto=motto,
+            description=description,
+            is_public=True,
+            activated=True
         )
+
+        user = User.query.get(user_id)
+        if 'group-image' in request.files:
+            file = request.files['group-image']
+            if file.filename != '':
+                filename = secure_filename(file.filename)
+                file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+                file.save(file_path)
+                group.image_filename = filename
+
+        group.created_by = user.id
+        group.owned_by = user.id
+        group.current_no_users = 0
+
         db.session.add(group)
         db.session.commit()
-        # try:
-        #     msg = Message(subject='Create Group', sender='contact@tpaservices.me', recipients=[user.email])
-        #     msg.body = f"Your ID - {group_key}"
-        #     mail.send(msg)
-        # except:
-        #     return "server error"
-        flash(f"{group_key}", 'info')
-        print(group_key)
-        flash('You group creation is not yet complete', "info")
-        flash('check your email to complete creation', "info")
-        return redirect('/groups/'+user_id)
-    
-@groute_bp.route('/user/create-group/<string:user_id>', methods=['POST'])
-@user_required
-def create_group(user_id):
-    if not is_auth():     
-        return redirect(f"/logout/{user_id}")
-    
-    data = request.form
-    if not data:
-        return jsonify({'error': 'No data provided'})
-    
-    group_pin = data.get('group-pin')
-    group_key = data.get('group-id')
-    group = Group.query.filter_by(group_key=group_key).first()
-    if not group or group.group_admin_id != user_id:
-        flash('Invalid group identifier', "warning")
-        return redirect('/groups/'+user_id)
-    
-    group.activated = True
-    group.is_public = False
-    group.pass_key = group_pin
-    
-    user = User.query.get(user_id)
-    if not user:
-        flash('You are not authorized to this page', "warning")
-        return redirect('/login-user')
-    
-    # Handle file upload
-    if 'group-image' in request.files:
-        file = request.files['group-image']
-        if file.filename != '':
-            filename = secure_filename(file.filename)
-            file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
-            file.save(file_path)
-            group.image_filename = filename
-    
-    group.users.append(user)
-    group.current_no_users += 1
 
-    db.session.commit()
-    flash(f'{group.name} has been created successfully', "success")
-    return redirect('/groups/'+user_id)
+        flash(f'{group.name} has been created successfully', "success")
+        return jsonify({'message': f'{group.name} cluster has been created'}), 200
+    
+    return abort(404)
+
 
 @groute_bp.route('/user/add-to-group', methods=['POST'])
 @user_required
@@ -130,12 +131,12 @@ def add_user_to_group():
         
         # Extract data from JSON
         group_id = data.get('group_id')
-        user_id = data.get('user_id')
+        user_id = session.get('user_id')
         pass_key = data.get('group_pin')
-        course_id = data.get('course_id')  # Ensure course_id is provided in the request
         
         # Retrieve the group and check if it exists
         group = Group.query.get(group_id)
+        print(group.id, "asdfasdfasdfasdfasdfasd")
         if not group:
             flash('This group was deleted by the creator', "warning")
             return redirect('/groups/'+user_id)
@@ -152,9 +153,10 @@ def add_user_to_group():
         # Retrieve the user and add them to the group
         user = User.query.get(user_id)
 
-        if not user.is_premium_user:
-            flash('Please upgrade to a premium account', "warning")
-            return redirect('/groups/'+user_id)
+        # if not user.is_premium_user:
+        #     print("here")
+        #     flash('Please upgrade to a premium account', "warning")
+        #     return redirect('/groups/'+user_id)
 
         if not user:
             flash('An unknown error occured', "warning")
@@ -162,18 +164,26 @@ def add_user_to_group():
             return redirect('/login-user')
 
         if user in group.users:
-            return redirect('/groups/'+user_id)
+            return jsonify({"error": "user already in group"}), 200
 
         group.users.append(user)
         group.current_no_users += 1
 
         # Create a new Performance object for the user
         for course in group.courses:
-            new_performance = Performance(user_id=user.id, course_id=course.id, score=0, average=0, progress=0)
+            new_performance = Performance(user_id=user.id, course_id=course.id, score=0, average=0)
             db.session.add(new_performance)
         
         # Commit all changes to the database
         db.session.commit()
 
         flash('Joined group successfully and performance created', "info")
-        return redirect('/groups/' + user.id)
+        return jsonify({"success": f"{user.username} user added to {group.name}"})
+    return abort(404)
+
+@groute_bp.route('/join-cluster/<cluster_id>', methods=['GET','POST'])
+@user_required
+def join_cluster(cluster_id):
+    if request.method == 'POST':
+        pass
+    return render_template("pages/join-cluster.html")

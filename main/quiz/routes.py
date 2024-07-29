@@ -5,6 +5,7 @@ from flask import (Blueprint, redirect,
     )
 from sqlalchemy.sql import func
 
+from main.authentication.models import User
 from main.utils import user_required
 
 from .models import Quiz, Topic, db
@@ -57,7 +58,7 @@ def quiz(user_id, course_id):
     ]
     quizzes_json = json.dumps(quizzes_data)
 
-    return render_template('pages/quiz.html', time=time, performance_id=performance.id, course_id=course_id, user_id=user_id, messages=messages, mode=mode, quizzes=quizzes_json, enum = enumerate, len=len, topics=topics)
+    return render_template('pages/quiz_answers.html', time=time, performance_id=performance.id, course_id=course_id, user_id=user_id, messages=messages, mode=mode, quizzes=quizzes_json, enum = enumerate, len=len, topics=topics)
 
 @qroute_bp.route('/exam/<string:user_id>/<string:course_id>')
 @user_required
@@ -90,4 +91,53 @@ def set_studymode(user_id, course_id):
     return redirect(f'/exam/{user_id}/{course_id}?mode={mode}&topics={topics}&hours={hours}&minutes={minutes}')
 
 
+@qroute_bp.route('/course-lessons/<string:course_id>')
+@user_required
+def course_lessons(course_id):
+    user_id = session.get('user_id')
+    user = User.query.get_or_404(user_id)
+    course = Course.query.get_or_404(course_id)
+    return render_template("pages/study.html", course=course, user=user)
 
+
+@qroute_bp.route('/course-quiz/<string:course_id>')
+@user_required
+def course_quiz(course_id):
+    course = Course.query.get_or_404(course_id)
+    user_id = session.get('user_id')
+    user = User.query.get_or_404(user_id)
+
+    return render_template('pages/quiz_test.html', course=course, user=user, enumerate=enumerate, len=len)
+
+
+@qroute_bp.route('/submit-quiz/<string:course_id>', methods=['POST'])
+@user_required
+def submit_quiz(course_id):
+    course = Course.query.get_or_404(course_id)
+    user = User.query.get_or_404(session.get('user_id'))
+    user_answers = []
+    score = 0
+    for index, quiz in enumerate(course.quizzes):
+        answer = request.form.get(f'question{index}')
+        user_answers.append(answer)
+        if quiz.answer == answer:
+            score += 1
+    
+    performance = Performance.query.filter_by(course_id=course_id, user_id=user.id).first()
+
+    if performance.user_id != user.id:
+        flash('Unauthorized action', 'danger')
+        return redirect('/courses')
+    
+    if score is not None:
+        new_score_value = float(score)
+        performance.add_score(new_score_value, len(course.quizzes))  # Adds a new score and manages the score count
+
+        # if average is not None:
+        #     performance.average = int(average)
+        # if progress is not None:
+        #     performance.progress = int(progress)
+        
+        db.session.commit()
+    
+    return render_template('pages/quiz_answers.html', enumerate=enumerate, len=len, user=user, course=course, user_answers=user_answers)

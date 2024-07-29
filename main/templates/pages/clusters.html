@@ -1,0 +1,334 @@
+{% extends 'pages/base.html' %}
+{% block title %}{{user.username}} - group{% endblock %}
+{% block heading %}group{% endblock %}
+
+{% block style %}
+<style>
+    .toggle-icon {
+      display: none; /* Hidden by default */
+      position: fixed;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      bottom: 20px;
+      right: 20px;
+      font-size: 60px;
+      z-index: 1000;
+      cursor: pointer;
+  }
+  @media (max-width: 991.98px) {
+      .toggle-icon {
+          display: block; /* Show the icon on smaller screens */
+          z-index: 9999;
+      }
+      .col-lg-4 {
+          position: fixed;
+          top: 10%;
+          right: -100%; /* Hide off-screen initially */
+          width: 90%;
+          height: 100%;
+          z-index: 9199;
+          transition: right 0.3s ease-in-out;
+        }
+        
+        .col-lg-4.show-sidebar {
+          right: 0; /* Slide in from the right */
+          transform: translateX(-5%); /* Adjust position to the center */
+      }
+  }
+  </style>
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-4 order-lg-1 d-lg-block">
+      <div class="card">
+          <div class="card-header d-flex align-items-center justify-content-between">
+            <h5 class="card-title m-0 me-2">Join A group</h5>
+          </div>
+          <div class="card-body text-center">
+          <input
+          type="text"
+          class="form-control"
+          id="defaultFormControlInput"
+          placeholder="Enter group Link"
+          aria-describedby="defaultFormControlHelp"
+          />
+              <a href="javascript:void(0);" class="btn btn-primary w-75 d-grid mx-auto mt-3 mb-3">Join group</a>
+              <div id="defaultFormControlHelp" class="form-text">
+                  Join your favorite groups to gain access to reading materials
+              </div>
+          </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-8 order-lg-0 mb-4">
+        <div class="card">
+            <div class="card-header d-flex align-items-center justify-content-between pb-0">
+            <div class="card-title mb-4">
+                <h5 class="m-0 me-2">groups you are in</h5>
+                <!-- <small class="text-muted">42.82k Total Sales</small> -->
+            </div>
+            <div class="dropdown">
+                <button
+                class="btn p-0"
+                type="button"
+                id="orederStatistics"
+                data-bs-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                >
+                <i class="bx bx-dots-vertical-rounded"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="orederStatistics">
+                        <a class="dropdown-item" href="javascript:void(0);">No Function</a>
+                    <!-- <a class="dropdown-item" href="/groups/{{user.id}}">view all</a> -->
+                    <!-- <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
+                    data-bs-target="#joingroup">Join group</a>
+                    <a class="dropdown-item" href="javascript:void(0);">Leave group</a>
+                    <a class="dropdown-item" href="javascript:void(0);">Share</a> -->
+                </div>
+            </div>
+            </div>
+            {% if not user_groups%}
+            <div class="card-body text-center">
+            
+                <p>You are not in any group yet.</p>
+                <input
+            type="text"
+            class="form-control"
+            id="defaultFormControlInput"
+            placeholder="Enter group Link"
+            aria-describedby="defaultFormControlHelp"
+            />
+                <a href="javascript:void(0);" class="btn btn-primary w-75 d-grid mx-auto mt-3 mb-3">Join group</a>
+                <div id="defaultFormControlHelp" class="form-text">
+                    groups you join will show here
+                </div>
+            </div>
+            {% else %}
+            <div class="card-body">
+                <ul class="p-0 mb-1">
+                    {% for group in user_groups %}
+                    <li class="d-flex mb-4 pb-1">
+                        <a href="{{ url_for('course.get_all_user_group_courses', group_id=group.id) }}" class="d-flex w-100 text-decoration-none text-reset">
+                            <div class="avatar flex-shrink-0 me-3">
+                                <span class="avatar-initial rounded bg-label-primary">
+                                    <i class="bx bx-mobile-alt"></i>
+                                </span>
+                            </div>
+                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                <div class="me-2">
+                                    <h6 class="mb-0">{{ group.name }}</h6>
+                                    <small class="text-muted">{{ group.motto }}</small>
+                                </div>
+                                <div class="user-progress">
+                                    <small class="fw-semibold">{{ group.current_no_users }}</small>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+      {% endif %}
+            <div class="modal fade" id="joingroup" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="joingroupTitle">Join A group</h5>
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                    ></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <input
+                        type="text"
+                        class="form-control"
+                        id="defaultFormControlInput"
+                        placeholder="Enter group Link"
+                        aria-describedby="defaultFormControlHelp"
+                    />
+                        <a href="javascript:void(0);" class="btn btn-primary w-75 d-grid mx-auto mt-3 mb-3">Join group</a>
+                        <div id="defaultFormControlHelp" class="form-text">
+                            Join your favorite groups to gain access to reading materials
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="button" class="btn btn-primary">Join</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div class="card-body">
+            <!-- <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="d-flex flex-column align-items-center gap-1">
+                <h2 class="mb-2">8,258</h2>
+                <span>Total Orders</span>
+                </div>
+                <div id="orderStatisticsChart"></div>
+            </div> -->
+            
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-12 col-lg-8 order-lg-2 mb-4">
+        <div class="card">
+            <div class="card-header d-flex align-items-center justify-content-between pb-0">
+                <div class="card-title mb-4">
+                    <h5 class="m-0 me-2">Popular groups</h5>
+                    <!-- <small class="text-muted">42.82k Total Sales</small> -->
+                </div>
+                <div class="dropdown">
+                    <button
+                    class="btn p-0"
+                    type="button"
+                    id="orederStatistics"
+                    data-bs-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    >
+                    <i class="bx bx-dots-vertical-rounded"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="orederStatistics">
+                        <a class="dropdown-item" href="javascript:void(0);">No Function</a>
+                        <!-- <a class="dropdown-item" href="javascript:void(0);">Select All</a>
+                        <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
+                        data-bs-target="#joingroup">Join group</a>
+                        <a class="dropdown-item" href="javascript:void(0);">Leave group</a>
+                        <a class="dropdown-item" href="javascript:void(0);">Share</a> -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="joingroup" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="joingroupTitle">Join A group</h5>
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                    ></button>
+                    </div>
+                    <div class="modal-body">
+                        <input
+                        type="text"
+                        class="form-control"
+                        id="defaultFormControlInput"
+                        placeholder="Enter group Link"
+                        aria-describedby="defaultFormControlHelp"
+                    />
+                        <a href="javascript:void(0);" class="btn btn-primary w-75 d-grid">Join group</a>
+                        <div id="defaultFormControlHelp" class="form-text">
+                            Join your favorite groups to gain access to reading materials
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="button" class="btn btn-primary">Join</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <!-- <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="d-flex flex-column align-items-center gap-1">
+                    <h2 class="mb-2">8,258</h2>
+                    <span>Total Orders</span>
+                    </div>
+                    <div id="orderStatisticsChart"></div>
+                </div> -->
+                <ul class="p-0 m-0">
+                  {% for group in public_groups %}
+                    <li class="d-flex mb-4 pb-1">
+                        <a href="{{ url_for('course.get_all_user_group_courses', group_id=group.id) }}" class="d-flex w-100 text-decoration-none text-reset">
+                            <div class="avatar flex-shrink-0 me-3">
+                                <span class="avatar-initial rounded bg-label-primary">
+                                    <i class="bx bx-mobile-alt"></i>
+                                </span>
+                            </div>
+                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                <div class="me-2">
+                                    <h6 class="mb-0">{{ group.name }}</h6>
+                                    <small class="text-muted">{{ group.motto }}</small>
+                                </div>
+                                <div class="user-progress">
+                                    <small class="fw-semibold">{{ group.current_no_users }}</small>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <!-- <li class="d-flex mb-4 pb-1">
+                    <div class="avatar flex-shrink-0 me-3">
+                        <span class="avatar-initial rounded bg-label-success"><i class="bx bx-closet"></i></span>
+                    </div>
+                    <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                        <div class="me-2">
+                        <h6 class="mb-0">Boiling Point</h6>
+                        <small class="text-muted">tutorial that hots</small>
+                        </div>
+                        <div class="user-progress">
+                        <small class="fw-semibold">23.8k</small>
+                        </div>
+                    </div>
+                    </li>
+                    <li class="d-flex mb-4 pb-1">
+                    <div class="avatar flex-shrink-0 me-3">
+                        <span class="avatar-initial rounded bg-label-info"><i class="bx bx-home-alt"></i></span>
+                    </div>
+                    <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                        <div class="me-2">
+                        <h6 class="mb-0">Gifted Hands</h6>
+                        <small class="text-muted">LLorem Ipsum</small>
+                        </div>
+                        <div class="user-progress">
+                        <small class="fw-semibold">849k</small>
+                        </div>
+                    </div>
+                    </li>
+                    <li class="d-flex">
+                    <div class="avatar flex-shrink-0 me-3">
+                        <span class="avatar-initial rounded bg-label-secondary"
+                        ><i class="bx bx-football"></i
+                        ></span>
+                    </div>
+                    <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                        <div class="me-2">
+                        <h6 class="mb-0">Uniben Tutorial</h6>
+                        <small class="text-muted">Lorem ipsum, dolor sit amet consectetur adipisicing elit</small>
+                        </div>
+                        <div class="user-progress">
+                        <small class="fw-semibold">99</small>
+                        </div>
+                    </div>
+                    </li> -->
+                  {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="toggle-icon btn btn-primary" id="toggleIcon"><i class='bx bx-plus' ></i></div>
+  </div>
+{% endblock %}
+{% block script %}
+<script>
+    $(document).ready(function() {
+      $('#toggleIcon').click(function() {
+          $('.col-lg-4').toggleClass('show-sidebar');
+      });
+  });
+</script>
+{% endblock %}

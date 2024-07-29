@@ -1,0 +1,63 @@
+{% extends 'pages/base.html' %}
+{% block heading %}Your peformance{% endblock %}
+{% block style %}
+<style>
+    .perfor { 
+        background-color: #696cff;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+    }
+    .con {
+        display: flex;
+        align-items: center;
+    }
+</style>
+{% endblock %}
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-12 mb-4 order-0">
+        <div class="card">
+            <h5 class="card-header">User Performance</h5>
+            <div class="table-responsive text-nowrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Course</th>
+                            <th>Last 5 Scores</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                        {% for performance in performances %}
+                        <tr>
+                            <td>
+                                <div class="con">
+                                    <div class="perfor">PA</div>
+                                    <div>{{ performance.course.course_name }}</div>
+                                </div>
+                            </td>
+                            <td>
+                                <ul class="list-inline">
+                                    {% for score in performance.scores %}
+                                    <li class="list-inline-item">{{ score.percentage }}%</li>
+                                    {% else %}
+                                    <li class="list-inline-item">N/A</li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="layout-overlay layout-menu-toggle"></div>
+</div>
+{% endblock %}

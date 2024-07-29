@@ -1,0 +1,371 @@
+{% extends 'pages/base.html' %}
+{% block heading %}Courses{% endblock %}
+{% block content %}
+<div class="card mb-6">
+    <div class="card-header d-flex flex-wrap justify-content-between gap-4">
+      <div class="card-title mb-0 me-1">
+        <h5 class="mb-0">My Courses</h5>
+        <p class="mb-0">Your daily effort means a lot</p>
+      </div>
+      <div class="d-flex justify-content-md-end align-items-center column-gap-6 flex-sm-row flex-column row-gap-4">
+        <!-- <select class="form-select">
+            <option value="">All Courses</option>
+            <option value="ui/ux">UI/UX</option>
+            <option value="seo">SEO</option>
+            <option value="web">Web</option>
+            <option value="music">Music</option>
+            <option value="painting">Painting</option>
+        </select> -->
+            
+        <div class="form-check form-switch my-2 ms-2">
+          <input type="checkbox" class="form-check-input" id="CourseSwitch">
+          <label class="form-check-label text-nowrap mb-0" for="CourseSwitch">Hide completed</label>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h6>{{group.name}}</h6>
+      <div class="row gy-6 mb-6">
+        {% for course in group.courses%}
+        <div class="col-sm-6 col-lg-4 mb-4">
+          <div class="card p-2 h-100 shadow-none border">
+            <div class="card-body p-4 pt-2">
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <span class="badge bg-label-primary">{{course._for}}</span>
+                <p class="d-flex align-items-center justify-content-center fw-medium gap-1 mb-0">
+                  4.4 <span class="text-warning"><i class="bx bxs-star me-1 mb-1_5"></i></span><span class="fw-normal">(1.23k)</span>
+                </p>
+              </div>
+              <a href="javascript:void(0)" class="h5">{{course.course_name}}</a>
+              <p class="mt-1">{{course.description}}</p>
+
+              {% if course.has_summary %} 
+              {% if course.completed %}
+              
+              <p class="d-flex align-items-center text-success mb-1"><i class="bx bx-check me-1"></i>Completed</p>
+                <div class="progress mb-4" style="height: 8px">
+                  <div class="progress-bar w-100" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                {% else %}
+                
+                <p class="d-flex align-items-center mb-1"><i class="bx bx-time-five me-1"></i>30 minutes</p>
+                <div class="progress mb-4" style="height: 8px">
+                  <div class="progress-bar w-75" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                {% endif %}
+                {% endif %}
+                <div class="d-flex flex-column flex-md-row gap-4 text-nowrap flex-wrap flex-md-nowrap flex-lg-wrap flex-xxl-nowrap">
+                  {% if course.has_summary %} 
+                  {% if course.completed %}
+                  <a class="w-100 btn btn-label-primary" href="/course-lessons/{{course.id}}"><i class="bx bx-rotate-right bx-sm me-1_5"></i>Start Over</a>
+                  {% else %}
+                  <a class="w-100 btn btn-label-secondary d-flex align-items-center justify-content-center text-center" href="/course-lessons/{{course.id}}">
+                    <span>Continue</span><i class="fa fa-play-circle bx-sm align-middle" style="margin-left: 8px;"></i>
+                  </a>
+                  {% endif %}
+                  {% endif %}
+                <a class="w-100 btn btn-label-primary d-flex align-items-center justify-content-center text-center" href="/course-quiz/{{course.id}}">
+                    <span class="me-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalCenter"
+                    >Practice Test</span><i class="bx bx-chevron-right bx-sm lh-1 scaleX-n1-rtl"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <nav aria-label="Page navigation" class="d-flex align-items-center justify-content-center">
+        <ul class="pagination mb-0 pagination-rounded">
+          <li class="page-item first disabled">
+            <a class="page-link" href="javascript:void(0);"><i class="bx bx-chevrons-left bx-sm scaleX-n1-rtl"></i></a>
+          </li>
+          <li class="page-item prev disabled">
+            <a class="page-link" href="javascript:void(0);"><i class="bx bx-chevron-left bx-sm scaleX-n1-rtl"></i></a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="javascript:void(0);">1</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="javascript:void(0);">2</a>
+          </li>
+          <li class="page-item active">
+            <a class="page-link" href="javascript:void(0);">3</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="javascript:void(0);">4</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="javascript:void(0);">5</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="javascript:void(0);">6</a>
+          </li>
+          <li class="page-item next">
+            <a class="page-link" href="javascript:void(0);"><i class="bx bx-chevron-right bx-sm scaleX-n1-rtl"></i></a>
+          </li>
+          <li class="page-item last">
+            <a class="page-link" href="javascript:void(0);"><i class="bx bx-chevrons-right bx-sm scaleX-n1-rtl"></i></a>
+          </li>
+        </ul>
+      </nav>
+      <!-- <h6>Boiling Points</h6>
+      <div class="row gy-6 mb-6">
+        <div class="col-sm-6 col-lg-4 mb-4">
+          <div class="card p-2 h-100 shadow-none border">
+            <div class="card-body p-4 pt-2">
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <span class="badge bg-label-primary">Web</span>
+                <p class="d-flex align-items-center justify-content-center fw-medium gap-1 mb-0">
+                  4.4 <span class="text-warning"><i class="bx bxs-star me-1 mb-1_5"></i></span><span class="fw-normal">(1.23k)</span>
+                </p>
+              </div>
+              <a href="app-academy-course-details.html" class="h5">Basics of Angular</a>
+              <p class="mt-1">Introductory course for Angular and framework basics in web development.</p>
+              <p class="d-flex align-items-center mb-1"><i class="bx bx-time-five me-1"></i>30 minutes</p>
+              <div class="progress mb-4" style="height: 8px">
+                <div class="progress-bar w-75" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <div class="d-flex flex-column flex-md-row gap-4 text-nowrap flex-wrap flex-md-nowrap flex-lg-wrap flex-xxl-nowrap">
+                <a class="w-100 btn btn-label-secondary d-flex align-items-center justify-content-center text-center" href="app-academy-course-details.html">
+                    <i class="bx bx-rotate-right bx-sm align-middle me-2"></i><span>Start Over</span>
+                </a>
+                <a class="w-100 btn btn-label-primary d-flex align-items-center justify-content-center text-center" href="#">
+                    <span class="me-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalCenter"
+                    >Practice Test</span><i class="bx bx-chevron-right bx-sm lh-1 scaleX-n1-rtl"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-4 mb-4">
+          <div class="card p-2 h-100 shadow-none border">
+            <div class="card-body p-4 pt-2">
+              <div class="d-flex justify-content-between align-items-center mb-4 pe-xl-4 pe-xxl-0">
+                <span class="badge bg-label-danger">UI/UX</span>
+                <p class="d-flex align-items-center justify-content-center fw-medium gap-1 mb-0">
+                  4.2 <span class="text-warning"><i class="bx bxs-star me-1 mb-1_5"></i></span><span class="fw-normal"> (424)</span>
+                </p>
+              </div>
+              <a class="h5" href="app-academy-course-details.html">Figma &amp; More</a>
+              <p class="mt-1">Introductory course for design and framework basics in web development.</p>
+              <p class="d-flex align-items-center mb-1"><i class="bx bx-time-five me-1"></i>16 hours</p>
+              <div class="progress mb-4" style="height: 8px">
+                <div class="progress-bar w-25" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <div class="d-flex flex-column flex-md-row gap-4 text-nowrap flex-wrap flex-md-nowrap flex-lg-wrap flex-xxl-nowrap">
+                <a class="w-100 btn btn-label-secondary d-flex align-items-center justify-content-center text-center" href="app-academy-course-details.html">
+                    <i class="bx bx-rotate-right bx-sm align-middle me-2"></i><span>Start Over</span>
+                </a>
+                <a class="w-100 btn btn-label-primary d-flex align-items-center justify-content-center text-center" href="#">
+                    <span class="me-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalCenter"
+                    >Practice Test</span><i class="bx bx-chevron-right bx-sm lh-1 scaleX-n1-rtl"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-4 mb-4">
+          <div class="card p-2 h-100 shadow-none border">
+            <div class="card-body p-4 pt-2">
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <span class="badge bg-label-success">SEO</span>
+                <p class="d-flex align-items-center justify-content-center fw-medium gap-1 mb-0">
+                  5 <span class="text-warning"><i class="bx bxs-star me-1 mb-1_5"></i></span><span class="fw-normal"> (12)</span>
+                </p>
+              </div>
+              <a class="h5" href="app-academy-course-details.html">Keyword Research</a>
+              <p class="mt-1">Keyword suggestion tool provides comprehensive details &amp; keyword suggestions.</p>
+              <p class="d-flex align-items-center mb-1"><i class="bx bx-time-five me-1"></i>7 hours</p>
+              <div class="progress mb-4" style="height: 8px">
+                <div class="progress-bar w-50" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <div class="d-flex flex-column flex-md-row gap-4 text-nowrap flex-wrap flex-md-nowrap flex-lg-wrap flex-xxl-nowrap">
+                <a class="w-100 btn btn-label-secondary d-flex align-items-center justify-content-center text-center" href="app-academy-course-details.html">
+                    <i class="bx bx-rotate-right bx-sm align-middle me-2"></i><span>Start Over</span>
+                </a>
+                <a class="w-100 btn btn-label-primary d-flex align-items-center justify-content-center text-center" href="#">
+                    <span class="me-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalCenter"
+                    >Practice Test</span><i class="bx bx-chevron-right bx-sm lh-1 scaleX-n1-rtl"></i>
+                </a>
+               </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-4 mb-4">
+          <div class="card p-2 h-100 shadow-none border">
+            <div class="card-body p-4 pt-2">
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <span class="badge bg-label-info">Music</span>
+                <p class="d-flex align-items-center justify-content-center gap-1 mb-0">
+                  3.8 <span class="text-warning"><i class="bx bxs-star me-1 mb-1_5"></i></span><span class="fw-normal"> (634)</span>
+                </p>
+              </div>
+              <a class="h5" href="app-academy-course-details.html">Basics to Advanced</a>
+              <p class="mt-1">20 more lessons like this about music production, writing, mixing, mastering</p>
+              <p class="d-flex align-items-center mb-1"><i class="bx bx-time-five me-1"></i>30 minutes</p>
+              <div class="progress mb-4" style="height: 8px">
+                <div class="progress-bar w-75" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <div class="d-flex flex-column flex-md-row gap-4 text-nowrap flex-wrap flex-md-nowrap flex-lg-wrap flex-xxl-nowrap">
+                <a class="w-100 btn btn-label-secondary d-flex align-items-center justify-content-center text-center" href="app-academy-course-details.html">
+                    <i class="bx bx-rotate-right bx-sm align-middle me-2"></i><span>Start Over</span>
+                </a>
+                <a class="w-100 btn btn-label-primary d-flex align-items-center justify-content-center text-center" href="#">
+                    <span class="me-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalCenter"
+                    >Practice Test</span><i class="bx bx-chevron-right bx-sm lh-1 scaleX-n1-rtl"></i>
+                </a>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-4 mb-4">
+          <div class="card p-2 h-100 shadow-none border">
+            <div class="card-body p-4 pt-2">
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <span class="badge bg-label-warning">Painting</span>
+                <p class="d-flex align-items-center justify-content-center gap-1 mb-0">
+                  4.7 <span class="text-warning"><i class="bx bxs-star me-1 mb-1_5"></i></span><span class="fw-normal"> (34)</span>
+                </p>
+              </div>
+              <a class="h5" href="app-academy-course-details.html">Art &amp; Drawing</a>
+              <p class="mt-1">Easy-to-follow video &amp; guides show you how to draw animals, people &amp; more.</p>
+              <p class="d-flex align-items-center text-success mb-1"><i class="bx bx-check me-1"></i>Completed</p>
+              <div class="progress mb-4" style="height: 8px">
+                <div class="progress-bar w-100" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <a class="w-100 btn btn-label-primary" href="app-academy-course-details.html"><i class="bx bx-rotate-right bx-sm me-1_5"></i>Start Over</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-4 mb-4">
+          <div class="card p-2 h-100 shadow-none border">
+            <div class="card-body p-4 pt-2">
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <span class="badge bg-label-danger">UI/UX</span>
+                <p class="d-flex align-items-center justify-content-center gap-1 mb-0">
+                  3.6 <span class="text-warning"><i class="bx bxs-star me-1 mb-1_5"></i></span><span class="fw-normal"> (2.5k)</span>
+                </p>
+              </div>
+              <a class="h5" href="app-academy-course-details.html">Basics Fundamentals</a>
+              <p class="mt-1">This guide will help you develop a systematic approach user interface.</p>
+              <p class="d-flex align-items-center mb-1"><i class="bx bx-time-five me-1"></i>16 hours</p>
+              <div class="progress mb-4" style="height: 8px">
+                <div class="progress-bar w-25" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <div class="d-flex flex-column flex-md-row gap-4 text-nowrap flex-wrap flex-md-nowrap flex-lg-wrap flex-xxl-nowrap">
+                <a class="w-100 btn btn-label-secondary d-flex align-items-center justify-content-center text-center" href="app-academy-course-details.html">
+                    <i class="bx bx-rotate-right bx-sm align-middle me-2"></i><span>Start Over</span>
+                </a>
+                <button class="w-100 btn btn-label-primary d-flex align-items-center justify-content-center text-center">
+                    <span class="me-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalCenter"
+                    >Practice Test here</span><i class="bx bx-chevron-right bx-sm lh-1 scaleX-n1-rtl"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <nav aria-label="Page navigation" class="d-flex align-items-center justify-content-center">
+        <ul class="pagination mb-0 pagination-rounded">
+          <li class="page-item first disabled">
+            <a class="page-link" href="javascript:void(0);"><i class="bx bx-chevrons-left bx-sm scaleX-n1-rtl"></i></a>
+          </li>
+          <li class="page-item prev disabled">
+            <a class="page-link" href="javascript:void(0);"><i class="bx bx-chevron-left bx-sm scaleX-n1-rtl"></i></a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="javascript:void(0);">1</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="javascript:void(0);">2</a>
+          </li>
+          <li class="page-item active">
+            <a class="page-link" href="javascript:void(0);">3</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="javascript:void(0);">4</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="javascript:void(0);">5</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="javascript:void(0);">6</a>
+          </li>
+          <li class="page-item next">
+            <a class="page-link" href="javascript:void(0);"><i class="bx bx-chevron-right bx-sm scaleX-n1-rtl"></i></a>
+          </li>
+          <li class="page-item last">
+            <a class="page-link" href="javascript:void(0);"><i class="bx bx-chevrons-right bx-sm scaleX-n1-rtl"></i></a>
+          </li>
+        </ul>
+      </nav> -->
+    </div>
+</div>
+<div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalCenterTitle">Modal title</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col mb-3">
+              <label for="nameWithTitle" class="form-label">Name</label>
+              <input
+                type="text"
+                id="nameWithTitle"
+                class="form-control"
+                placeholder="Enter Name"
+              />
+            </div>
+          </div>
+          <div class="row g-2">
+            <div class="col mb-0">
+              <label for="emailWithTitle" class="form-label">Email</label>
+              <input
+                type="text"
+                id="emailWithTitle"
+                class="form-control"
+                placeholder="xxxx@xxx.xx"
+              />
+            </div>
+            <div class="col mb-0">
+              <label for="dobWithTitle" class="form-label">DOB</label>
+              <input
+                type="text"
+                id="dobWithTitle"
+                class="form-control"
+                placeholder="DD / MM / YY"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+            Close
+          </button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

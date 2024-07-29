@@ -1,0 +1,157 @@
+{% extends 'pages/base.html' %}
+{% block heading %}Quiz Test{% endblock %}
+
+{% block style %}
+<style>
+    .flex-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+    .flex-btn {
+        width: calc(100% / 7 - 10px); /* Adjust width to fit 7 buttons per row */
+        height: 30px;
+        padding: 0;
+        margin: 5px;
+        font-size: 12px;
+        text-align: center;
+        line-height: 30px; /* Vertically center the text */
+    }
+    .quiz-question {
+        display: none;
+    }
+    .quiz-question.active {
+        display: block;
+    }
+    .current-question-btn {
+        background-color: #696cff;
+        color: white;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<h5 class="mt-4">Quiz</h5>
+<div class="row">
+    <div class="col-lg-8 mb-4">
+      <small class="text-light fw-semibold">Quiz Title</small>
+      <div class="accordion mt-3" id="accordionExample">
+        <div class="card accordion-item">
+          <h2 class="accordion-header" id="headingTwo">
+            <button
+              type="button"
+              class="accordion-button collapsed"
+              data-bs-toggle="collapse"
+              data-bs-target="#accordionTwo"
+              aria-expanded="false"
+              aria-controls="accordionTwo"
+            >
+              Instructions
+            </button>
+          </h2>
+          <div
+            id="accordionTwo"
+            class="accordion-collapse collapse"
+            aria-labelledby="headingTwo"
+            data-bs-parent="#accordionExample"
+          >
+            <div class="accordion-body">
+              Dessert ice cream donut oat cake jelly-o pie sugar plum cheesecake. Bear claw dragée oat cake
+              dragée ice cream halvah tootsie roll. Danish cake oat cake pie macaroon tart donut gummies.
+              Jelly beans candy canes carrot cake. Fruitcake chocolate chupa chups.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-8 mb-4">
+        <form id="quizForm" method="POST" action="/submit-quiz/{{course.id}}">
+            {% for index, quiz in enumerate(course.quizzes) %}
+            <div class="card mb-6 quiz-question" id="question-{{ index }}">
+                <div class="card-body">
+                    <h6>Question {{ index + 1 }}</h6>
+                    <p>{{ quiz['question_text'] }}</p>
+                    {% for option in quiz['options'] %}
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="question{{ index }}" id="option{{ option['option_text'] }}" value="{{ option['option_text'] }}" {% if user_answers and user_answers[index] == option['option_text'] %} checked {% endif %}>
+                        <label class="form-check-label {% if quiz['correct_answer'] == option['option_text'] %}correct-option{% elif user_answers and user_answers[index] == option['option_text'] and quiz['correct_answer'] != option['option_text'] %}incorrect-option{% endif %}" for="option{{ option['option_text'] }}">
+                            {{ option['option_text'] }}
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+            <div class="d-flex justify-content-between mt-4">
+                <button id="previousButton" type="button" class="btn btn-label-secondary">
+                    <i class="bx bx-chevron-left bx-sm lh-1 scaleX-n1-rtl"></i> Previous
+                </button>
+                <button id="nextButton" type="button" class="btn btn-label-primary">
+                    Next <i class="bx bx-chevron-right bx-sm lh-1 scaleX-n1-rtl"></i>
+                </button>
+                <button id="submitButton" type="submit" class="btn btn-success" style="display: none;">
+                    Submit <i class="bx bx-check bx-sm lh-1"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-12 col-lg-4">
+        <div class="col-md">
+            <div class="card">
+                <div class="card-body">
+                    <div class="flex-container">
+                        {% for i in range(1, len(course.quizzes) + 1) %}
+                        <button id="btn-{{ i-1 }}" class="btn btn-outline-primary flex-btn" onclick="showQuestion({{ i - 1 }})">{{ i }}</button>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    let currentQuestion = 0;
+    const totalQuestions = {{ course.quizzes | length }};
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        showQuestion(currentQuestion);
+
+        document.getElementById('nextButton').addEventListener('click', () => {
+            if (currentQuestion < totalQuestions - 1) {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+            }
+        });
+
+        document.getElementById('previousButton').addEventListener('click', () => {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion(currentQuestion);
+            }
+        });
+    });
+
+    function showQuestion(index) {
+        const questions = document.querySelectorAll('.quiz-question');
+        questions.forEach((question, idx) => {
+            question.classList.toggle('active', idx === index);
+        });
+
+        const buttons = document.querySelectorAll('.flex-btn');
+        buttons.forEach((button, idx) => {
+            button.classList.toggle('current-question-btn', idx === index);
+        });
+
+        if (index === totalQuestions - 1) {
+            document.getElementById('nextButton').style.display = 'none';
+            document.getElementById('submitButton').style.display = 'block';
+        } else {
+            document.getElementById('nextButton').style.display = 'block';
+            document.getElementById('submitButton').style.display = 'none';
+        }
+
+        currentQuestion = index;
+    }
+</script>
+{% endblock %}

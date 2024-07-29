@@ -56,9 +56,9 @@
 	
 				$this.circleProgress({
 					value: progressValue,
-					size: 125,
-					thickness: 15,
-					startAngle: 10,
+					size: 50,
+					thickness: 5,
+					startAngle: 130,
 					fill: {
 						gradient: ["#5211c2", "#5211c2"]
 					}
