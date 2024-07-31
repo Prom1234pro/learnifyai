@@ -17,24 +17,23 @@ from datetime import datetime, timedelta
 uroute_bp = Blueprint('user', __name__)
 
 
-@uroute_bp.route('/account-settings')
+@uroute_bp.route('/account-settings', methods=['GET', 'POST'])
 @user_required
 def profile_settings():
-    user_id = session.get('user_id')
+    user_id = session['user_id']
     user = User.query.get_or_404(user_id)
     profile = Profile.query.filter_by(user_id=user_id).first()
 
     if request.method == 'POST':
         # Update user details
-        user.username = request.form.get('username')
         user.email = request.form.get('email')
 
         # Update profile details
         profile.full_name = request.form.get('full_name')
-        profile.bio = request.form.get('bio')
         profile.university = request.form.get('university')
         profile.course = request.form.get('course')
         profile.date_of_birth = request.form.get('date_of_birth')
+        profile.address = request.form.get('address')
 
         # Save changes
         db.session.commit()
@@ -42,8 +41,6 @@ def profile_settings():
         return redirect("/account-settings")
 
     return render_template('pages/account-settings.html', user=user, profile=profile)
-
-
 
 @uroute_bp.route('/security-settings', methods=['GET', 'POST'])
 @user_required

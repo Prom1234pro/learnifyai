@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  class="light-style customizer-hide"
+  dir="ltr"
+  data-theme="theme-default"
+  data-assets-path="../assets/"
+  data-template="vertical-menu-template-free"
+>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="description" content="" />
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='assets/img/favicon/favicon.png') }}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/fonts/boxicons.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/css/core.css') }}" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/css/theme-default.css') }}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/demo.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/css/pages/page-auth.css') }}" />
+    <script src="{{ url_for('static', filename='assets/vendor/js/helpers.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/config.js') }}"></script>
+
+    <!-- Page CSS -->
+    <!-- Page -->
+    <!-- Helpers -->
+    <script src="{{ url_for('static', filename='assets/vendor/js/helpers.js') }}"></script>
+
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="{{ url_for('static', filename='assets/js/config.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+    <div id="toast-container">
+      {% for category, message in messages %}
+      <div class="bs-toast toast toast-placement-ex m-2 fade bg-primary top-0" role="alert" aria-live="assertive" data-time="{{ message['time'] }}" aria-atomic="true" data-delay="2000">
+        <div class="toast-header">
+          <i class="bx bx-bell me-2"></i>
+          <div class="me-auto fw-semibold">{{ message['title'] }}</div>
+          <small class="toast-time"></small>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      <div class="toast-body">{{ message['text'] }}</div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% block content%}
+    {% endblock %}
+    <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.8/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.8/plugin/relativeTime.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.8/plugin/utc.js"></script>
+    <script>
+      dayjs.extend(dayjs_plugin_relativeTime);
+      dayjs.extend(dayjs_plugin_utc);
+    
+      document.addEventListener('DOMContentLoaded', function() {
+          var toasts = document.querySelectorAll('.bs-toast');
+          toasts.forEach(function(toast) {
+              var timestamp = toast.getAttribute('data-time');
+              var timeElement = toast.querySelector('.toast-time');
+    
+              // Convert server time (UTC) to local time
+              var localTime = dayjs.utc(timestamp).local();
+    
+              // Calculate relative time from the local time
+              var relativeTime = localTime.fromNow();
+    
+              // Update the time element with relative time
+              timeElement.textContent = relativeTime;
+    
+              // Show toast if there are messages
+              var toastElement = new bootstrap.Toast(toast);
+              toastElement.show();
+          });
+      });
+    </script>
+    
+</body>
+</html>

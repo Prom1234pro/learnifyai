@@ -1,69 +1,53 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-    <title>Onboarding - Learnify AI</title>
-    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='assets/img/favicon/favicon.ico') }}" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/fonts/boxicons.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/css/core.css') }}" class="template-customizer-core-css" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/css/theme-default.css') }}" class="template-customizer-theme-css" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/demo.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/css/pages/page-auth.css') }}" />
-</head>
-<body>
-    <div class="container-xxl">
-        <div class="authentication-wrapper authentication-basic container-p-y">
-            <div class="authentication-inner">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="app-brand justify-content-center">
-                            <a href="#" class="app-brand-link gap-2">
-                                <span class="app-brand-logo demo">
-                                    <img width="50" height="50" src="{{ url_for('static', filename='assets/img/favicon/logo.png') }}" alt="">
-                                </span>
-                                <!-- <span class="app-brand-text demo text-body fw-bolder">Learnify AI</span> -->
-                            </a>
-                        </div>
-                        <h4 class="mb-2">Welcome to Learnify AI 🚀</h4>
-                        <p class="mb-4">Let's get to know you better</p>
+{% extends 'account/base.html'%}
+{% block title %} Onboarding - Personal Details {% endblock %}
+{% block content%}
 
-                        <form id="formOnboarding" class="mb-3" action="/onboarding" method="POST">
-                            <div class="mb-3">
-                                <label for="full_name" class="form-label">Full Name</label>
-                                <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Enter your full name" autofocus />
-                            </div>
-                            <div class="mb-3">
-                                <label for="date_of_birth" class="form-label">Date of Birth</label>
-                                <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" />
-                            </div>
-                            <div class="mb-3">
-                                <label for="university" class="form-label">University</label>
-                                <input type="text" class="form-control" id="university" name="university" placeholder="Enter your university" />
-                            </div>
-                            <div class="mb-3">
-                                <label for="course" class="form-label">Course</label>
-                                <input type="text" class="form-control" id="course" name="course" placeholder="Enter your course" />
-                            </div>
-                            <div class="mb-3">
-                                <label for="bio" class="form-label">Bio</label>
-                                <textarea class="form-control" id="bio" name="bio" rows="3" placeholder="Tell us a bit about yourself"></textarea>
-                            </div>
-                            <button class="btn btn-primary d-grid w-100">Complete Onboarding</button>
-                        </form>
-
-                        <p class="text-center">
-                            <a href="/dashboard">Skip for now</a>
-                        </p>
+<div class="container-xxl">
+    <div class="authentication-wrapper authentication-basic container-p-y">
+        <div class="authentication-inner">
+            <div class="card">
+                <div class="card-body">
+                    <div class="app-brand justify-content-center">
+                        <a href="#" class="app-brand-link gap-2">
+                            <span class="app-brand-logo demo">
+                                <img width="50" height="50" src="{{ url_for('static', filename='assets/img/favicon/logo.png') }}" alt="">
+                            </span>
+                            <!-- <span class="app-brand-text demo text-body fw-bolder">Learnify AI</span> -->
+                        </a>
                     </div>
+                    <h4 class="mb-2">Welcome to Learnify AI 🚀</h4>
+                    <p class="mb-4">Let's get to know you better</p>
+
+                    <form id="formOnboarding" class="mb-3" action="/onboarding" method="POST">
+                        <div class="mb-3">
+                            <label for="full_name" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Enter your full name" autofocus />
+                        </div>
+                        <div class="mb-3">
+                            <label for="date_of_birth" class="form-label">Date of Birth</label>
+                            <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="university" class="form-label">University</label>
+                            <input type="text" class="form-control" id="university" name="university" placeholder="Enter your university" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="course" class="form-label">Course</label>
+                            <input type="text" class="form-control" id="course" name="course" placeholder="Enter your course" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="bio" class="form-label">Bio</label>
+                            <textarea class="form-control" id="bio" name="bio" rows="3" placeholder="Tell us a bit about yourself"></textarea>
+                        </div>
+                        <button class="btn btn-primary d-grid w-100">Complete Onboarding</button>
+                    </form>
+
+                    <p class="text-center">
+                        <a href="/verification-email-sent?email={{user.email}}">Skip for now</a>
+                    </p>
                 </div>
             </div>
         </div>
     </div>
-
-    <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
-</body>
-</html>
+</div>
+{% endblock %}

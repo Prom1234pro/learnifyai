@@ -9,7 +9,7 @@ def user_required(f):
     def decorated_function(*args, **kwargs):
         user_id = session.get('user_id')
         if not user_id:
-            return abort(404)
+            return redirect(url_for('auth.login_user_'))
         
         user = User.query.get(user_id)
         if not user:

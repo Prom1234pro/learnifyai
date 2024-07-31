@@ -278,7 +278,7 @@
                         data-bs-placement="top"
                         data-bs-html="true"
                         data-bs-content="<form method='POST' action='/user/add-to-group'>
-                        <div class='pb-3'>Join <b>{{cluster.name}}</b> cluster</div>
+                        <div class='pb-3'>{{cluster.name}}  cluster</div>
                         <div class='form-group'>
                             <input type='text' hidden class='form-control' id='group_id' value={{cluster.id}} name='group_id' required>
                         </div>
@@ -287,7 +287,7 @@
                         </div>
                         <button type='submit' class='btn btn-primary'>Join Cluster</button>
                         </form>"
-                        title="Join the cluster"
+                        title=""
                         >
                             <div class="avatar flex-shrink-0 me-3">
                                 <span class="avatar-initial rounded bg-label-primary">

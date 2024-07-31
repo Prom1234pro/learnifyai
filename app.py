@@ -30,7 +30,7 @@ def landing_page():
     # except Exception as e:
     #     print(f"Error sending verification email: {e}")
     #     return redirect('/register')
-    return redirect('/register')
+    return redirect('/login-user')
 
 
 # @socketio.on('connect')
