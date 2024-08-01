@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Affiliates</title>
+</head>
+<body>
+    <h2>Affiliates List</h2>
+    <ul>
+        {% for affiliate in affiliates %}
+            <li>{{ affiliate.user.username }} - {{ affiliate.commission_rate }}%</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

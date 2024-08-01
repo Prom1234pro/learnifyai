@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Referrals</title>
+</head>
+<body>
+    <h2>Referrals List</h2>
+    <ul>
+        {% for referral in referrals %}
+            <li>{{ referral.affiliate.user.username }} referred {{ referral.user.username }} - {{ referral.status }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Commissions</title>
+</head>
+<body>
+    <h2>Commissions List</h2>
+    <ul>
+        {% for commission in commissions %}
+            <li>{{ commission.affiliate.user.username }} - ${{ commission.amount }} - {{ commission.status }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
