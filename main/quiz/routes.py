@@ -109,6 +109,23 @@ def course_quiz(course_id):
 
     return render_template('pages/quiz_test.html', course=course, user=user, enumerate=enumerate, len=len)
 
+@qroute_bp.route('/theory-quiz/<string:course_id>')
+@user_required
+def theory_quiz(course_id):
+    course = Course.query.get_or_404(course_id)
+    user_id = session.get('user_id')
+    user = User.query.get_or_404(user_id)
+
+    return render_template('pages/theory-quiz.html', course=course, user=user, enumerate=enumerate, len=len)
+
+@qroute_bp.route('/gamma-quiz/<string:course_id>')
+@user_required
+def gamma_quiz(course_id):
+    course = Course.query.get_or_404(course_id)
+    user_id = session.get('user_id')
+    user = User.query.get_or_404(user_id)
+
+    return render_template('pages/gamma-quiz.html', course=course, user=user, enumerate=enumerate, len=len)
 
 @qroute_bp.route('/submit-quiz/<string:course_id>', methods=['POST'])
 @user_required

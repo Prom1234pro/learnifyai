@@ -1,0 +1,87 @@
+{% extends 'account/base.html'%}
+{% block title %} Affiliate Registration - Learnify AI {% endblock %}
+{% block content %}
+
+<div class="container-xxl">
+  <div class="authentication-wrapper authentication-basic container-p-y">
+    <div class="authentication-inner">
+      <div class="card">
+        <div class="card-body">
+          <div class="app-brand justify-content-center">
+            <a href="#" class="app-brand-link gap-2">
+              <span class="app-brand-logo demo">
+                <img width="50" height="50" src="{{ url_for('static', filename='assets/img/favicon/logo.png') }}" alt="">
+              </span>
+            </a>
+          </div>
+          <h4 class="mb-2">Affiliate Account Registration</h4>
+          <p class="mb-4">Please complete the following steps to create your affiliate account.</p>
+
+          <form id="affiliateForm" action="/affiliate-register" method="post">
+            <!-- Step 1: Personal Information -->
+            <div id="step-1" class="step">
+              <h5>Step 1: Personal Information</h5>
+              <div class="mb-3">
+                <label for="first-name" class="form-label">First Name</label>
+                <input type="text" class="form-control" id="first-name" name="first_name" placeholder="Enter your first name" required />
+              </div>
+              <div class="mb-3">
+                <label for="last-name" class="form-label">Last Name</label>
+                <input type="text" class="form-control" id="last-name" name="last_name" placeholder="Enter your last name" required />
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required />
+              </div>
+              <button type="button" class="btn btn-primary" onclick="nextStep(2)">Next</button>
+            </div>
+
+            <!-- Step 2: Business Details -->
+            <div id="step-2" class="step" style="display: none;">
+              <h5>Step 2: Business Details</h5>
+              <div class="mb-3">
+                <label for="business-name" class="form-label">Business Name</label>
+                <input type="text" class="form-control" id="business-name" name="business_name" placeholder="Enter your business name" required />
+              </div>
+              <div class="mb-3">
+                <label for="website" class="form-label">Website</label>
+                <input type="url" class="form-control" id="website" name="website" placeholder="Enter your website URL" />
+              </div>
+              <button type="button" class="btn btn-secondary" onclick="prevStep(1)">Previous</button>
+              <button type="button" class="btn btn-primary" onclick="nextStep(3)">Next</button>
+            </div>
+
+            <!-- Step 3: Payment Information -->
+            <div id="step-3" class="step" style="display: none;">
+              <h5>Step 3: Payment Information</h5>
+              <div class="mb-3">
+                <label for="bank-account" class="form-label">Bank Account Number</label>
+                <input type="text" class="form-control" id="bank-account" name="bank_account" placeholder="Enter your bank account number" required />
+              </div>
+              <div class="mb-3">
+                <label for="paypal-email" class="form-label">PayPal Email</label>
+                <input type="email" class="form-control" id="paypal-email" name="paypal_email" placeholder="Enter your PayPal email" />
+              </div>
+              <button type="button" class="btn btn-secondary" onclick="prevStep(2)">Previous</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function nextStep(step) {
+    document.querySelector('.step:not([style*="display: none"])').style.display = 'none';
+    document.getElementById(`step-${step}`).style.display = 'block';
+  }
+
+  function prevStep(step) {
+    document.querySelector('.step:not([style*="display: none"])').style.display = 'none';
+    document.getElementById(`step-${step}`).style.display = 'block';
+  }
+</script>
+
+{% endblock %}

@@ -412,3 +412,11 @@ def update_user(user_id):
         user.password = bcrypt.generate_password_hash(data['password']).decode('utf-8')  # Make sure to hash the password in real implementation
     db.session.commit()
     return jsonify({'message': 'User updated successfully'}), 200
+
+
+@app.route('/affiliate-register')
+def affiliate_register():
+    
+
+    messages = get_flashed_messages(with_categories=True)
+    return render_template('account/affiliate-multi-step.html', messages=messages) 

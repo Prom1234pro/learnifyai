@@ -8,7 +8,7 @@ from main import bcrypt, mail
 
 from main.quiz.topic import create_topic
 # from main.utils import load_active_sessions, save_active_sessions, SESSION_TIMEOUT
-from main.quiz.models import Quiz, Option
+from main.quiz.models import Quiz, Option, QuizQuestion
 from main.cluster.models import Group
 import string, secrets
 
@@ -243,6 +243,71 @@ def create_quiz_obj():
             return jsonify({'error': f'unknown error{e}'}), 401
 
     return abort(404)
+
+@admin_bp.route('/admin/create-quiz/obj_', methods=['POST'])
+@admin_required
+def create_quiz_obj_():
+    if request.method == 'POST':
+        data = request.json  # Get JSON data from the request body
+
+        # Check for required fields in the input data
+        if 'quizzes' not in data or not isinstance(data['quizzes'], list):
+            return jsonify({'error': 'No quizzes data provided or invalid format'}), 400
+        
+        course_id = data.get('course_id')
+        year = data.get('year')
+        
+        # Validate required fields
+        if not course_id:
+            return jsonify({'error': 'Course ID is required'}), 400
+        
+        quizzes = data['quizzes']
+        
+        for quiz_data in quizzes:
+            try:                
+                quiz = QuizQuestion(
+                    topic_name=quiz_data.get('topic_name'),
+                    year=year,
+                    type_=quiz_data.get('type_', 'obj'),
+                    question_text=quiz_data.get('question_text', ''),
+                    answer=quiz_data.get('answer', ''),
+                    hint=quiz_data.get('hint', 'No hint'),
+                    instructions=quiz_data.get('instructions', 'No instructions'),
+                    img=quiz_data.get('img'),
+                    course_id=course_id
+                )
+                db.session.add(quiz)
+                db.session.commit()
+                
+                if 'options' in quiz_data and isinstance(quiz_data['options'], list):
+                    options_data = quiz_data['options']
+                    for option_data in options_data:
+                        option = Option(
+                            option_text=option_data['option_text'],
+                            is_correct=option_data['is_correct'],
+                            option_type='quiz_question',
+                            quiz_id=None,
+                            quiz_question_id= quiz.id,
+                        )
+                        db.session.add(option)
+                        if option.is_correct:
+                            quiz.answer = option.option_text
+                            
+
+            except Exception as e:
+                db.session.rollback()
+                return jsonify({'error': f'Error processing quiz: {e}'}), 400
+        
+        try:
+            db.session.commit()
+            return jsonify({'message': 'Quizzes created successfully'}), 201
+        
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({'error': f'Error committing to database: {e}'}), 500
+
+    return abort(404)
+
 
 @admin_bp.route('/admin/create-quiz/gamma', methods=['POST'])
 @admin_required
