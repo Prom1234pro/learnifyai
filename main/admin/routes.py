@@ -5,7 +5,7 @@ from main.course.models import Course
 from main.utils import admin_required, user_required
 from flask_mail import Message
 from main import bcrypt, mail
-
+from flasgger import swag_from
 from main.quiz.topic import create_topic
 # from main.utils import load_active_sessions, save_active_sessions, SESSION_TIMEOUT
 from main.quiz.models import Quiz, Option
@@ -28,6 +28,43 @@ def send_verification_email(user):
 
 @admin_bp.route('/ailearnify/create-admin', methods=['POST'])
 @admin_required
+@swag_from({
+    'summary': 'Create Admin',
+    'tags':['Admin Routes'],
+    'parameters': [
+        {
+            'name': 'body',
+            'in': 'body',
+            'required': True,
+            'schema' :{
+                'type': 'object',
+                'properties':{
+                    'password':{
+                        'type':'string',
+                        'description': 'The password of the admin',
+                    },
+                    'username':{
+                        'type':'string',
+                        'description': 'The username of the admin'
+                    },
+                    'email':{
+                        'type':'string',
+                        'description': 'The email of the admin'
+                    }
+
+                    }
+                }
+            }
+    ],
+    'responses': {
+        201: {
+            'description': 'Success'
+        },
+        400: {
+            'description': 'Username or email already exits'
+        }
+    }
+})
 def create_admin():
     if request.method == "POST":
         data = request.get_json()
@@ -92,6 +129,31 @@ def admin_login():
 
 @admin_bp.route('/make_admin/<user_id>', methods=['POST'])
 @admin_required
+@swag_from({
+    'tags':['Admin Routes'],
+    'parameters': [
+        {
+            'name': 'user_id',
+            'in': 'path',
+            'type': 'string',
+            'required': True,
+            'description': 'ID of the user to be made admin'
+        }
+    ],
+    'responses': {
+        200: {
+            'description': 'User made an admin successfully',
+            'examples': {
+                'application/json': {
+                    'success': 'user made an admin'
+                }
+            }
+        },
+        404: {
+            'description': 'User not found'
+        }
+    }
+})
 def make_admin(user_id):
     if request.method == 'POST':
         user = User.query.get_or_404(user_id)
@@ -102,6 +164,23 @@ def make_admin(user_id):
 
 @admin_bp.route('/admin/groups')
 @admin_required
+@swag_from({
+    'tags':['Admin Routes'],
+    'responses': {
+        200: {
+            'description': 'List all groups',
+            'examples': {
+                'application/json': [
+                    {
+                        "id": "group.id",
+                        "name": "group.name",
+                        "image_filename": "group image"
+                    }
+                ]
+            }
+        }
+    }
+})
 def group():
     all_groups =Group.query.all()
     all_groups_data = [{'id': group.id, 'name': group.name, 'image_filename': group.image_filename} for group in all_groups]
@@ -124,6 +203,29 @@ def update_user(user_id):
 
 @admin_bp.route('/admin/get-all-users', methods=['GET'])
 @admin_required
+@swag_from({
+    'tags':['Admin Routes'],
+    'responses': {
+        200: {
+            'description': 'get all users',
+            'examples': {
+                'application/json': [
+                    {
+                    'id': "user.id",
+                    'username':" user.username",
+                    'full_name': "user.full_name",
+                    'email': "user.email",
+                    'is_admin': "user.is_admin",
+                    'email_verified': "user.email_verified",
+                    'is_logged_in': "user.is_logged_in",
+                    'is_premium_user': "user.is_premium_user",
+                    'user_plan': "user.user_plan"
+                    }
+                ]
+            }
+        }
+    }
+})
 def get_all_users():
     users = User.query.all()
     users_list = []
@@ -312,6 +414,24 @@ def generate_group_key(user_id):
 
 @admin_bp.route('/download/<filename>', methods=['GET'])
 @admin_required
+@swag_from({
+    'summary': 'Download a file from the server',
+    'tags':['Admin Routes'],
+    'parameters': [
+        {
+            'name': 'filename',
+            'in': 'path',
+            'type': 'string',
+            'required': True,
+            'description': 'name of file'
+        }
+    ],
+    'responses': {
+        200: {
+            'description': 'Download File'
+        }
+    }
+})
 def download_file(filename):
     try:
         path = f'../instance/{filename}'

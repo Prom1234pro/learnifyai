@@ -10,6 +10,7 @@ db = SQLAlchemy()
 from flask import Flask
 from flask_mail import Mail
 from flask_jwt_extended import JWTManager
+from flasgger import Swagger
 
 
 app = Flask(__name__)
@@ -23,6 +24,7 @@ app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
+swagger = Swagger()
 # from .routes import register_routes
 
 def create_app():
@@ -30,6 +32,7 @@ def create_app():
     Migrate(app, db)
     # register_routes(app)
     Session(app)
+    swagger.init_app(app)
 
     return app, bcrypt
 

@@ -3,7 +3,7 @@ from flask import (Blueprint, abort, redirect,
     jsonify, session, flash, get_flashed_messages, url_for, abort
     )
 from datetime import datetime, timedelta
-
+from flasgger import swag_from
 from main.utils import user_required
 from .models import Performance, Score, db, Course
 from main.authentication.models import User
@@ -14,6 +14,14 @@ croute_bp = Blueprint('course', __name__)
 
 @croute_bp.route('/courses')
 @user_required
+@swag_from({
+    'tags':['Course Routes'],
+    'responses':{
+        200: {
+            'description': 'to get list of course',
+        }
+    }
+})
 def courses():
     user = session.get('user')
     # if user is None:
@@ -22,6 +30,24 @@ def courses():
 
 @croute_bp.route('/courses/<string:user_id>')
 @user_required
+@swag_from({
+    'summary': 'Get specific user courses',
+    'tags':['Course Routes'],
+    'parameters': [
+        {
+            'user_id': 'user_id',
+            'in': 'path',
+            'type': 'string',
+            'required': True,
+            'description': 'get all user courses'
+        }
+    ],
+    'responses': {
+        200: {
+            
+        }
+    }
+})
 def get_all_user_courses(user_id):
     user = User.query.get(user_id)
     messages = get_flashed_messages(with_categories=True)
@@ -46,6 +72,28 @@ def get_all_user_courses(user_id):
 
 @croute_bp.route('/cluster-courses/<string:group_id>')
 @user_required
+@swag_from({
+    'parameters': [
+        {
+            'name': 'user_id',
+            'in': 'path',
+            'type': 'string',
+            'required': True,
+            'description': 'ID of the user'
+        }
+    ],
+    'responses': {
+        200: {
+            'description': 'List of all user courses',
+            'examples': {
+                'text/html': '<html>...</html>'
+            }
+        },
+        404: {
+            'description': 'User not found'
+        }
+    }
+})
 def get_all_user_group_courses(group_id):
     group = Group.query.get(group_id)
     messages = get_flashed_messages(with_categories=True)
@@ -170,6 +218,25 @@ def delete_performance(id):
 
 
 @croute_bp.route('/leaderboard', methods=['GET'])
+@swag_from({
+    'responses': {
+        200: {
+            'description': 'Top performers within the last week',
+            'examples': {
+                'application/json': [
+                    {
+                        "username": "user1",
+                        "total_score": 100
+                    },
+                    {
+                        "username": "user2",
+                        "total_score": 95
+                    }
+                ]
+            }
+        }
+    }
+})
 def get_leaderboard():
     # Calculate the date for one week ago
     one_week_ago = datetime.utcnow() - timedelta(weeks=1)

@@ -16,6 +16,7 @@ app3.py
 
 # Ignore virtual environment
 /env/
+/venv/
 /virenv/
 conn.py
 prompt.md
