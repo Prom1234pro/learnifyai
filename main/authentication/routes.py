@@ -191,11 +191,11 @@ def onboarding():
         university = request.form.get('university')
         course = request.form.get('course')
         bio = request.form.get('bio')
-        profile.full_name=full_name,
-        profile.user_id=user.id,
-        profile.date_of_birth=date_of_birth,
-        profile.university=university,
-        profile.course=course,
+        profile.full_name=full_name
+        profile.user_id=user.id
+        profile.date_of_birth=date_of_birth
+        profile.university=university
+        profile.course=course
         profile.bio=bio
         db.session.commit()
         
