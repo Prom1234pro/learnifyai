@@ -20,11 +20,11 @@
         <label for="fileType">Choose file type:</label>
         <select id="fileType">
             <option value="txt">Text (.txt)</option>
-            <option value="json" selected>JSON (.json)</option>
+            <option value="json">JSON (.json)</option>
             <option value="js">JavaScript (.js)</option>
         </select>
-        <button id="saveBtn" disabled>Save</button>
-        <button id="uploadBtn">Create</button>
+        <button id="saveBtn">Save</button>
+        <button id="uploadBtn">Upload</button>
     </div>
     <div id="container"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.43.0/min/vs/loader.js"></script>
@@ -39,26 +39,8 @@
                 language: 'plaintext'
             });
 
-            // Function to update language based on file type
-            function updateLanguage() {
-                const fileType = document.getElementById('fileType').value;
-                let language;
-                switch (fileType) {
-                    case 'json':
-                        language = 'json';
-                        break;
-                    case 'js':
-                        language = 'javascript';
-                        break;
-                    default:
-                        language = 'plaintext';
-                        break;
-                }
-                editor.getModel().setMode(language);
-            }
 
             // Event listener to update language when file type changes
-            document.getElementById('fileType').addEventListener('change', updateLanguage);
 
             // Save button functionality
             document.getElementById('saveBtn').addEventListener('click', function() {
@@ -86,7 +68,7 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ text })
+                    body: JSON.stringify({ text: "asdfasd" })
                 })
                 .then(response => response.json())
                 .then(data => {

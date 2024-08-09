@@ -7,7 +7,7 @@ from main.authentication.models import Profile, User
 def user_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        user_id = session.get('user_id')
+        user_id = session.get("user_id")
         if not user_id:
             return redirect(url_for('auth.login_user_'))
         
@@ -35,13 +35,15 @@ def onboarding_required(f):
 def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        user_id = session.get('user_id')
-        print("always here")
+        user_id = session.get("user_id")
+        print(user_id)
         if not user_id:
+            print("always here")
             return abort(404)
         
         user = User.query.get(user_id)
         if not user or not user.is_admin:
+            print("always here 2")
             return abort(404)
         
         return f(*args, **kwargs)

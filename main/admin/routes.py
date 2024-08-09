@@ -1,5 +1,8 @@
+import json
+import os.path
 import uuid
 from flask import Blueprint, request, jsonify, send_file, url_for, abort, session
+import requests
 from main.authentication.models import User, db
 from main.course.models import Course
 from main.utils import admin_required, user_required
@@ -245,71 +248,74 @@ def create_quiz_obj():
 
     return abort(404)
 
-@admin_bp.route('/admin/create-quiz/obj_', methods=['POST'])
-@admin_required
-def create_quiz_obj_():
-    if request.method == 'POST':
-        data = request.json  # Get JSON data from the request body
-        print("Something")
-        # Check for required fields in the input data
-        if 'quizzes' not in data or not isinstance(data['quizzes'], list):
-            return jsonify({'error': 'No quizzes data provided or invalid format'}), 400
-        
-        course_id = data.get('course_id')
-        year = data.get('year')
-        
-        # Validate required fields
-        if not course_id:
-            return jsonify({'error': 'Course ID is required'}), 400
-        
-        quizzes = data['quizzes']
-        
-        for quiz_data in quizzes:
-            try:                
-                quiz = QuizQuestion(
-                    topic_name=quiz_data.get('topic_name'),
-                    year=year,
-                    type_=quiz_data.get('type_', 'obj'),
-                    question_text=quiz_data.get('question_text', ''),
-                    answer=quiz_data.get('answer', ''),
-                    hint=quiz_data.get('hint', 'No hint'),
-                    instructions=quiz_data.get('instructions', 'No instructions'),
-                    img=quiz_data.get('img'),
-                    course_id=course_id
-                )
-                db.session.add(quiz)
-                db.session.commit()
-                
-                if 'options' in quiz_data and isinstance(quiz_data['options'], list):
-                    options_data = quiz_data['options']
-                    for option_data in options_data:
-                        option = Option(
-                            option_text=option_data['option_text'],
-                            is_correct=option_data['is_correct'],
-                            option_type='quiz_question',
-                            quiz_id=None,
-                            quiz_question_id= quiz.id,
-                        )
-                        db.session.add(option)
-                        if option.is_correct:
-                            quiz.answer = option.option_text
-                            
 
-            except Exception as e:
-                db.session.rollback()
-                return jsonify({'error': f'Error processing quiz: {e}'}), 400
-        
+def create_quiz_obj_(path):
+    try:
+        with open(path, 'r') as json_file:
+            data = json.load(json_file)
+    except FileNotFoundError:
+        return jsonify({'error': 'JSON file not found'}), 404
+    except json.JSONDecodeError:
+        return jsonify({'error': 'Error decoding JSON file'}), 400
+    
+    print(data)
+    
+    # Check for required fields in the input data
+    if 'quizzes' not in data or not isinstance(data['quizzes'], list):
+        return jsonify({'error': 'No quizzes data provided or invalid format'}), 400
+    
+    course_id = data.get('course_id')
+    year = data.get('year')
+    
+    # Validate required fields
+    if not course_id:
+        return jsonify({'error': 'Course ID is required'}), 400
+    
+    quizzes = data['quizzes']
+    
+    for quiz_data in quizzes:
         try:
+            quiz = QuizQuestion(
+                topic_name=quiz_data.get('topic_name'),
+                year=year,
+                type_=quiz_data.get('type_', 'obj'),
+                question_text=quiz_data.get('question_text', ''),
+                answer=quiz_data.get('answer', ''),
+                hint=quiz_data.get('hint', 'No hint'),
+                instructions=quiz_data.get('instructions', 'No instructions'),
+                img=quiz_data.get('img'),
+                course_id=course_id
+            )
+            db.session.add(quiz)
             db.session.commit()
-            return jsonify({'message': 'Quizzes created successfully'}), 201
-        
+            
+            if 'options' in quiz_data and isinstance(quiz_data['options'], list):
+                options_data = quiz_data['options']
+                for option_data in options_data:
+                    option = Option(
+                        option_text=option_data['option_text'],
+                        is_correct=option_data['is_correct'],
+                        option_type='quiz_question',
+                        quiz_id=None,
+                        quiz_question_id=quiz.id,
+                    )
+                    db.session.add(option)
+                    if option.is_correct:
+                        quiz.answer = option.option_text
+                    
         except Exception as e:
             db.session.rollback()
-            return jsonify({'error': f'Error committing to database: {e}'}), 500
+            return jsonify({'error': f'Error processing quiz: {e}'}), 400
+    
+    try:
+        db.session.commit()
+        return jsonify({'message': 'Quizzes created successfully'}), 201
+    
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': f'Error committing to database: {e}'}), 500
 
     return abort(404)
-
-
 
 @admin_bp.route('/admin/delete-quizzes/<course_id>', methods=['DELETE'])
 @admin_required
@@ -426,3 +432,88 @@ def download_file(filename):
         return send_file(path, as_attachment=True)
     except Exception as e:
         return str(e)
+    
+
+def read_text(text):
+    lines = text.splitlines()
+    
+    course_id = None
+    topic_name = None
+    instructions = None
+    year = None
+    quizzes = []
+    
+    current_question = {}
+    current_options = []
+
+    def add_question():
+        if "question_text" in current_question and current_options:
+            current_question["topic_name"] = topic_name
+            current_question["options"] = current_options.copy()
+            quizzes.append(current_question.copy())
+            current_question.clear()
+            current_options.clear()
+
+    for line in lines:
+        line = line.strip()
+        
+        if line.startswith("Course ID:"):
+            course_id = line.split(":", 1)[1].strip()
+        
+        elif line.startswith("Topic Name:"):
+            topic_name = line.split(":", 1)[1].strip()
+        
+        elif line.startswith("Current Instruction:"):
+            instructions = line.split(":", 1)[1].strip()
+        
+        elif line.startswith("Year:"):
+            year = line.split(":", 1)[1].strip()
+        
+        elif line and not line.startswith(("Course ID:", "Topic Name:", "Topic ID:", "Year:", "Instruction:")):
+            if line.endswith("?"):
+                add_question()
+                current_question["question_text"] = line
+                current_question["instructions"] = instructions  
+            else:
+                option_parts = line.rsplit(",", 1)
+                option_text = option_parts[0].strip()
+                is_correct = option_parts[1].strip().lower() == "true" if len(option_parts) > 1 else False
+                current_options.append({
+                    "option_text": option_text,
+                    "is_correct": is_correct
+                })
+
+    add_question()
+
+    return {
+        "course_id": course_id,
+        "year": year,
+        "quizzes": quizzes
+    }
+
+
+
+@admin_bp.route('/convert-text-to-json', methods=['POST'])
+@admin_required
+def convert_text_to_json():
+    if request.method == 'POST':
+        data = request.get_json()  # Get JSON data from the request body
+        text = data.get('text')    # Extract the text from the data
+        user_id = session.get('user_id')
+        user = User.query.get_or_404(user_id)
+        try:
+            json_data = read_text(text)  # Convert text to JSON
+            directory = user.username
+            json_file_path = os.path.join(directory, 'temp_data.json')
+            if not os.path.exists(directory):
+                os.makedirs(directory)
+            with open(json_file_path, 'w') as json_file:
+                json.dump(json_data, json_file, indent=4, separators=(',', ': '))
+ 
+            create_quiz_obj_(json_file_path)
+            
+            return jsonify(json_data), 201
+        except Exception as e:
+            return jsonify({'error': f'Error processing text: {e}'}), 400
+
+    return jsonify({'error': 'Invalid request method'}), 405

@@ -1,0 +1,903 @@
+{
+    "course_id": "216d6335-074d-41a5-8ef9-39eb4b4a2150",
+    "year": "2005",
+    "quizzes": [
+        {
+            "question_text": "The most important aspect of agriculture mentioned in the passage is?",
+            "instructions": "Read the passage 1 below carefully and answer the questions that follow Farming is the most important aspect of agriculture that has attracted attention within the last few years. Agriculture has several other aspects like fishery, livestock and poultry. All these are also very important in that they have to do with the production of items which humans consume for survival. In many parts of the world today, farming has been regarded as the mainstay of the economy. Crops such cocoa, rubber and cotton have been produced in such commercial quantity that they are sold to other countries. Some countries have better comparative advantage in producing certain crops than other countries. In these other countries, there is the need to spend a lot of money on agriculture, particularly farming. Most farmers use outmoded tools. A lot of them have no place to store their crops, most of which are always destroyed by insects and pests before harvest time. All these have adverse effects on productivity. The government can do a lot to help farmers. Farmers co-operative societies can be encouraged and loans can be made available to farmers through Government institutions like banks and finance corporations. Farmers can be taught how to build good storage structures for their produce All these can help to improve the conditions of farming in these countries.",
+            "topic_name": "General Questions",
+            "options": [
+                {
+                    "option_text": "Poultry",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Fishery",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Livestock",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Farming",
+                    "is_correct": true
+                }
+            ]
+        },
+        {
+            "question_text": "Farming in many countries today is?",
+            "instructions": "Read the passage 1 below carefully and answer the questions that follow Farming is the most important aspect of agriculture that has attracted attention within the last few years. Agriculture has several other aspects like fishery, livestock and poultry. All these are also very important in that they have to do with the production of items which humans consume for survival. In many parts of the world today, farming has been regarded as the mainstay of the economy. Crops such cocoa, rubber and cotton have been produced in such commercial quantity that they are sold to other countries. Some countries have better comparative advantage in producing certain crops than other countries. In these other countries, there is the need to spend a lot of money on agriculture, particularly farming. Most farmers use outmoded tools. A lot of them have no place to store their crops, most of which are always destroyed by insects and pests before harvest time. All these have adverse effects on productivity. The government can do a lot to help farmers. Farmers co-operative societies can be encouraged and loans can be made available to farmers through Government institutions like banks and finance corporations. Farmers can be taught how to build good storage structures for their produce All these can help to improve the conditions of farming in these countries.",
+            "topic_name": "General Questions",
+            "options": [
+                {
+                    "option_text": "an alternative to poultry",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "of great assistance to the economy",
+                    "is_correct": true
+                },
+                {
+                    "option_text": "for those who are out of job",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "for the illiterates",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "question_text": "Some countries produce more and better crops than others because the farmers in the former?",
+            "instructions": "Read the passage 1 below carefully and answer the questions that follow Farming is the most important aspect of agriculture that has attracted attention within the last few years. Agriculture has several other aspects like fishery, livestock and poultry. All these are also very important in that they have to do with the production of items which humans consume for survival. In many parts of the world today, farming has been regarded as the mainstay of the economy. Crops such cocoa, rubber and cotton have been produced in such commercial quantity that they are sold to other countries. Some countries have better comparative advantage in producing certain crops than other countries. In these other countries, there is the need to spend a lot of money on agriculture, particularly farming. Most farmers use outmoded tools. A lot of them have no place to store their crops, most of which are always destroyed by insects and pests before harvest time. All these have adverse effects on productivity. The government can do a lot to help farmers. Farmers co-operative societies can be encouraged and loans can be made available to farmers through Government institutions like banks and finance corporations. Farmers can be taught how to build good storage structures for their produce All these can help to improve the conditions of farming in these countries.",
+            "topic_name": "General Questions",
+            "options": [
+                {
+                    "option_text": "are more educated",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "have greater manpower",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "have more modern equipment",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "have more fertile land",
+                    "is_correct": true
+                }
+            ]
+        },
+        {
+            "question_text": "In order to help improve the state of farming, the Government should?",
+            "instructions": "Read the passage 1 below carefully and answer the questions that follow Farming is the most important aspect of agriculture that has attracted attention within the last few years. Agriculture has several other aspects like fishery, livestock and poultry. All these are also very important in that they have to do with the production of items which humans consume for survival. In many parts of the world today, farming has been regarded as the mainstay of the economy. Crops such cocoa, rubber and cotton have been produced in such commercial quantity that they are sold to other countries. Some countries have better comparative advantage in producing certain crops than other countries. In these other countries, there is the need to spend a lot of money on agriculture, particularly farming. Most farmers use outmoded tools. A lot of them have no place to store their crops, most of which are always destroyed by insects and pests before harvest time. All these have adverse effects on productivity. The government can do a lot to help farmers. Farmers co-operative societies can be encouraged and loans can be made available to farmers through Government institutions like banks and finance corporations. Farmers can be taught how to build good storage structures for their produce All these can help to improve the conditions of farming in these countries.",
+            "topic_name": "General Questions",
+            "options": [
+                {
+                    "option_text": "give all farmers enough money to work with",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "sell enough fertilizers to all farmers",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "find ways of financing and modernizing the farming system",
+                    "is_correct": true
+                },
+                {
+                    "option_text": "help farmers with the storage of their crops",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "question_text": "A lot of crops harvested are wasted because farmers?",
+            "instructions": "Read the passage 1 below carefully and answer the questions that follow Farming is the most important aspect of agriculture that has attracted attention within the last few years. Agriculture has several other aspects like fishery, livestock and poultry. All these are also very important in that they have to do with the production of items which humans consume for survival. In many parts of the world today, farming has been regarded as the mainstay of the economy. Crops such cocoa, rubber and cotton have been produced in such commercial quantity that they are sold to other countries. Some countries have better comparative advantage in producing certain crops than other countries. In these other countries, there is the need to spend a lot of money on agriculture, particularly farming. Most farmers use outmoded tools. A lot of them have no place to store their crops, most of which are always destroyed by insects and pests before harvest time. All these have adverse effects on productivity. The government can do a lot to help farmers. Farmers co-operative societies can be encouraged and loans can be made available to farmers through Government institutions like banks and finance corporations. Farmers can be taught how to build good storage structures for their produce All these can help to improve the conditions of farming in these countries.",
+            "topic_name": "General Questions",
+            "options": [
+                {
+                    "option_text": "allow insects and pests to destroy their crops",
+                    "is_correct": true
+                },
+                {
+                    "option_text": "do not have enough money to invest in harvesters",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "do not have storage facilities",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "harvest too much at a time",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "question_text": "The author believes that electronic recording is?",
+            "instructions": "Read the passage below carefully and answer the questions that follow. Each question carries 2 marks PASSAGE II: Developments in electronic science have transformed the art of record keeping in the modern age. Traditionally, records of events were kept only in people's minds. It depended very much on the retentive power of the human memory. This was extremely dangerous as people either forget events wholly or in part, or deliberately falsified details to suit their various interests. Interminable arguments were thus the order of the day. Even writing, which replaced mental recording, was not entirely free from these shortcomings as untruths could be written as true records either willingly or inadvertently. With the advent of electronic memory, however, these dangers have been largely overcome. Recordings on audio or video cassettes now show not only what happened but also who did or said what, including how and when.",
+            "topic_name": "Record Keeping",
+            "options": [
+                {
+                    "option_text": "superior only to mental recording",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "inferior to both mental recording and writing",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "superior to both mental recording and writing",
+                    "is_correct": true
+                },
+                {
+                    "option_text": "inferior to only writing",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "question_text": "The writer believes that the art of record keeping has?",
+            "instructions": "Read the passage below carefully and answer the questions that follow. Each question carries 2 marks PASSAGE II: Developments in electronic science have transformed the art of record keeping in the modern age. Traditionally, records of events were kept only in people's minds. It depended very much on the retentive power of the human memory. This was extremely dangerous as people either forget events wholly or in part, or deliberately falsified details to suit their various interests. Interminable arguments were thus the order of the day. Even writing, which replaced mental recording, was not entirely free from these shortcomings as untruths could be written as true records either willingly or inadvertently. With the advent of electronic memory, however, these dangers have been largely overcome. Recordings on audio or video cassettes now show not only what happened but also who did or said what, including how and when.",
+            "topic_name": "Record Keeping",
+            "options": [
+                {
+                    "option_text": "improved over the years",
+                    "is_correct": true
+                },
+                {
+                    "option_text": "endangered the art of writing",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "changed human memory",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "overcome all the problems facing humans",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "question_text": "How many stages of development did the writer mention while discussing the art of record keeping?",
+            "instructions": "Read the passage below carefully and answer the questions that follow. Each question carries 2 marks PASSAGE II: Developments in electronic science have transformed the art of record keeping in the modern age. Traditionally, records of events were kept only in people's minds. It depended very much on the retentive power of the human memory. This was extremely dangerous as people either forget events wholly or in part, or deliberately falsified details to suit their various interests. Interminable arguments were thus the order of the day. Even writing, which replaced mental recording, was not entirely free from these shortcomings as untruths could be written as true records either willingly or inadvertently. With the advent of electronic memory, however, these dangers have been largely overcome. Recordings on audio or video cassettes now show not only what happened but also who did or said what, including how and when.",
+            "topic_name": "Record Keeping",
+            "options": [
+                {
+                    "option_text": "Two",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Three",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Four",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Five",
+                    "is_correct": true
+                }
+            ]
+        },
+        {
+            "question_text": "According to the author, human memory is unreliable because people?",
+            "instructions": "Read the passage below carefully and answer the questions that follow. Each question carries 2 marks PASSAGE II: Developments in electronic science have transformed the art of record keeping in the modern age. Traditionally, records of events were kept only in people's minds. It depended very much on the retentive power of the human memory. This was extremely dangerous as people either forget events wholly or in part, or deliberately falsified details to suit their various interests. Interminable arguments were thus the order of the day. Even writing, which replaced mental recording, was not entirely free from these shortcomings as untruths could be written as true records either willingly or inadvertently. With the advent of electronic memory, however, these dangers have been largely overcome. Recordings on audio or video cassettes now show not only what happened but also who did or said what, including how and when.",
+            "topic_name": "Record Keeping",
+            "options": [
+                {
+                    "option_text": "die and we forget what they said",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "forget events or tell lies",
+                    "is_correct": true
+                },
+                {
+                    "option_text": "do not always know when events happen",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "do not always know who did what and when",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "question_text": "From the passage, we gather that writing is almost?",
+            "instructions": "Read the passage below carefully and answer the questions that follow. Each question carries 2 marks PASSAGE II: Developments in electronic science have transformed the art of record keeping in the modern age. Traditionally, records of events were kept only in people's minds. It depended very much on the retentive power of the human memory. This was extremely dangerous as people either forget events wholly or in part, or deliberately falsified details to suit their various interests. Interminable arguments were thus the order of the day. Even writing, which replaced mental recording, was not entirely free from these shortcomings as untruths could be written as true records either willingly or inadvertently. With the advent of electronic memory, however, these dangers have been largely overcome. Recordings on audio or video cassettes now show not only what happened but also who did or said what, including how and when.",
+            "topic_name": "Record Keeping",
+            "options": [
+                {
+                    "option_text": "as unreliable as human memory",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "as reliable as electronic memory",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "more reliable than electronic memory",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "not to be compared to any other recording system",
+                    "is_correct": true
+                }
+            ]
+        },
+        {
+            "question_text": "Find the option that is differently stressed.?",
+            "instructions": "In each of questions 11 to 13, identify the option that has a STRESS PATTERN different from the rest?",
+            "topic_name": "Stress Patterns",
+            "options": [
+                {
+                    "option_text": "Factory",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Distinctive",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Regular",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "National",
+                    "is_correct": true
+                }
+            ]
+        },
+        {
+            "question_text": "Find the option that is differently stressed.?",
+            "instructions": "In each of questions 11 to 13, identify the option that has a STRESS PATTERN different from the rest?",
+            "topic_name": "Stress Patterns",
+            "options": [
+                {
+                    "option_text": "Interpret",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Period",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Destructive",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Forever",
+                    "is_correct": true
+                }
+            ]
+        },
+        {
+            "question_text": "Find the option that is differently stressed.?",
+            "instructions": "In each of questions 11 to 13, identify the option that has a STRESS PATTERN different from the rest?",
+            "topic_name": "Stress Patterns",
+            "options": [
+                {
+                    "option_text": "Unless",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Enact",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Useless",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Combine",
+                    "is_correct": true
+                }
+            ]
+        },
+        {
+            "question_text": "The singer's popularity is beginning to decline.?",
+            "instructions": "In each of question 14 to 26, choose the option NEAREST IN MEANING to the word(s) or phrase(s) underlined",
+            "topic_name": "Vocabulary",
+            "options": [
+                {
+                    "option_text": "Slope",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Disappear",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Wane",
+                    "is_correct": true
+                },
+                {
+                    "option_text": "Darken",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "question_text": "Ade is at the verge of nervous breakdown so he must be very careful.?",
+            "instructions": "In each of question 14 to 26, choose the option NEAREST IN MEANING to the word(s) or phrase(s) underlined",
+            "topic_name": "Vocabulary",
+            "options": [
+                {
+                    "option_text": "Brink",
+                    "is_correct": true
+                },
+                {
+                    "option_text": "Margin",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Avenue",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Fringe",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "question_text": "An open car gives no protection against the elements.?",
+            "instructions": "In each of question 14 to 26, choose the option NEAREST IN MEANING to the word(s) or phrase(s) underlined",
+            "topic_name": "Vocabulary",
+            "options": [
+                {
+                    "option_text": "Weather",
+                    "is_correct": true
+                },
+                {
+                    "option_text": "Atoms",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Dust",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Atmosphere",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "question_text": "He has never been a good mediator even in minor family disputes because, in most cases, his views are jaundiced.?",
+            "instructions": "In each of question 14 to 26, choose the option NEAREST IN MEANING to the word(s) or phrase(s) underlined",
+            "topic_name": "Vocabulary",
+            "options": [
+                {
+                    "option_text": "Coloured",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Prejudiced",
+                    "is_correct": true
+                },
+                {
+                    "option_text": "Suspicious",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Unscrupulous",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "question_text": "In some parts of our society, people are ostracized purely on the basis of their parentage.?",
+            "instructions": "In each of question 14 to 26, choose the option NEAREST IN MEANING to the word(s) or phrase(s) underlined",
+            "topic_name": "Vocabulary",
+            "options": [
+                {
+                    "option_text": "Hated",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Disrespected",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Locked up",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Shut off from others",
+                    "is_correct": true
+                }
+            ]
+        },
+        {
+            "question_text": "My friend will hate his uncle forever because he left him in the lurch at his hour of need.?",
+            "instructions": "In each of question 14 to 26, choose the option NEAREST IN MEANING to the word(s) or phrase(s) underlined",
+            "topic_name": "Vocabulary",
+            "options": [
+                {
+                    "option_text": "Abandoned him",
+                    "is_correct": true
+                },
+                {
+                    "option_text": "Punished",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Disrespected him",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Despised him",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "question_text": "All the efforts made to settle the quarrel were futile?",
+            "instructions": "In each of question 14 to 26, choose the option NEAREST IN MEANING to the word(s) or phrase(s) underlined",
+            "topic_name": "Vocabulary",
+            "options": [
+                {
+                    "option_text": "Successful",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Fruitless",
+                    "is_correct": true
+                },
+                {
+                    "option_text": "Wicked",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Reasonable",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "question_text": "Kelechi hardly ever falls sick?",
+            "instructions": "In each of question 14 to 26, choose the option NEAREST IN MEANING to the word(s) or phrase(s) underlined",
+            "topic_name": "Vocabulary",
+            "options": [
+                {
+                    "option_text": "Most often",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Very seldom",
+                    "is_correct": true
+                },
+                {
+                    "option_text": "Frequently",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Sometimes",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "question_text": "It is sheer fantasy to believe that there could never be a miscalculation by any nation that has atomic weapon?",
+            "instructions": "In each of question 14 to 26, choose the option NEAREST IN MEANING to the word(s) or phrase(s) underlined",
+            "topic_name": "Vocabulary",
+            "options": [
+                {
+                    "option_text": "Dream",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Hope",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Nonsense",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Joke",
+                    "is_correct": true
+                }
+            ]
+        },
+        {
+            "question_text": "The ingenious scheme of the robber broke down because of the efficiency of the police officer.?",
+            "instructions": "In each of question 14 to 26, choose the option NEAREST IN MEANING to the word(s) or phrase(s) underlined",
+            "topic_name": "Vocabulary",
+            "options": [
+                {
+                    "option_text": "Suspicious",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Ambitious",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Deceitful",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Clever",
+                    "is_correct": true
+                }
+            ]
+        },
+        {
+            "question_text": "Our town is so small that we are always meeting our school master accidentally?",
+            "instructions": "In each of question 14 to 26, choose the option NEAREST IN MEANING to the word(s) or phrase(s) underlined",
+            "topic_name": "Vocabulary",
+            "options": [
+                {
+                    "option_text": "Falling into",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Finding",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Running into",
+                    "is_correct": true
+                },
+                {
+                    "option_text": "Stepping on",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "question_text": "One has to score not less than 200 marks in the UME together with meeting other conditions to be qualified to write the UNIBEN post UME screening test.?",
+            "instructions": "In each of question 14 to 26, choose the option NEAREST IN MEANING to the word(s) or phrase(s) underlined",
+            "topic_name": "Vocabulary",
+            "options": [
+                {
+                    "option_text": "To be exempted",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "To become a candidate for",
+                    "is_correct": true
+                },
+                {
+                    "option_text": "To be considered",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "To seek permission for",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "question_text": "He went through fire before he qualified as a doctor?",
+            "instructions": "In each of question 14 to 26, choose the option NEAREST IN MEANING to the word(s) or phrase(s) underlined",
+            "topic_name": "Vocabulary",
+            "options": [
+                {
+                    "option_text": "A fire accident",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "A hilarious experience",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Some purification",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Some \"tough\" time",
+                    "is_correct": true
+                }
+            ]
+        },
+        {
+            "question_text": "The chairman's verdict redressed the injustice meted out by the secretary?",
+            "instructions": "In questions 27 to 40, choose the option opposite in meaning to the word underlined",
+            "topic_name": "Vocabulary",
+            "options": [
+                {
+                    "option_text": "Corrected",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Restored",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Aggravated",
+                    "is_correct": true
+                },
+                {
+                    "option_text": "Addressed",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "question_text": "Uche could not travel last December because of the severity of the harmattan?",
+            "instructions": "In questions 27 to 40, choose the option opposite in meaning to the word underlined",
+            "topic_name": "Vocabulary",
+            "options": [
+                {
+                    "option_text": "Cold",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Mildness",
+                    "is_correct": true
+                },
+                {
+                    "option_text": "Warmth",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Moderation",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "question_text": "Travelling in the night can be an ordeal?",
+            "instructions": "In questions 27 to 40, choose the option opposite in meaning to the word underlined",
+            "topic_name": "Vocabulary",
+            "options": [
+                {
+                    "option_text": "A great exercise",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "A great fear",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "A great endurance",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "A great pleasure",
+                    "is_correct": true
+                }
+            ]
+        },
+        {
+            "question_text": "Bola is very provocative in her style of dressing?",
+            "instructions": "In questions 27 to 40, choose the option opposite in meaning to the word underlined",
+            "topic_name": "Vocabulary",
+            "options": [
+                {
+                    "option_text": "Modest",
+                    "is_correct": true
+                },
+                {
+                    "option_text": "Happy",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Angry",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Beautiful",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "question_text": "Joke thought that her father was very callous!?",
+            "instructions": "In questions 27 to 40, choose the option opposite in meaning to the word underlined",
+            "topic_name": "Vocabulary",
+            "options": [
+                {
+                    "option_text": "Indifferent",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Compassionate",
+                    "is_correct": true
+                },
+                {
+                    "option_text": "Wicked",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Careless",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "question_text": "The Lions of Cameroon is really an indomitable team?",
+            "instructions": "In questions 27 to 40, choose the option opposite in meaning to the word underlined",
+            "topic_name": "Vocabulary",
+            "options": [
+                {
+                    "option_text": "A powerful",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "A compassionate",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "A weak",
+                    "is_correct": true
+                },
+                {
+                    "option_text": "An unyielding team",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "question_text": "To almost everyone in the little village, Ada's behavior was almost odious?",
+            "instructions": "In questions 27 to 40, choose the option opposite in meaning to the word underlined",
+            "topic_name": "Vocabulary",
+            "options": [
+                {
+                    "option_text": "Repulsive",
+                    "is_correct": true
+                },
+                {
+                    "option_text": "Difficult",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Interesting",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Charming",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "question_text": "Aduma was vociferous during the meeting of the congregation that he succeeded in incurring the wrath of the chairman?",
+            "instructions": "In questions 27 to 40, choose the option opposite in meaning to the word underlined",
+            "topic_name": "Vocabulary",
+            "options": [
+                {
+                    "option_text": "Anger",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Admiration",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Displeasure",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Sympathy",
+                    "is_correct": true
+                }
+            ]
+        },
+        {
+            "question_text": "It was an inopportune time for you to make that suggestion.?",
+            "instructions": "In questions 27 to 40, choose the option opposite in meaning to the word underlined",
+            "topic_name": "Vocabulary",
+            "options": [
+                {
+                    "option_text": "Ideal",
+                    "is_correct": true
+                },
+                {
+                    "option_text": "A wrong",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Exact",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "A sad",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "question_text": "He deviated too much to the peripheral aspects.?",
+            "instructions": "In questions 27 to 40, choose the option opposite in meaning to the word underlined",
+            "topic_name": "Vocabulary",
+            "options": [
+                {
+                    "option_text": "Unimportant",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Superficial",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Minor",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Main",
+                    "is_correct": true
+                }
+            ]
+        },
+        {
+            "question_text": "The climate of Nigeria is an enervating one.?",
+            "instructions": "In questions 27 to 40, choose the option opposite in meaning to the word underlined",
+            "topic_name": "Vocabulary",
+            "options": [
+                {
+                    "option_text": "Weakening",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Energy sapping",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Invigorating",
+                    "is_correct": true
+                },
+                {
+                    "option_text": "Sluggish",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "question_text": "The girl's idiosyncrasy was a passion for bread and butter?",
+            "instructions": "In questions 27 to 40, choose the option opposite in meaning to the word underlined",
+            "topic_name": "Vocabulary",
+            "options": [
+                {
+                    "option_text": "Stupid outburst",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "General tendency",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Singular characteristics",
+                    "is_correct": true
+                },
+                {
+                    "option_text": "Occupational calling",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "question_text": "Those were the days of the fallacy that some languages are primitive while others are not.?",
+            "instructions": "In questions 27 to 40, choose the option opposite in meaning to the word underlined",
+            "topic_name": "Vocabulary",
+            "options": [
+                {
+                    "option_text": "Argument",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Exercise",
+                    "is_correct": false
+                },
+                {
+                    "option_text": "Misconception",
+                    "is_correct": true
+                },
+                {
+                    "option_text": "Truth",
+                    "is_correct": false
+                }
+            ]
+        }
+    ]
+}
