@@ -1,0 +1,30 @@
+{% extends 'account/base.html' %}
+{% block title %} Maintenance - Learnify AI {% endblock %}
+{% block content %}
+
+    <div class="container-xxl">
+      <div class="maintenance-wrapper container-p-y">
+        <div class="maintenance-inner">
+          <!-- Maintenance -->
+          <div class="card">
+            <div class="card-body">
+              <!-- Logo -->
+              <div class="app-brand justify-content-center">
+                <a href="#" class="app-brand-link gap-2">
+                  <span class="app-brand-logo demo">
+                    <img width="50" height="50" src="{{ url_for('static', filename='assets/img/favicon/logo.png') }}" alt="">
+                  </span>
+                  <!-- <span class="app-brand-text demo text-body fw-bolder">Learnify AI</span> -->
+                </a>
+              </div>
+              <!-- /Logo -->
+              <h4 class="mb-2 text-center">Learnify AI is under maintenance</h4>
+              <p class="text-center mb-4">We're currently updating our system. Please check back later.</p>
+            </div>
+          </div>
+          <!-- /Maintenance -->
+        </div>
+      </div>
+    </div>
+
+{% endblock %}

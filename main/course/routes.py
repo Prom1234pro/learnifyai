@@ -108,6 +108,19 @@ def create_course(group_id):
 
     return abort(404)
 
+@croute_bp.route('/user/delete-course/<string:course_id>', methods=['DELETE'])
+@user_required
+def delete_course(course_id):
+    course = Course.query.get_or_404(course_id)
+    
+    
+    Performance.query.filter_by(course_id=course.id).delete()
+
+    db.session.delete(course)
+    db.session.commit()
+    
+    return jsonify({"message": "Course deleted successfully"})
+
 
 @croute_bp.route('/performances', methods=['GET'])
 @user_required

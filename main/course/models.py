@@ -20,6 +20,7 @@ class Course(db.Model):
     description = db.Column(db.String(125))
     progress = db.Column(db.Integer, default=0)
     url = db.Column(db.String(125))
+    year = db.Column(db.String(125))
     group_id = db.Column(db.String(36), db.ForeignKey('group.id'), nullable=False)
     group = db.relationship('Group', backref='courses', lazy=True)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)

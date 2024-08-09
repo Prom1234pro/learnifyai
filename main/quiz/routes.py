@@ -8,7 +8,7 @@ from sqlalchemy.sql import func
 from main.authentication.models import User
 from main.utils import user_required
 
-from .models import Quiz, Topic, db
+from .models import Quiz, QuizQuestion, Topic, db
 from main.course.models import Course, Performance
 from datetime import timedelta
 # from ... import bcrypt 
@@ -107,7 +107,35 @@ def course_quiz(course_id):
     user_id = session.get('user_id')
     user = User.query.get_or_404(user_id)
 
-    return render_template('pages/quiz_test.html', course=course, user=user, enumerate=enumerate, len=len)
+    # Get query parameters
+    years = request.args.get('years')
+    questions_limit = request.args.get('questions', type=int, default=0)
+
+    # Parse years if provided
+    year_list = years.split(',') if years else []
+
+    # Filter quizzes by course
+
+    # Filter questions by course and year
+    quiz_questions_query = QuizQuestion.query.filter_by(course_id=course_id)
+    
+    if year_list:
+        quiz_questions_query = quiz_questions_query.filter(QuizQuestion.year.in_(year_list))
+    
+    if questions_limit > 0:
+        quiz_questions_query = quiz_questions_query.limit(questions_limit)
+    
+    quiz_questions = quiz_questions_query.all()
+
+    return render_template(
+        'pages/quiz_test.html',
+        course=course,
+        user=user,
+        quizzes=[],
+        quiz_questions=quiz_questions,
+        enumerate=enumerate,
+        len=len
+    )
 
 @qroute_bp.route('/theory-quiz/<string:course_id>')
 @user_required

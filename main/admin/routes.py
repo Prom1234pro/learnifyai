@@ -64,6 +64,7 @@ def create_admin():
 
 @admin_bp.route('/admin-login-to-system', methods=['POST'])
 def admin_login():
+    print(request.method)
     if request.method == "POST":
         data = request.get_json()
         email = data.get('email')
@@ -88,7 +89,7 @@ def admin_login():
                 return jsonify({"error": "Invalid credentials"}), 401
         else:
             return jsonify({"error": "Invalid credentials"}), 401
-    return abort(404)
+    return "hi me"
 
 @admin_bp.route('/make_admin/<user_id>', methods=['POST'])
 @admin_required
@@ -249,7 +250,7 @@ def create_quiz_obj():
 def create_quiz_obj_():
     if request.method == 'POST':
         data = request.json  # Get JSON data from the request body
-
+        print("Something")
         # Check for required fields in the input data
         if 'quizzes' not in data or not isinstance(data['quizzes'], list):
             return jsonify({'error': 'No quizzes data provided or invalid format'}), 400
@@ -307,6 +308,48 @@ def create_quiz_obj_():
             return jsonify({'error': f'Error committing to database: {e}'}), 500
 
     return abort(404)
+
+
+
+@admin_bp.route('/admin/delete-quizzes/<course_id>', methods=['DELETE'])
+@admin_required
+def delete_quizzes_by_course(course_id):
+    try:
+        # Find all quizzes related to the course
+        quizzes = Quiz.query.filter_by(course_id=course_id).all()
+        if not quizzes:
+            return jsonify({'message': 'No quizzes found for the provided course ID'}), 404
+
+        # Delete all quizzes related to the course
+        for quiz in quizzes:
+            db.session.delete(quiz)
+        
+        db.session.commit()
+        return jsonify({'message': 'All quizzes deleted successfully'}), 200
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': f'An error occurred: {e}'}), 500
+
+@admin_bp.route('/admin/delete-quiz-questions/<course_id>', methods=['DELETE'])
+@admin_required
+def delete_quiz_questions_by_course(course_id):
+    try:
+        # Find all quiz questions related to the course
+        quiz_questions = QuizQuestion.query.filter_by(course_id=course_id).all()
+        if not quiz_questions:
+            return jsonify({'message': 'No quiz questions found for the provided course ID'}), 404
+
+        # Delete all quiz questions related to the course
+        for quiz_question in quiz_questions:
+            db.session.delete(quiz_question)
+        
+        db.session.commit()
+        return jsonify({'message': 'All quiz questions deleted successfully'}), 200
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': f'An error occurred: {e}'}), 500
 
 
 @admin_bp.route('/admin/create-quiz/gamma', methods=['POST'])

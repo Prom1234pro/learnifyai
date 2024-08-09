@@ -36,6 +36,7 @@ def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         user_id = session.get('user_id')
+        print("always here")
         if not user_id:
             return abort(404)
         

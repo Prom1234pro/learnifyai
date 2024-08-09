@@ -201,6 +201,7 @@ def onboarding():
         
         return redirect(f'/verification-email-sent?email={user.email}')
     
+    user = User.query.get(session.get('onboarding_id'))
     return render_template('account/onboarding.html', user=user)
 
 

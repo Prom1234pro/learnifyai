@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monaco Editor with JSON Upload</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.43.0/min/vs/editor/editor.main.css">
+    <style>
+        #container {
+            height: 400px; /* Set the height of the editor */
+            border: 1px solid #ccc;
+        }
+        #toolbar {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="toolbar">
+        <label for="fileType">Choose file type:</label>
+        <select id="fileType">
+            <option value="txt">Text (.txt)</option>
+            <option value="json" selected>JSON (.json)</option>
+            <option value="js">JavaScript (.js)</option>
+        </select>
+        <button id="saveBtn" disabled>Save</button>
+        <button id="uploadBtn">Create</button>
+    </div>
+    <div id="container"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.43.0/min/vs/loader.js"></script>
+    <script>
+        // Configure the Monaco Editor loader
+        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.43.0/min/vs' } });
+
+        // Load the Monaco Editor
+        require(['vs/editor/editor.main'], function() {
+            const editor = monaco.editor.create(document.getElementById('container'), {
+                value: '', // Initialize with empty content
+                language: 'plaintext'
+            });
+
+            // Function to update language based on file type
+            function updateLanguage() {
+                const fileType = document.getElementById('fileType').value;
+                let language;
+                switch (fileType) {
+                    case 'json':
+                        language = 'json';
+                        break;
+                    case 'js':
+                        language = 'javascript';
+                        break;
+                    default:
+                        language = 'plaintext';
+                        break;
+                }
+                editor.getModel().setMode(language);
+            }
+
+            // Event listener to update language when file type changes
+            document.getElementById('fileType').addEventListener('change', updateLanguage);
+
+            // Save button functionality
+            document.getElementById('saveBtn').addEventListener('click', function() {
+                const fileType = document.getElementById('fileType').value;
+                const fileName = `file.${fileType}`;
+                const code = editor.getValue();
+
+                const blob = new Blob([code], { type: fileType === 'json' ? 'application/json' : 'text/plain' });
+                const url = URL.createObjectURL(blob);
+
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = fileName;
+                a.click();
+
+                URL.revokeObjectURL(url);
+            });
+
+            // Upload button functionality
+            document.getElementById('uploadBtn').addEventListener('click', function() {
+                const text = editor.getValue();
+                
+                fetch('/convert-text-to-json', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ text })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(`Error: ${data.error}`);
+                    } else {
+                        // Do something with the JSON data (e.g., display it or save it)
+                        console.log('Converted JSON:', data);
+                        alert('Text converted to JSON successfully!');
+                    }
+                })
+                .catch(error => {
+                    alert(`Network error: ${error}`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
