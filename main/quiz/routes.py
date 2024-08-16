@@ -41,7 +41,6 @@ def quiz(user_id, course_id):
 
     performance = Performance.query.filter_by(user_id=user_id, course_id=course_id).first()
     quizzes = quizzes.all()
-    # print(quizzes)
     quizzes_data = [
         {
             "question_text": quiz.question_text,
@@ -109,7 +108,7 @@ def course_quiz(course_id):
 
     # Get query parameters
     years = request.args.get('years')
-    questions_limit = request.args.get('questions', type=int, default=0)
+    questions_limit = request.args.get('questions', type=int, default=10)
 
     # Parse years if provided
     year_list = years.split(',') if years else []
@@ -134,7 +133,9 @@ def course_quiz(course_id):
         quizzes=[],
         quiz_questions=quiz_questions,
         enumerate=enumerate,
-        len=len
+        len=len,
+        questions_limit=questions_limit,
+        years=years
     )
 
 @qroute_bp.route('/theory-quiz/<string:course_id>')
@@ -161,8 +162,26 @@ def submit_quiz(course_id):
     course = Course.query.get_or_404(course_id)
     user = User.query.get_or_404(session.get('user_id'))
     user_answers = []
+    years = request.args.get('years')
+    questions_limit = request.args.get('questions', type=int, default=10)
+
+    # Parse years if provided
+    year_list = years.split(',') if years else []
+
+    # Filter quizzes by course
+
+    # Filter questions by course and year
+    quiz_questions_query = QuizQuestion.query.filter_by(course_id=course_id)
+    
+    if year_list:
+        quiz_questions_query = quiz_questions_query.filter(QuizQuestion.year.in_(year_list))
+    
+    if questions_limit > 0:
+        quiz_questions_query = quiz_questions_query.limit(questions_limit)
+    
+    quiz_questions = quiz_questions_query.all()
     score = 0
-    for index, quiz in enumerate(course.quizzes):
+    for index, quiz in enumerate(quiz_questions):
         answer = request.form.get(f'question{index}')
         user_answers.append(answer)
         if quiz.answer == answer:
@@ -185,4 +204,4 @@ def submit_quiz(course_id):
         
         db.session.commit()
     
-    return render_template('pages/quiz_answers.html', enumerate=enumerate, len=len, user=user, course=course, user_answers=user_answers)
+    return render_template('pages/quiz_answers.html', enumerate=enumerate, len=len, user=user, course=course, quizzes=quiz_questions, user_answers=user_answers)

@@ -1,11 +1,11 @@
 import json
 import os.path
 import uuid
-from flask import Blueprint, request, jsonify, send_file, url_for, abort, session
+from flask import Blueprint, render_template, request, jsonify, send_file, url_for, abort, session
 import requests
 from main.authentication.models import User, db
 from main.course.models import Course
-from main.utils import admin_required, user_required
+from main.utils import admin_required, user_required, validate_format
 from flask_mail import Message
 from main import bcrypt, mail
 
@@ -67,7 +67,6 @@ def create_admin():
 
 @admin_bp.route('/admin-login-to-system', methods=['POST'])
 def admin_login():
-    print(request.method)
     if request.method == "POST":
         data = request.get_json()
         email = data.get('email')
@@ -258,9 +257,6 @@ def create_quiz_obj_(path):
     except json.JSONDecodeError:
         return jsonify({'error': 'Error decoding JSON file'}), 400
     
-    print(data)
-    
-    # Check for required fields in the input data
     if 'quizzes' not in data or not isinstance(data['quizzes'], list):
         return jsonify({'error': 'No quizzes data provided or invalid format'}), 400
     
@@ -502,6 +498,10 @@ def convert_text_to_json():
         user_id = session.get('user_id')
         user = User.query.get_or_404(user_id)
         try:
+            is_valid, message = validate_format(text)
+            if not is_valid:
+                return jsonify({'error': message}), 400
+            
             json_data = read_text(text)  # Convert text to JSON
             directory = user.username
             json_file_path = os.path.join(directory, 'temp_data.json')
@@ -517,3 +517,29 @@ def convert_text_to_json():
             return jsonify({'error': f'Error processing text: {e}'}), 400
 
     return jsonify({'error': 'Invalid request method'}), 405
+
+
+@admin_bp.route('/preview-json', methods=['POST'])
+@admin_required
+def preview_json():
+    if request.method == 'POST':
+        data = request.get_json()  # Extract JSON data from the request body
+        text = data.get('text')    # Retrieve the text field from the data
+        user_id = session.get('user_id')
+        user = User.query.get_or_404(user_id)
+        try:
+            # Validate the format of the provided text
+            is_valid, message = validate_format(text)
+            if not is_valid:
+                return jsonify({'error': message}), 400
+            
+            # Convert the validated text to JSON
+            json_data = read_text(text)
+            html_content = render_template('pages/preview.html', user=user, data=json_data, enumerate=enumerate)
+            
+            # Return the HTML content as a JSON response
+            return jsonify({'html': html_content}), 200
+        
+        except Exception as e:
+            # Return an error message if an exception occurs
+            return jsonify({'error': f'Error processing text: {e}'}), 400

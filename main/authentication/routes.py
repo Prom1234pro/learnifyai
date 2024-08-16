@@ -401,19 +401,6 @@ def generate_referral_link():
     referral_link = url_for('auth.create_user', referrer=user.username, _external=True)
     return render_template('pages/referral_link.html', referral_link=referral_link)
 
-@a_route_bp.route('/user/update/<user_id>', methods=['PUT'])
-@user_required
-def update_user(user_id):
-    user = User.query.get_or_404(user_id)
-    data = request.get_json()
-    user.username = data.get('username', user.username)
-    user.email = data.get('email', user.email)
-    user.is_admin = data.get('is_admin', user.is_admin)
-    if 'password' in data:
-        user.password = bcrypt.generate_password_hash(data['password']).decode('utf-8')  # Make sure to hash the password in real implementation
-    db.session.commit()
-    return jsonify({'message': 'User updated successfully'}), 200
-
 
 @app.route('/affiliate-register')
 def affiliate_register():

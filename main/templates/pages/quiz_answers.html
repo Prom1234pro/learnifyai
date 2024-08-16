@@ -1,5 +1,5 @@
 {% extends 'pages/base.html' %}
-{% block heading %}Quiz Answers{% endblock %}
+{% block heading %}{{ course.course_name }}{% endblock %}
 
 {% block style %}
 <style>
@@ -44,42 +44,42 @@
 </style>
 {% endblock %}
 {% block content %}
-<h5 class="mt-4">Quiz Results</h5>
+<h5 class="mt-4">{{ course._for}}</h5>
 <div class="row">
     <div class="col-lg-8 mb-4">
-      <small class="text-light fw-semibold">Quiz Title</small>
+      <small class="text-light fw-semibold">English</small>
       <div class="accordion mt-3" id="accordionExample">
-        <div class="card accordion-item">
-          <h2 class="accordion-header" id="headingTwo">
-            <button
-              type="button"
-              class="accordion-button collapsed"
-              data-bs-toggle="collapse"
-              data-bs-target="#accordionTwo"
-              aria-expanded="false"
-              aria-controls="accordionTwo"
+        {% for index, quiz in enumerate(quizzes) %}
+        <div class="card accordion-item" id="instruction-card-{{ index }}" style="display: none;">
+            <h2 class="accordion-header" id="heading{{ index }}">
+                <button
+                  type="button"
+                  class="accordion-button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#accordion{{ index }}"
+                  aria-expanded="true"
+                  aria-controls="accordion{{ index }}"
+                >
+                  Instructions for Question {{ index + 1 }}
+                </button>
+            </h2>
+            <div
+              id="accordion{{ index }}"
+              class="accordion-collapse collapse show"
+              aria-labelledby="heading{{ index }}"
+              data-bs-parent="#accordionExample"
             >
-              Instructions
-            </button>
-          </h2>
-          <div
-            id="accordionTwo"
-            class="accordion-collapse collapse"
-            aria-labelledby="headingTwo"
-            data-bs-parent="#accordionExample"
-          >
-            <div class="accordion-body">
-              Dessert ice cream donut oat cake jelly-o pie sugar plum cheesecake. Bear claw dragée oat cake
-              dragée ice cream halvah tootsie roll. Danish cake oat cake pie macaroon tart donut gummies.
-              Jelly beans candy canes carrot cake. Fruitcake chocolate chupa chups.
+                <div class="accordion-body">
+                    {{ quiz.instructions }}
+                </div>
             </div>
-          </div>
         </div>
-      </div>
+        {% endfor %}
+    </div>
     </div>
 
     <div class="col-12 col-lg-8 mb-4">
-        {% for index, quiz in enumerate(course.quizzes) %}
+        {% for index, quiz in enumerate(quizzes) %}
         <div class="card mb-6 quiz-question" id="question-{{ index }}">
             <div class="card-body">
                 <h6>Question {{ index + 1 }}</h6>
@@ -112,8 +112,8 @@
             <div class="card">
                 <div class="card-body">
                     <div class="flex-container">
-                        {% for i in range(1, len(course.quizzes) + 1) %}
-                        <button id="btn-{{ i-1 }}" class="btn flex-btn {% if user_answers[i-1] == course.quizzes[i-1]['answer'] %}correct-answer{% else %}incorrect-answer{% endif %}" onclick="showQuestion({{ i - 1 }})">{{ i }}</button>
+                        {% for i, quiz in  enumerate(quizzes)  %}
+                        <button id="btn-{{ i }}" class="btn flex-btn {% if user_answers[i] == quiz['answer'] %}correct-answer{% else %}incorrect-answer{% endif %}" onclick="showQuestion({{ i  }})">{{ i + 1 }}</button>
                         {% endfor %}
                     </div>
                 </div>
@@ -123,32 +123,37 @@
 </div>
 <script>
     let currentQuestion = 0;
-    const totalQuestions = {{ course.quizzes | length }};
+    const totalQuestions = {{ (course.quizzes + course.quiz_questions) | length }};
 
     document.addEventListener('DOMContentLoaded', (event) => {
-        showQuestion(currentQuestion);
+        if (totalQuestions > 0) {
+            showQuestion(currentQuestion);
 
-        document.getElementById('nextButton').addEventListener('click', () => {
-            if (currentQuestion < totalQuestions - 1) {
-                currentQuestion++;
-                showQuestion(currentQuestion);
-            }
-        });
+            document.getElementById('nextButton').addEventListener('click', () => {
+                if (currentQuestion < totalQuestions - 1) {
+                    currentQuestion++;
+                    showQuestion(currentQuestion);
+                }
+            });
 
-        document.getElementById('previousButton').addEventListener('click', () => {
-            if (currentQuestion > 0) {
-                currentQuestion--;
-                showQuestion(currentQuestion);
-            }
-        });
+            document.getElementById('previousButton').addEventListener('click', () => {
+                if (currentQuestion > 0) {
+                    currentQuestion--;
+                    showQuestion(currentQuestion);
+                }
+            });
+        }
     });
 
     function showQuestion(index) {
         const questions = document.querySelectorAll('.quiz-question');
+        const instructionCards = document.querySelectorAll('.accordion-item');
         questions.forEach((question, idx) => {
             question.classList.toggle('active', idx === index);
         });
-
+        instructionCards.forEach((card, idx) => {
+            card.style.display = (idx === index) ? 'block' : 'none';
+        });
         const buttons = document.querySelectorAll('.flex-btn');
         buttons.forEach((button, idx) => {
             button.classList.toggle('current-question-btn', idx === index);

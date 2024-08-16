@@ -37,6 +37,7 @@ def landing_page():
 
 
 @app.route('/admin-editor/create-quiz')
+@admin_required
 def admin_editor_create_quiz():
     return render_template('index.html')
 

@@ -94,7 +94,12 @@
                 <div class="row mb-3">
                     <div class="col">
                         <label for="numberOfQuestions" class="form-label">Number of Questions</label>
-                        <input type="number" id="numberOfQuestions" class="form-control" placeholder="Enter number of questions" min="1" />
+                        <select id="numberOfQuestions" class="form-select" multiple>
+                            <option value="all">All</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                        </select>
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -102,6 +107,7 @@
                         <label for="years" class="form-label">Select Years</label>
                         <select id="years" class="form-select" multiple>
                             <option value="2005">2005</option>
+                            <option value="2006">2006</option>
                         </select>
                     </div>
                 </div>
@@ -121,18 +127,19 @@
         const startQuizButton = document.getElementById('startQuizButton');
         startQuizButton.addEventListener('click', () => {
             const numberOfQuestions = document.getElementById('numberOfQuestions').value;
-            const selectedYears = Array.from(document.getElementById('years').selectedOptions).map(option => option.value);
-            
-            if (numberOfQuestions && selectedYears.length > 0) {
+            const selectedYear = document.getElementById('years').value;  // Adjusted for single year selection
+
+            if (numberOfQuestions && selectedYear) {
                 // Handle quiz start logic here, e.g., redirect to quiz page with parameters
                 const courseId = document.querySelector('[data-bs-target="#modalCenter"]').getAttribute('data-course-id');
-                const url = `/course-quiz/${courseId}?questions=${numberOfQuestions}&years=${selectedYears.join(',')}`;
+                const url = `/course-quiz/${courseId}?questions=${numberOfQuestions}&year=${selectedYear}`;
                 window.location.href = url;
             } else {
-                alert('Please select number of questions and years.');
+                alert('Please select the number of questions and a year.');
             }
         });
     });
 </script>
+
 
 {% endblock %}

@@ -1,5 +1,5 @@
 {% extends 'pages/base.html' %}
-{% block heading %}{{ course.course_name }}{% endblock %}
+{% block heading %}{{ data.course_id }}{% endblock %}
 
 {% block style %}
 <style>
@@ -9,13 +9,13 @@
         justify-content: flex-start;
     }
     .flex-btn {
-        width: calc(100% / 7 - 10px); /* Adjust width to fit 7 buttons per row */
+        width: calc(100% / 7 - 10px);
         height: 30px;
         padding: 0;
         margin: 5px;
         font-size: 12px;
         text-align: center;
-        line-height: 30px; /* Vertically center the text */
+        line-height: 30px;
     }
     .quiz-question {
         display: none;
@@ -31,7 +31,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 200px; /* Adjust height as needed */
+        height: 200px;
         text-align: center;
         font-size: 1.2rem;
         color: #6c757d;
@@ -39,35 +39,29 @@
 </style>
 {% endblock %}
 {% block content %}
-<h5 class="mt-4">{{ course._for }}</h5>
+<h5 class="mt-4">{{ data.course_id }}</h5>
 <div class="row">
     <div class="col-lg-8 mb-4">
-        
-        {% if quiz_questions|length == 0 %}
-        <div class="no-quiz-message">
-            <p>Quiz not created yet.</p>
-        </div>
-        {% else %}
-        <small class="text-light fw-semibold">Year - {{ quiz_questions[0].year}}</small>
+        <small class="text-light fw-semibold">Year - {{ data.year }}</small>
             <div class="accordion mt-3" id="accordionExample">
-                {% for index, quiz in enumerate(quiz_questions + quizzes) %}
-                <div class="card accordion-item" id="instruction-card-{{ index }}" style="display: none;">
-                    <h2 class="accordion-header" id="heading{{ index }}">
+                {% for quiz in data.quizzes %}
+                <div class="card accordion-item" id="instruction-card-{{ loop.index0 }}" style="display: none;">
+                    <h2 class="accordion-header" id="heading{{ loop.index0 }}">
                         <button
                           type="button"
                           class="accordion-button"
                           data-bs-toggle="collapse"
-                          data-bs-target="#accordion{{ index }}"
+                          data-bs-target="#accordion{{ loop.index0 }}"
                           aria-expanded="true"
-                          aria-controls="accordion{{ index }}"
+                          aria-controls="accordion{{ loop.index0 }}"
                         >
-                          Instructions for Question {{ index + 1 }}
+                          Instructions for Question 
                         </button>
                     </h2>
                     <div
-                      id="accordion{{ index }}"
-                      class="accordion-collapse collapse show"
-                      aria-labelledby="heading{{ index }}"
+                      id="accordion{{ loop.index0 }}"
+                      class="accordion-collapse collapse"
+                      aria-labelledby="heading{{ loop.index0 }}"
                       data-bs-parent="#accordionExample"
                     >
                         <div class="accordion-body">
@@ -77,22 +71,19 @@
                 </div>
                 {% endfor %}
             </div>
-        {% endif %}
     </div>
 
     <div class="col-12 col-lg-8 mb-4">
-        {% if quiz_questions|length > 0 %}
-        <form id="quizForm" method="POST" action="/submit-quiz/{{course.id}}?questions={{questions_limit}}&years={{years}}">
-            {% set all_quizzes = quiz_questions + quizzes %}
-            {% for index, quiz in enumerate(all_quizzes) %}
+        <form id="quizForm"  action="#">
+            {% for index, quiz in enumerate(data.quizzes) %}
             <div class="card mb-6 quiz-question" id="question-{{ index }}">
                 <div class="card-body">
                     <h6>Question {{ index + 1 }}</h6>
                     <p>{{ quiz.question_text|safe }}</p>
                     {% for option in quiz.options %}
                     <div class="form-check mb-2">
-                        <input class="form-check-input" type="radio" name="question{{ index }}" id="option{{ option.option_text }}" value="{{ option.option_text }}" {% if user_answers and user_answers[index] == option.option_text %} checked {% endif %}>
-                        <label class="form-check-label {% if quiz.correct_answer == option.option_text %}correct-option{% elif user_answers and user_answers[index] == option.option_text and quiz.correct_answer != option.option_text %}incorrect-option{% endif %}" for="option{{ option.option_text }}">
+                        <input class="form-check-input" type="radio" name="question{{ index }}" id="option{{ option.text }}" value="{{ option.text }}">
+                        <label class="form-check-label">
                             {{ option.option_text|safe }}
                         </label>
                     </div>
@@ -112,16 +103,15 @@
                 </button>
             </div>
         </form>
-        {% endif %}
     </div>
 
-    {% if quizzes or quiz_questions %}
+    {% if data.quizzes %}
     <div class="col-12 col-lg-4">
         <div class="col-md">
             <div class="card">
                 <div class="card-body">
                     <div class="flex-container">
-                        {% for i in range(1, len(quizzes + quiz_questions) + 1) %}
+                        {% for i in range(1, data.quizzes | length + 1) %}
                         <button id="btn-{{ i-1 }}" class="btn btn-outline-primary flex-btn" onclick="showQuestion({{ i - 1 }})">{{ i }}</button>
                         {% endfor %}
                     </div>
@@ -133,9 +123,9 @@
 </div>
 <script>
     let currentQuestion = 0;
-    const totalQuestions = {{ quiz_questions | length + quizzes | length }};
+    const totalQuestions = {{ data.quizzes | length }};
 
-    document.addEventListener('DOMContentLoaded', (event) => {
+    document.addEventListener('DOMContentLoaded', () => {
         if (totalQuestions > 0) {
             showQuestion(currentQuestion);
 
@@ -158,6 +148,8 @@
     function showQuestion(index) {
         const questions = document.querySelectorAll('.quiz-question');
         const instructionCards = document.querySelectorAll('.accordion-item');
+        const buttons = document.querySelectorAll('.flex-btn');
+
         questions.forEach((question, idx) => {
             question.classList.toggle('active', idx === index);
         });
@@ -166,20 +158,13 @@
             card.style.display = (idx === index) ? 'block' : 'none';
         });
 
-        const buttons = document.querySelectorAll('.flex-btn');
         buttons.forEach((button, idx) => {
             button.classList.toggle('current-question-btn', idx === index);
         });
 
-        if (index === totalQuestions - 1) {
-            document.getElementById('nextButton').style.display = 'none';
-            document.getElementById('submitButton').style.display = 'block';
-        } else {
-            document.getElementById('nextButton').style.display = 'block';
-            document.getElementById('submitButton').style.display = 'none';
-        }
-
-        currentQuestion = index;
+        document.getElementById('nextButton').style.display = (index === totalQuestions - 1) ? 'none' : 'block';
+        document.getElementById('submitButton').style.display = (index === totalQuestions - 1) ? 'block' : 'none';
+        document.getElementById('previousButton').style.display = (index === 0) ? 'none' : 'block';
     }
 </script>
 {% endblock %}

@@ -23,10 +23,11 @@
             <option value="json">JSON (.json)</option>
             <option value="js">JavaScript (.js)</option>
         </select>
-        <button id="saveBtn">Save</button>
-        <button id="uploadBtn">Upload</button>
+        <button id="previewBtn">Preview</button>
+        <button id="uploadBtn">Create</button>
     </div>
     <div id="container"></div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.43.0/min/vs/loader.js"></script>
     <script>
         // Configure the Monaco Editor loader
@@ -40,27 +41,35 @@
             });
 
 
-            // Event listener to update language when file type changes
-
-            // Save button functionality
-            document.getElementById('saveBtn').addEventListener('click', function() {
-                const fileType = document.getElementById('fileType').value;
-                const fileName = `file.${fileType}`;
-                const code = editor.getValue();
-
-                const blob = new Blob([code], { type: fileType === 'json' ? 'application/json' : 'text/plain' });
-                const url = URL.createObjectURL(blob);
-
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = fileName;
-                a.click();
-
-                URL.revokeObjectURL(url);
+            document.getElementById('previewBtn').addEventListener('click', function() {
+                const text = editor.getValue();
+                
+                fetch('/preview-json', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ text })
+                })
+                .then(response => response.json()) // Parse response as JSON
+                .then(data => {
+                    if (data.error) {
+                        // Handle the error response
+                        alert(`Error: ${data.error}`);
+                    } else {
+                        // Open a new window and write the HTML into it
+                        const previewWindow = window.open();
+                        previewWindow.document.write(data.html); // Assuming the server returns HTML content
+                        previewWindow.document.close();
+                    }
+                })
+                .catch(error => {
+                    alert(`Network error: ${error}`);
+                });
             });
-
-            // Upload button functionality
+            
             document.getElementById('uploadBtn').addEventListener('click', function() {
+                console.log("here")
                 const text = editor.getValue();
                 
                 fetch('/convert-text-to-json', {
@@ -77,13 +86,14 @@
                     } else {
                         // Do something with the JSON data (e.g., display it or save it)
                         console.log('Converted JSON:', data);
-                        alert('Text converted to JSON successfully!');
+                        alert('Questions created successfully!');
                     }
                 })
                 .catch(error => {
                     alert(`Network error: ${error}`);
                 });
             });
+
         });
     </script>
 </body>
