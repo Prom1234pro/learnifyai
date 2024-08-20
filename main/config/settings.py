@@ -13,7 +13,7 @@ class BaseConfig():
 
 
 class DevConfig(BaseConfig):
-    FLASK_ENV = 'production'
+    FLASK_ENV = 'development'
     DEBUG = True
     UPLOAD_FOLDER = 'main\\static\\media'
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'this'
