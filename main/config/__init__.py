@@ -3,9 +3,8 @@ import sys
 from .settings import DevConfig, ProductionConfig, TestConfig
 
 # Determine the appropriate configuration class
-APP_ENV = os.environ.get('APP_ENV', 'Dev')
-APP_ENV = "Dev"
-print(APP_ENV)
+APP_ENV = os.environ.get('APP_ENV', 'Production')
+
 if APP_ENV == 'Production':
     ConfigClass = ProductionConfig
 elif APP_ENV == 'Test':

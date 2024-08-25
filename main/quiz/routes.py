@@ -95,8 +95,8 @@ def set_studymode(user_id, course_id):
 def course_lessons(course_id):
     user_id = session.get('user_id')
     user = User.query.get_or_404(user_id)
-    course = Course.query.get_or_404(course_id)
-    return render_template("pages/study.html", course=course, user=user)
+    # course = Course.query.get_or_404(course_id)
+    return render_template("pages/study.html", course="course", user=user)
 
 
 @qroute_bp.route('/course-quiz/<string:course_id>')

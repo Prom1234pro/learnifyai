@@ -7,6 +7,7 @@
 /odbc_debs
 .git
 /instancess/
+/instance/
 /mytesting/
 /.github/
 app2.py
