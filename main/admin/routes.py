@@ -94,7 +94,7 @@ def admin_login():
     return "hi me"
 
 @admin_bp.route('/make_admin/<user_id>', methods=['POST'])
-# @admin_required
+@admin_required
 def make_admin(user_id):
     if request.method == 'POST':
         user = User.query.get_or_404(user_id)
@@ -126,7 +126,7 @@ def update_user(user_id):
     return abort(404)
 
 @admin_bp.route('/admin/get-all-users', methods=['GET'])
-# @admin_required
+@admin_required
 def get_all_users():
     users = User.query.all()
     users_list = []
