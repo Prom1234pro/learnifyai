@@ -47,35 +47,7 @@
 <h5 class="mt-4">{{ course._for}}</h5>
 <div class="row">
     <div class="col-lg-8 mb-4">
-      <small class="text-light fw-semibold">English</small>
-      <div class="accordion mt-3" id="accordionExample">
-        {% for index, quiz in enumerate(quizzes) %}
-        <div class="card accordion-item" id="instruction-card-{{ index }}" style="display: none;">
-            <h2 class="accordion-header" id="heading{{ index }}">
-                <button
-                  type="button"
-                  class="accordion-button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#accordion{{ index }}"
-                  aria-expanded="true"
-                  aria-controls="accordion{{ index }}"
-                >
-                  Instructions for Question {{ index + 1 }}
-                </button>
-            </h2>
-            <div
-              id="accordion{{ index }}"
-              class="accordion-collapse collapse show"
-              aria-labelledby="heading{{ index }}"
-              data-bs-parent="#accordionExample"
-            >
-                <div class="accordion-body">
-                    {{ quiz.instructions }}
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
+      <small class="text-light fw-semibold">Year - {{ year }}</small>
     </div>
 
     <div class="col-12 col-lg-8 mb-4">
@@ -83,7 +55,32 @@
         <div class="card mb-6 quiz-question" id="question-{{ index }}">
             <div class="card-body">
                 <h6>Question {{ index + 1 }}</h6>
-                <p>{{ quiz['question_text'] }}</p>
+                    {% if quiz.instructions|length > 200 %}
+                    <p>{{ quiz.instructions[:200]|safe }}... 
+                        <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#instructionModal{{ index }}">Read more</a>
+                    </p>
+
+                    <!-- Modal for displaying full instructions -->
+                    <div class="modal fade" id="instructionModal{{ index }}" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Full Instructions</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    {{ quiz.instructions|safe }}
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <p>{{ quiz.instructions|safe }}</p>
+                    {% endif %}
+                    <p>{{ quiz.question_text|safe }}</p>
                 {% for option in quiz['options'] %}
                 <div class="form-check mb-2">
                     <input class="form-check-input" type="radio" name="question{{ index }}" id="option{{ option['option_text'] }}" value="{{ option['option_text'] }}" {% if user_answers[index] == option['option_text'] %} checked {% endif %} disabled>

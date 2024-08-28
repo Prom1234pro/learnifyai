@@ -4,6 +4,7 @@ from flask import (Blueprint, abort, redirect,
     )
 from datetime import datetime, timedelta
 
+from main.quiz.models import QuizQuestion
 from main.utils import user_required
 from .models import Performance, Score, db, Course
 from main.authentication.models import User
@@ -52,8 +53,16 @@ def get_all_user_group_courses(group_id):
 
     user_id = session.get('user_id')
     user = User.query.get(user_id)
-      
-    return render_template('pages/courses.html', messages=messages, group=group, user=user)
+
+    # Create a dictionary to hold years for each course
+    courses_with_years = {}
+    for course in group.courses:
+        # Get distinct years for the quizzes associated with this course
+        quiz_years = QuizQuestion.query.with_entities(QuizQuestion.year).filter_by(course_id=course.id).distinct().all()
+        quiz_years = [q.year for q in quiz_years]
+        courses_with_years[course.id] = quiz_years
+
+    return render_template('pages/courses.html', messages=messages, group=group, user=user, courses_with_years=courses_with_years)
 
 
 @croute_bp.route('/courses/<string:id>/<string:group_id>')

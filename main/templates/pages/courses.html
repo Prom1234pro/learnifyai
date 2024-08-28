@@ -94,7 +94,7 @@
                 <div class="row mb-3">
                     <div class="col">
                         <label for="numberOfQuestions" class="form-label">Number of Questions</label>
-                        <select id="numberOfQuestions" class="form-select" multiple>
+                        <select id="numberOfQuestions" class="form-select">
                             <option value="all">All</option>
                             <option value="10">10</option>
                             <option value="20">20</option>
@@ -105,9 +105,10 @@
                 <div class="row mb-3">
                     <div class="col">
                         <label for="years" class="form-label">Select Years</label>
-                        <select id="years" class="form-select" multiple>
-                            <option value="2005">2005</option>
-                            <option value="2006">2006</option>
+                        <select id="years" class="form-select">
+                            {% for year in courses_with_years[selected_course_id] %}
+                                <option value="{{ year }}">{{ year }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                 </div>
@@ -122,7 +123,28 @@
     </div>
 </div>
 
+
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var modalCenter = document.getElementById('modalCenter');
+        modalCenter.addEventListener('show.bs.modal', function(event) {
+            var button = event.relatedTarget;
+            var courseId = button.getAttribute('data-course-id');
+    
+            // Use courseId to dynamically populate the years in the modal
+            var yearSelect = document.getElementById('years');
+            yearSelect.innerHTML = '';
+    
+            var courseYears = {{ courses_with_years | tojson }};
+            courseYears[courseId].forEach(function(year) {
+                var option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                yearSelect.appendChild(option);
+            });
+        });
+    });
+    
     document.addEventListener('DOMContentLoaded', (event) => {
         const startQuizButton = document.getElementById('startQuizButton');
         startQuizButton.addEventListener('click', () => {

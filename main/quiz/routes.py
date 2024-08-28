@@ -107,11 +107,11 @@ def course_quiz(course_id):
     user = User.query.get_or_404(user_id)
 
     # Get query parameters
-    years = request.args.get('years')
-    questions_limit = request.args.get('questions', type=int, default=10)
+    year = request.args.get('year')
+    questions_limit = request.args.get('questions', type=int, default=0)
 
     # Parse years if provided
-    year_list = years.split(',') if years else []
+    year_list = year.split(',') if year else []
 
     # Filter quizzes by course
 
@@ -135,7 +135,7 @@ def course_quiz(course_id):
         enumerate=enumerate,
         len=len,
         questions_limit=questions_limit,
-        years=years
+        year=year
     )
 
 @qroute_bp.route('/theory-quiz/<string:course_id>')
@@ -162,8 +162,9 @@ def submit_quiz(course_id):
     course = Course.query.get_or_404(course_id)
     user = User.query.get_or_404(session.get('user_id'))
     user_answers = []
-    years = request.args.get('years')
-    questions_limit = request.args.get('questions', type=int, default=10)
+    years = request.args.get('year')
+    print(years)
+    questions_limit = request.args.get('questions', type=int, default=0)
 
     # Parse years if provided
     year_list = years.split(',') if years else []
@@ -204,4 +205,4 @@ def submit_quiz(course_id):
         
         db.session.commit()
     
-    return render_template('pages/quiz_answers.html', enumerate=enumerate, len=len, user=user, course=course, quizzes=quiz_questions, user_answers=user_answers)
+    return render_template('pages/quiz_answers.html', enumerate=enumerate, len=len, user=user, course=course, quizzes=quiz_questions, user_answers=user_answers, year=years)
