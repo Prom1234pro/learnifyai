@@ -11,7 +11,7 @@ from flask_mail import Message
 # from flask_socketio import SocketIO
 # from flask_login import LoginManager, login_user, current_user, logout_user
 from main import mail
-from main.utils import admin_required
+from main.utils import admin_required, user_required
 
 app, bcrypt = create_app()
 register_routes(app)
@@ -33,7 +33,12 @@ def landing_page():
     # except Exception as e:
     #     print(f"Error sending verification email: {e}")
     #     return redirect('/register')
-    return redirect('/login-user')
+    return render_template('pages/index.html')
+
+@app.route('/cbt-practice')
+@user_required
+def past_question():
+    return render_template('pages/bb.html')
 
 
 @app.route('/admin-editor/create-quiz')

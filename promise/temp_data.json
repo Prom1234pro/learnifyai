@@ -1,0 +1,302 @@
+[
+    {
+        "question_text": "Which of the following is the best know semi-conductor?",
+        "optional_text": "Answer the following questions",
+        "school_code": "etc",
+        "school": "UNIBEN",
+        "year": "2005",
+        "subject": "Geography",
+        "options": [
+            "Carbon",
+            "Selenium",
+            "Gallium arsenide",
+            "Germanium"
+        ],
+        "correct_option": "Germanium"
+    },
+    {
+        "question_text": "The process of adding semiconductor <b>called</b>?",
+        "optional_text": "Answer the following questions",
+        "school_code": "etc",
+        "school": "UNIBEN",
+        "year": "2005",
+        "subject": "Geography",
+        "options": [
+            "Transmutation",
+            "Doping",
+            "Polarization",
+            "Hydrolysis"
+        ],
+        "correct_option": "Doping"
+    },
+    {
+        "question_text": "In the D.C electric motor, which of the following does not apply?",
+        "optional_text": "Answer the following questions",
+        "school_code": "etc",
+        "school": "UNIBEN",
+        "year": "2005",
+        "subject": "Geography",
+        "options": [
+            "Spindle",
+            "Fixed carbon brushes",
+            "Powerful magnetic field",
+            "Slip rings"
+        ],
+        "correct_option": "Slip rings"
+    },
+    {
+        "question_text": "In the A.C. generator, which of the following does not apply?",
+        "optional_text": "Answer the following questions",
+        "school_code": "etc",
+        "school": "UNIBEN",
+        "year": "2005",
+        "subject": "Geography",
+        "options": [
+            "Fixed carbon brushes",
+            "Spindle",
+            "Split rings",
+            "Powerful magnetic field"
+        ],
+        "correct_option": "Split rings"
+    },
+    {
+        "question_text": "Which of the following law is an application of the law of conservation of energy?",
+        "optional_text": "Answer the following questions",
+        "school_code": "etc",
+        "school": "UNIBEN",
+        "year": "2005",
+        "subject": "Geography",
+        "options": [
+            "Maxwell's law",
+            "Lenz's law",
+            "Faraday's law",
+            "Fleming's left hand rule"
+        ],
+        "correct_option": "Faraday's law"
+    },
+    {
+        "question_text": "The induction coil is a device for generating a?",
+        "optional_text": "Answer the following questions",
+        "school_code": "etc",
+        "school": "UNIBEN",
+        "year": "2005",
+        "subject": "Geography",
+        "options": [
+            "High voltage from low A.C. source",
+            "Low voltage from high D.C. source",
+            "High voltage from a low D.C. source",
+            "Low voltage from a low A.C. source"
+        ],
+        "correct_option": "High voltage from a low D.C. source"
+    },
+    {
+        "question_text": "Which of the following pairs of quantities have equivalent units?",
+        "optional_text": "Answer the following questions",
+        "school_code": "etc",
+        "school": "UNIBEN",
+        "year": "2005",
+        "subject": "Geography",
+        "options": [
+            "Work done and moments",
+            "Energy and momentum",
+            "Strain and Young's modulus",
+            "Energy and pressure"
+        ],
+        "correct_option": "Work done and moments"
+    },
+    {
+        "question_text": "The dimension of power is?",
+        "optional_text": "Answer the following questions",
+        "school_code": "etc",
+        "school": "UNIBEN",
+        "year": "2005",
+        "subject": "Geography",
+        "options": [
+            "ML-1 T2",
+            "ML2 T-2",
+            "ML2 T-3",
+            "ML-1 T-2 -2"
+        ],
+        "correct_option": "ML-1 T2"
+    },
+    {
+        "question_text": "A body starts from rest and moves with an acceleration of 8ms for 10 seconds. Find the distance during the 8th second?",
+        "optional_text": "Answer the following questions",
+        "school_code": "etc",
+        "school": "UNIBEN",
+        "year": "2005",
+        "subject": "Geography",
+        "options": [
+            "256m",
+            "196m",
+            "120m",
+            "60m"
+        ],
+        "correct_option": "60m"
+    },
+    {
+        "question_text": "One of the limitations of Bohr's model of the atom is that it does not explain?",
+        "optional_text": "Answer the following questions",
+        "school_code": "etc",
+        "school": "UNIBEN",
+        "year": "2005",
+        "subject": "Geography",
+        "options": [
+            "The stability of the atom",
+            "Variation of the atomic radius",
+            "The line spectra of hydrogen",
+            "The experiment determination of the atomic radius"
+        ],
+        "correct_option": "The line spectra of hydrogen"
+    },
+    {
+        "question_text": "X-rays were discovered by?",
+        "optional_text": "Answer the following questions",
+        "school_code": "etc",
+        "school": "UNIBEN",
+        "year": "2005",
+        "subject": "Geography",
+        "options": [
+            "Isaac Newton",
+            "Michael Faraday",
+            "Sir J.J. Thompson",
+            "W. Roentgen"
+        ],
+        "correct_option": "W. Roentgen"
+    },
+    {
+        "question_text": "Natural radioactivity was discovered by?",
+        "optional_text": "Answer the following questions",
+        "school_code": "etc",
+        "school": "UNIBEN",
+        "year": "2005",
+        "subject": "Geography",
+        "options": [
+            "Niel Bohr",
+            "Henri Becquerel",
+            "De Broglie",
+            "Rutherford"
+        ],
+        "correct_option": "Henri Becquerel"
+    },
+    {
+        "question_text": "The number of atoms of a radioactive substance is initially8 x 1016. If the number reduces to 2 x 1016 in 64 minutes. What is the half-life of the substance?",
+        "optional_text": "Answer the following questions",
+        "school_code": "etc",
+        "school": "UNIBEN",
+        "year": "2005",
+        "subject": "Geography",
+        "options": [
+            "82min",
+            "16min",
+            "8min",
+            "4min"
+        ],
+        "correct_option": "82min"
+    },
+    {
+        "question_text": "During the electrolysis of copper (II) sulphate solution, an ammeter showed a steady current reading of 1.0A for 2hr and 6.6 x 104 kg of copper were liberated. Calculate the % error in ammeter reading?",
+        "optional_text": "Answer the following questions",
+        "school_code": "etc",
+        "school": "UNIBEN",
+        "year": "2005",
+        "subject": "Geography",
+        "options": [
+            "12%",
+            "11%",
+            "1.2%",
+            "1.1%"
+        ],
+        "correct_option": "11%"
+    },
+    {
+        "question_text": "An electric lamp has the following markings 230V. 250W, how long would it take the kilowatt-hour when lamp to use one connected to a 230V mains?",
+        "optional_text": "Answer the following questions",
+        "school_code": "etc",
+        "school": "UNIBEN",
+        "year": "2005",
+        "subject": "Geography",
+        "options": [
+            "8.0hr",
+            "6.0hr",
+            "4.0hr",
+            "2.0hr"
+        ],
+        "correct_option": "4.0hr"
+    },
+    {
+        "question_text": "Which of the following statements is correct about a temperature semi-conductor at room?",
+        "optional_text": "Answer the following questions",
+        "school_code": "etc",
+        "school": "UNIBEN",
+        "year": "2005",
+        "subject": "Geography",
+        "options": [
+            "The valence band is filled and the conduction band is partly filled",
+            "The valence band is completely filled and the conduction band is completely empty",
+            "The valence band is almost filled and the conduction band is almost empty",
+            "The valence band is empty and the conduction band is filled"
+        ],
+        "correct_option": "The valence band is almost filled and the conduction band is almost empty"
+    },
+    {
+        "question_text": "Which of the following statements is not correct?",
+        "optional_text": "Answer the following questions",
+        "school_code": "etc",
+        "school": "UNIBEN",
+        "year": "2005",
+        "subject": "Geography",
+        "options": [
+            "When ebonite rod is rubbed with wool the ebonite rod acquires a negative charge and wool acquires a positive charge",
+            "When a glass rod is rubbed with silk the glass rod acquires a positive charge while silk acquires a negative charge",
+            "When fur is rubbed with ebonite rod the ebonite rod acquires a positive charge and fur a negative charge",
+            "When wool rubbed with an ebonite rod is brought near silk rubbed with a glass rod attraction occurs."
+        ],
+        "correct_option": "When fur is rubbed with ebonite rod the ebonite rod acquires a positive charge and fur a negative charge"
+    },
+    {
+        "question_text": "With the Daniel cell the depolarizer is?",
+        "optional_text": "Answer the following questions",
+        "school_code": "etc",
+        "school": "UNIBEN",
+        "year": "2005",
+        "subject": "Geography",
+        "options": [
+            "Tetra-oxo-sulphate (IV) acid",
+            "Ammonium chloride solution",
+            "Copper sulphate solution",
+            "Manganese (IV) Oxide"
+        ],
+        "correct_option": "Copper sulphate solution"
+    },
+    {
+        "question_text": "Which of the following arrangements gives the electromagnetic radiation in their ascending order of wavelength?",
+        "optional_text": "Answer the following questions",
+        "school_code": "etc",
+        "school": "UNIBEN",
+        "year": "2005",
+        "subject": "Geography",
+        "options": [
+            "Radio waves/ ultraviolet rays. x-rays. y- rays",
+            "y -rays. x-rays. ultraviolent rays. radio waves",
+            "x-rays. y -rays. radio waves. ultraviolent Rays",
+            "Ultraviolent rays. y -rays. x-rays. radio waves"
+        ],
+        "correct_option": "y -rays. x-rays. ultraviolent rays. radio waves"
+    },
+    {
+        "question_text": "Which of the following statements is not correct about the astronomical telescope under normal adjustment?",
+        "optional_text": "Answer the following questions",
+        "school_code": "etc",
+        "school": "UNIBEN",
+        "year": "2005",
+        "subject": "Geography",
+        "options": [
+            "The final image is at infinity",
+            "The principal foci of the objective and eye piece coincide",
+            "The final image is at principal focus of the eye piece",
+            "The distance between the lenses is equal to the sum of their focal lengths"
+        ],
+        "correct_option": "The final image is at principal focus of the eye piece"
+    }
+]

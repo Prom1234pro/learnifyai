@@ -216,7 +216,7 @@ def login_user_():
     user_id = session.get("user_id") or ""
     user = User.query.get(user_id)
     if user:
-        return redirect(f'/dashboard/{user.id}')
+        return redirect(f'/dashboard')
 
     if request.method == 'POST':
         current_time = datetime.now(timezone.utc).isoformat()  # Ensure the timestamp is in UTC
@@ -255,7 +255,7 @@ def login_user_():
         user.is_logged_in = True
         db.session.commit()
         print("redirect success ===============")
-        return redirect(f'/dashboard/{user.id}')
+        return redirect(f'/dashboard')
 
     return render_template('account/auth-login.html', messages=messages, page="login")
 

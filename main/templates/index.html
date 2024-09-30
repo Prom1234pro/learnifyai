@@ -69,10 +69,9 @@
             });
             
             document.getElementById('uploadBtn').addEventListener('click', function() {
-                console.log("here")
                 const text = editor.getValue();
                 
-                fetch('/convert-text-to-json', {
+                fetch('/convert-text-to-json2', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

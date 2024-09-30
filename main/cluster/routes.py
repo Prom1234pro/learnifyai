@@ -22,12 +22,13 @@ groute_bp = Blueprint('group', __name__)
 ACTIVE_SESSIONS_FILE = 'active_sessions.json'
 
  
-@groute_bp.route('/dashboard/<string:id>')
+@groute_bp.route('/dashboard')
 @user_required
-def dashboard(id):
+def dashboard():
     messages = get_flashed_messages(with_categories=True)
     public_groups = Group.query.filter_by(is_public=True, activated=True).all()
-    user = User.query.get_or_404(id)
+    user_id = session.get("user_id")
+    user = User.query.get_or_404(user_id)
     courses = []
     for group in user.groups:
         courses.extend(group.courses)

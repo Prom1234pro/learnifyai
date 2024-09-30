@@ -69,7 +69,7 @@ def validate_format(text):
     expected_structure = [
         (r'^(Current Instruction: .*)?$', "Current Instruction is optional but if present, it should be in the format 'Current Instruction: ...'"),
         (r'^.+\?$', "Question should end with a question mark."),
-        (r'^Topic Name: .+$', "Topic Name should be in the format 'Topic Name: ...'"),
+        # (r'^Topic Name: .+$', "Topic Name should be in the format 'Topic Name: ...'"),
         (r'^.+$', "Answer option 1 should be a non-empty line."),
         (r'^.+$', "Answer option 2 should be a non-empty line."),
         (r'^.+$', "Answer option 3 should be a non-empty line."),
@@ -77,14 +77,18 @@ def validate_format(text):
         (r'^$', "A single empty line is expected here."),
     ]
 
-    if not re.match(r'^Course ID: .+$', lines[0].strip()):
-        return False, "Error: First line should be 'Course ID: ...'"
-    if not re.match(r'^Year: \d{4}$', lines[1].strip()):
+    if not re.match(r'^School Code: .+$', lines[0].strip()):
+        return False, "Error: First line should be 'School Code: ...'"
+    if not re.match(r'^School: .+$', lines[1].strip()):
+        return False, "Error: First line should be 'School: ...'"
+    if not re.match(r'^Subject: .+$', lines[2].strip()):
+        return False, "Error: First line should be 'Subject: ...'"
+    if not re.match(r'^Year: \d{4}$', lines[3].strip()):
         return False, "Error: Second line should be 'Year: YYYY'"
-    if not re.match(r'^$', lines[2].strip()):
+    if not re.match(r'^$', lines[4].strip()):
         return False, "Error: Third line should be an empty line."
     
-    i = 3
+    i = 5
     structure_index = 0
 
     while i < len(lines):

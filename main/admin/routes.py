@@ -311,7 +311,6 @@ def create_quiz_obj_(path):
         db.session.rollback()
         return jsonify({'error': f'Error committing to database: {e}'}), 500
 
-    return abort(404)
 
 @admin_bp.route('/admin/delete-quizzes/<course_id>', methods=['DELETE'])
 @admin_required

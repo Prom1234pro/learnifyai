@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet"> -->
+        <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendors/bootstrap.min.css') }}"> -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/fonts/boxicons.css') }}" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='vendors/font-awesome/css/font-awesome.min.css') }}" />
+    
+        <!-- Core CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/css/core.css') }}"
+            class="template-customizer-core-css" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/css/theme-default.css') }}"
+        class="template-customizer-theme-css" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/demo.css') }}" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+        
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/pages_css/modal.css') }}">
+        <!-- Vendors CSS -->
+        <link rel="stylesheet"
+            href="{{ url_for('static', filename='assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/libs/apex-charts/apex-charts.css') }}" />
+    
+        <title>Quiz Page</title>
+        <style>
+            .flex-container {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 5px;
+                padding: 10px;
+                margin-left: 15px;
+                background-color: #f8f9fa;
+            }
+    
+            .spec {
+                width: 40px;
+                height: 40px;
+                margin: 1px;
+                padding: 0;
+                font-size: 14px;
+                text-align: center;
+                line-height: 38px;
+            }
+    
+            .quiz-question {
+                display: none;
+            }
+    
+            .quiz-question.active {
+                display: block;
+            }
+    
+            .current-question-btn {
+                background-color: #696cff;
+                color: white;
+            }
+    
+            .no-quiz-message {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 200px;
+                text-align: center;
+                font-size: 1.2rem;
+                color: #6c757d;
+            }
+    
+            #timer {
+                font-size: 1.5rem;
+                color: #dc3545;
+                margin-bottom: 15px;
+                display: none;
+            }
+    
+            /* AI Assistant Button */
+            .ai-assistant-btn {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background-color: #696cff;
+                color: white;
+                border: none;
+                border-radius: 50%;
+                width: 60px;
+                height: 60px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                font-size: 24px;
+                cursor: pointer;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                transition: background-color 0.3s;
+            }
+            .u-show {
+                position: fixed;
+                bottom: 100px;
+                right: 20px;
+                color: black;
+                border: none;
+                cursor: pointer;
+                display: flex;
+                justify-content: flex-end;
+                align-items: flex-end;
+            }
+    
+            .ai-assistant-btn:hover {
+                background-color: #5757d1;
+            }
+            .dp-none {
+                display: none;
+            }
+            .b-button {
+                border: none;
+                padding: 1em;
+                background-color: #5757d1;
+            }
+            .btn-yellow {
+                background-color: rgb(128, 9, 149);
+                color: white;
+            }
+            .btn-green {
+                background-color: green
+            }
+            #navButtons {
+                padding-bottom: 1.5em;
+            }
+            .read-more {
+                cursor: pointer;
+                color: rgb(129, 129, 233);
+            }
+        </style>
+    </head>
+    
+
+    <body>
+        <div class="container mt-3">
+            <div class="mb-3">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="schoolSelect" class="form-label">Select UTME School:</label>
+                        <select id="schoolSelect" class="form-select">
+                            <option value="A000001">UNIBEN</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="subjectSelect" class="form-label">Subject:</label>
+                        <select id="subjectSelect" class="form-select">
+                            <option value="unibenSOCMAG">UNIBEN SOCIAL AND MANAGEMENT SCIENCE</option>
+                            <option value="unibenARTLAW">UNIBEN ART AND LAW</option>
+                            <option value="unibenLIFSCI">UNIBEN LIFE SCIENCE</option>
+                            <option value="unibenENGPHY">UNIBEN ENGINEERING AND PHYSICAL SCIENCE</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="yearSelect" class="form-label">Select Year:</label>
+                        <select id="yearSelect" class="form-select">
+                            <option value="2021">2021/2022</option>
+                            <option value="2020">2020/2021</option>
+                            <option value="2019">2019/2020</option>
+                            <option value="2018">2018/2019</option>
+                            <option value="2017">2017/2018</option>
+                            <option value="2016">2016/2017</option>
+                            <option value="2015">2015/2016</option>
+                            <option value="2014">2014/2015</option>
+                            <option value="2013">2013/2014</option>
+                            <option value="2012">2012/2013</option>
+                            <option value="2011">2011/2012</option>
+                            <option value="2010">2010/2011</option>
+                            <option value="2009">2009/2010</option>
+                            <option value="2008">2008/2009</option>
+                            <option value="2007">2007/2008</option>
+                            <option value="2006">2006/2007</option>
+                            <option value="2005">2005/2006</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <button id="startQuizButton" class="btn btn-primary mb-3">Start Quiz</button>
+            <button onclick="location.reload()" class="btn btn-primary mb-3">Restart</button>
+            <div id="timer">Time Remaining: 10:00</div>
+
+            <div id="navButtons"></div>
+
+            <div class="row dp-none">
+                <div class="col-12 col-lg-8 mb-4">
+                    <form id="quiz">
+                    <div id="quizForm"></div>
+                    <div class="d-flex justify-content-between mt-4">
+                        <!-- <button id="previousButton" onclick="prev()" type="button" class="btn btn-label-secondary">
+                            <i class="bi bi-chevron-left"></i> Previous
+                        </button>
+                        <button id="nextButton" onclick="next()" type="button" class="btn btn-label-primary">
+                            Next <i class="bi bi-chevron-right"></i>
+                        </button> -->
+                        <button id="submitButton" type="submit" class="btn btn-success" style="display: none;">
+                            Submit <i class="bi bi-check"></i>
+                        </button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+
+            <button class="ai-assistant-btn" onclick="openAIAssistant()">
+                <i class="bi bi-robot"></i>
+            </button>
+            <div class="u-show">
+                <button id="generateAudioBtn" class="b-button" onclick="generateAudio()" style="display: none;">
+                    <i class="bi bi-play-fill"></i> Learn more the topic
+                </button>
+                <button id="playAudioBtn" onclick="playAudio()" class="b-button" style="display: none;">
+                    <i class="bi bi-play-fill"></i> Play Audio
+                </button>
+                <button id="pauseAudioBtn" onclick="pauseAudio()" class="b-button" style="display: none;">
+                    <i class="bi bi-pause-fill"></i> Pause Audio
+                </button>
+                <div id="loadingSpinner" style="display: none;">
+                    <div class="spinner-border text-primary" role="status">
+                        
+                    </div>
+                    <div>Generating..</div>
+                </div>
+
+            </div>
+            <audio id="audioPlayer">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+        <div class="modal fade" id="optionalTextModal" tabindex="-1" aria-labelledby="optionalTextModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="optionalTextModalLabel">Instruction for question</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="modalTextContent">
+                        <!-- Full text will be injected here -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+
+        <script>
+            let currentQuestion = 0;
+            let allQuestions = [];
+            let generating = false;
+            let totalQuestions = 0;
+            let audioCreated = false
+            let timerInterval;
+            let timeRemaining = 10 * 60; // 10 minutes in seconds
+            let audioPlayer = document.getElementById('audioPlayer');
+        
+            document.addEventListener('DOMContentLoaded', () => {
+                document.getElementById('startQuizButton').addEventListener('click', startQuiz);
+                document.getElementById('myModal').addEventListener('show.bs.modal', openAIAssistant);
+                document.getElementById('generateAudioBtn').addEventListener('click', generateAudio);
+                document.getElementById('playAudioBtn').addEventListener('click', playAudio);
+                document.getElementById('pauseAudioBtn').addEventListener('click', pauseAudio);
+                document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+                
+            });
+        
+            async function startQuiz() {
+                document.getElementById('startQuizButton').disabled = true;
+                document.querySelector('.dp-none').style.display = 'block';
+                
+                const subject = document.getElementById('subjectSelect').value;
+                const school = document.getElementById('schoolSelect').value;
+                const year = document.getElementById('yearSelect').value;
+        
+                try {
+                    const response = await fetch(`/past-questions/search?school-code=${school}&year=${year}&subject=${subject}`);
+                    if (!response.ok) {
+                        throw new Error('No questions found for the selected criteria');
+                    }
+        
+                    const pastQuestions = await response.json();
+                    allQuestions = pastQuestions;
+                    totalQuestions = pastQuestions.length;
+        
+                    if (totalQuestions === 0) {
+                        alert('No questions found for the selected criteria.');
+                        return;
+                    }
+        
+                    document.getElementById('timer').style.display = 'block';
+        
+                    generateNavigationButtons(totalQuestions);
+                    displayQuestions(pastQuestions);
+                    showQuestion(currentQuestion);
+        
+                    startTimer();
+        
+                    
+                    document.getElementById('submitButton').style.display = 'block';
+                } catch (error) {
+                    console.error(error);
+                    alert('No questions found for the selected criteria.');
+                }
+            }
+        
+            function generateNavigationButtons(totalQuestions) {
+                const navButtons = document.getElementById('navButtons');
+                navButtons.innerHTML = '';
+        
+                for (let i = 0; i < totalQuestions; i++) {
+                    const btn = document.createElement('button');
+                    btn.classList.add('btn', 'btn-outline-primary', 'spec');
+                    btn.textContent = i + 1;
+                    btn.onclick = () => showQuestion(i);
+                    navButtons.appendChild(btn);
+                }
+            }
+            
+            
+            function update(index){
+                const navButtons = document.querySelectorAll('.spec');
+
+                navButtons[index].classList.add('btn-yellow'); // Add grey class
+                navButtons[index].classList.remove('btn-outline-primary')
+            }
+
+            
+            // Function to truncate the text
+            function truncateText(text, limit) {
+                if (text.length > limit) {
+                    return `${text.slice(0, limit)}... <span class="read-more" onclick="showMore('${text}')">Read more</span>`;
+                }
+                return text;
+            }
+
+            // Function to show the full text in a modal
+            function showMore(fullText) {
+                const modalTextContent = document.getElementById('modalTextContent');
+                modalTextContent.textContent = fullText;
+                
+                // Open the modal
+                const modal = new bootstrap.Modal(document.getElementById('optionalTextModal'));
+                modal.show();
+            }
+
+// Inject question data into the card
+
+
+            function displayQuestions(questions) {
+                const quizForm = document.getElementById('quizForm');
+                quizForm.innerHTML = '';
+        
+                questions.forEach((question, index) => {
+                    console.log("CBT Questions", question)
+                    const questionCard = document.createElement('div');
+                    questionCard.className = 'card mb-6 quiz-question';
+                    questionCard.id = `question-${index}`;
+        
+                    questionCard.innerHTML = `
+                    <div class="card-body">
+                        <h6>Question ${index + 1}</h6>
+                        <p id="optional-text-${index}">
+                            ${truncateText(question.optional_text, 100)}
+                        </p>
+                        <br>
+                        <p>${question.question}</p>
+                        ${question.options.map((option, i) => `
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" onchange="update(${index})" name="question${index}" id="q${index}_opt${i}" value="${option}">
+                                <label class="form-check-label" for="q${index}_opt${i}">${option}</label>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+        
+                    quizForm.appendChild(questionCard);
+                });
+            }
+        
+            function showQuestion(index) {
+                currentQuestion = index
+                audioCreated = false
+                generating = false
+                document.querySelectorAll('.quiz-question').forEach((q) => {
+                    q.classList.remove('active');
+                });
+        
+                document.getElementById(`question-${index}`).classList.add('active');
+        
+                const navButtons = document.querySelectorAll('.spec');
+                navButtons.forEach((btn, i) => {
+                    btn.classList.toggle('current-question-btn', i === index);
+                });
+        
+                document.getElementById('submitButton').style.display = index === totalQuestions - 1 ? 'block' : 'none';
+            }
+        
+            function startTimer() {
+                timerInterval = setInterval(() => {
+                    if (timeRemaining <= 0) {
+                        clearInterval(timerInterval);
+                        alert('Time is up!');
+                        submitQuestions();
+                    }
+        
+                    const minutes = Math.floor(timeRemaining / 60);
+                    const seconds = timeRemaining % 60;
+        
+                    document.getElementById('timer').textContent = `Time Remaining: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+                    timeRemaining--;
+                }, 1000);
+            }
+        
+            let audioBlob = null;
+
+            function openAIAssistant() {
+                if(generating){
+                    return
+                }
+                if (audioCreated) {
+                    audioPlayer.pause()
+                    document.getElementById('generateAudioBtn').style.display = 'none';
+                    document.getElementById('playAudioBtn').style.display = 'inline-block';
+                    document.getElementById('pauseAudioBtn').style.display = 'none';
+                    document.getElementById('loadingSpinner').style.display = 'none';
+                }else {
+                    document.getElementById('generateAudioBtn').style.display = 'inline-block';
+                    document.getElementById('playAudioBtn').style.display = 'none';
+                    document.getElementById('pauseAudioBtn').style.display = 'none';
+                    document.getElementById('loadingSpinner').style.display = 'none';
+                }
+                if (!allQuestions || allQuestions.length === 0 || currentQuestion === undefined) {
+                    alert("Please start the quiz first.");
+                    return false;
+                }
+
+                const question = allQuestions[currentQuestion].question + " I want to show more insight on the topic related to this question";
+                
+            }
+
+            function generateAudio() {
+                generating = true;
+                document.getElementById('loadingSpinner').style.display = 'block';
+                document.getElementById('generateAudioBtn').style.display = 'none';
+
+                const questionObj = allQuestions[currentQuestion];
+    
+                // Get the question and its options
+                const questionText = questionObj.question;
+                const optionalText = questionObj.optional_text;
+                const optionsText = questionObj.options.join("\n")
+                const correctOption = questionObj.correct_option
+                const questionPrompt = `${optionalText}\n${questionText}\n${optionsText}\nThe correct answer is ${correctOption}. Now state the answer and Give me short brief explanation`;
+                console.log(questionPrompt)
+                fetch('/generate-audio', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ question: questionPrompt })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.blob();
+                    } else {
+                        return response.text().then(text => {
+                            console.error("Response was not OK:", text);
+                            throw new Error("Error generating audio");
+                        });
+                    }
+                })
+                .then(blob => {
+                    audioBlob = blob;
+                    document.getElementById('loadingSpinner').style.display = 'none';
+                    document.getElementById('playAudioBtn').style.display = 'inline-block';
+                    audioCreated = true;
+                    generating = false
+                })
+                .catch(error => {
+                    console.error("Error:", error.message);
+                    alert("Failed to generate audio: " + error.message);
+                    document.getElementById('loadingSpinner').style.display = 'none';
+                    document.getElementById('generateAudioBtn').style.display = 'inline-block';
+                });
+            }
+            
+            async function playAudio() {
+                const filename = "one.mp3";
+                if (!filename) {
+                    alert("Please enter the filename.");
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`/get-audio/${filename}`);
+
+                    if (response.ok) {
+                        const blob = await response.blob();
+                        const url = window.URL.createObjectURL(blob);
+
+                        audioPlayer.src = url;
+                        audioPlayer.play();
+                        audioPlayer.style.display = 'block';
+                        document.getElementById('playAudioBtn').style.display = 'none';
+                        document.getElementById('pauseAudioBtn').style.display = 'inline-block';
+                    } else {
+                        const errorData = await response.json();
+                        alert(`Error: ${errorData.error}`);
+                    }
+                } catch (error) {
+                    console.error('Error fetching audio:', error);
+                    alert('An error occurred while fetching the audio.');
+                }
+            }
+
+            function pauseAudio() {
+                    audioPlayer.pause();
+                    document.getElementById('playAudioBtn').style.display = 'inline-block';
+                    document.getElementById('pauseAudioBtn').style.display = 'none';
+                }
+        
+                function closeModal() {
+                    audioPlayer.pause();
+                    document.getElementById('playAudioBtn').style.display = 'inline-block';
+                    document.getElementById('pauseAudioBtn').style.display = 'none';
+                    $('#myModal').modal('hide');
+                }
+        
+                // Add event listeners
+                
+        
+                
+        
+                // Event listener for quiz form submission
+                function submitQuestions() {
+                    const questions = document.querySelectorAll('.quiz-question');
+                    const submissions = [];
+                
+                    questions.forEach((questionElement, index) => {
+                        const selectedOption = questionElement.querySelector('input[type="radio"]:checked');
+                        if (selectedOption) {
+                            submissions.push({
+                                question_id: allQuestions[index].id, // Use your actual question ID here
+                                submitted_option: selectedOption.value
+                            });
+                        }else {
+                            submissions.push({
+                                question_id: allQuestions[index].id, // Use your actual question ID here
+                                submitted_option: ""
+                            });
+                        }
+                    });
+                
+                    if (submissions.length > 0) {
+                        // Send the data to the Flask route
+                        fetch('/past-questions/submit', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(submissions),
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            // Handle the response from the server
+                            console.log('Submission Response:', data);
+                            alert('Quiz submitted successfully!');
+                            
+                            // Update navigation buttons and check correct answers
+                            updateUIAfterSubmission(data);
+                
+                        })
+                        .catch((error) => {
+                            console.error('Error submitting quiz:', error);
+                            alert('There was an error submitting your quiz. Please try again.');
+                        });
+                    } else {
+                        alert('Please select an option for each question.');
+                    }
+                }
+            
+                document.getElementById('quiz').addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    submitQuestions()
+                });
+                
+                // Function to update navigation buttons and correct answers after submission
+                function updateUIAfterSubmission(resultData) {
+                    console.log(resultData)
+                    resultData.forEach((result, index) => {
+                        // Update navigation button color based on correctness
+                        const navButton = document.getElementById('navButtons').children[index];
+                        if (result.is_correct) {
+                            navButton.classList.remove('btn-outline-primary');
+                            navButton.classList.add('btn-green');  // Correct -> Green
+                        } else {
+                            navButton.classList.remove('btn-outline-primary');
+                            navButton.classList.add('btn-danger');  // Incorrect -> Red
+                        }
+                
+                        // Mark correct answer in the quiz
+                        const questionElement = document.getElementById(`question-${index}`);
+                        const correctOption = result.correct_option;
+                
+                        questionElement.querySelectorAll('input[type="radio"]').forEach((optionElement) => {
+                            optionElement.disabled = true;
+                            if (optionElement.value === correctOption) {
+                                optionElement.checked = true;  // Mark the correct answer
+                                optionElement.parentNode.classList.add('text-success');  // Highlight correct answer
+                            } else if (optionElement.checked && optionElement.value !== correctOption) {
+                                optionElement.parentNode.classList.add('text-danger');  // Highlight wrong selected option
+                            }
+                        });
+                    });
+                }
+        </script>
+    </body>
+    </html>
