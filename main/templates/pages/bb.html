@@ -181,7 +181,7 @@
             
             <button id="startQuizButton" class="btn btn-primary mb-3">Start Quiz</button>
             <button onclick="location.reload()" class="btn btn-primary mb-3">Restart</button>
-            <div id="timer">Time Remaining: 10:00</div>
+            <div id="timer">Time Remaining: 60:00</div>
 
             <div id="navButtons"></div>
 
@@ -256,16 +256,14 @@
             let totalQuestions = 0;
             let audioCreated = false
             let timerInterval;
-            let timeRemaining = 10 * 60; // 10 minutes in seconds
+            let timeRemaining = 60 * 60; // 10 minutes in seconds
             let audioPlayer = document.getElementById('audioPlayer');
         
             document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('startQuizButton').addEventListener('click', startQuiz);
-                document.getElementById('myModal').addEventListener('show.bs.modal', openAIAssistant);
                 document.getElementById('generateAudioBtn').addEventListener('click', generateAudio);
                 document.getElementById('playAudioBtn').addEventListener('click', playAudio);
                 document.getElementById('pauseAudioBtn').addEventListener('click', pauseAudio);
-                document.getElementById('closeModalBtn').addEventListener('click', closeModal);
                 
             });
         
@@ -333,22 +331,24 @@
             // Function to truncate the text
             function truncateText(text, limit) {
                 if (text.length > limit) {
-                    return `${text.slice(0, limit)}... <span class="read-more" onclick="showMore('${text}')">Read more</span>`;
+                    const escapedText = text.replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/\n/g, '<br>');
+                    const res = text.slice(0, limit) + `... <span class="read-more" onclick='showMore("${escapedText}")'>Read more</span>`;
+                    return res;
                 }
                 return text;
             }
+            
 
             // Function to show the full text in a modal
             function showMore(fullText) {
                 const modalTextContent = document.getElementById('modalTextContent');
-                modalTextContent.textContent = fullText;
+                modalTextContent.innerHTML = fullText;
                 
                 // Open the modal
                 const modal = new bootstrap.Modal(document.getElementById('optionalTextModal'));
                 modal.show();
             }
 
-// Inject question data into the card
 
 
             function displayQuestions(questions) {
@@ -356,7 +356,6 @@
                 quizForm.innerHTML = '';
         
                 questions.forEach((question, index) => {
-                    console.log("CBT Questions", question)
                     const questionCard = document.createElement('div');
                     questionCard.className = 'card mb-6 quiz-question';
                     questionCard.id = `question-${index}`;
@@ -364,7 +363,7 @@
                     questionCard.innerHTML = `
                     <div class="card-body">
                         <h6>Question ${index + 1}</h6>
-                        <p id="optional-text-${index}">
+                        <p id="optional-text-${index}" data-fulltext="${question.optional_text}">
                             ${truncateText(question.optional_text, 100)}
                         </p>
                         <br>
@@ -377,7 +376,6 @@
                         `).join('')}
                     </div>
                 `;
-        
                     quizForm.appendChild(questionCard);
                 });
             }
@@ -456,7 +454,6 @@
                 const optionsText = questionObj.options.join("\n")
                 const correctOption = questionObj.correct_option
                 const questionPrompt = `${optionalText}\n${questionText}\n${optionsText}\nThe correct answer is ${correctOption}. Now state the answer and Give me short brief explanation`;
-                console.log(questionPrompt)
                 fetch('/generate-audio', {
                     method: 'POST',
                     headers: {
@@ -568,7 +565,6 @@
                         .then(response => response.json())
                         .then(data => {
                             // Handle the response from the server
-                            console.log('Submission Response:', data);
                             alert('Quiz submitted successfully!');
                             
                             // Update navigation buttons and check correct answers
@@ -591,7 +587,6 @@
                 
                 // Function to update navigation buttons and correct answers after submission
                 function updateUIAfterSubmission(resultData) {
-                    console.log(resultData)
                     resultData.forEach((result, index) => {
                         // Update navigation button color based on correctness
                         const navButton = document.getElementById('navButtons').children[index];
