@@ -147,7 +147,6 @@ def create_user():
 def resend_email(email):
     current_time = datetime.now(timezone.utc).isoformat()  # Ensure the timestamp is in UTC
     try:
-        print(email)
         verification_token = generate_verification_token()
         user = User.query.filter_by(email=email.strip()).first()
         verification_link = url_for('auth.verify_email', token=verification_token, _external=True)
@@ -165,7 +164,6 @@ def resend_email(email):
         return redirect(f'/verification-email-sent?email={email}')
 
     except Exception as e:
-        print(f"Error sending verification email: {e}")
         flash('Server timeout. Please try again later.', "danger")
         flash({
                 'time': current_time,
@@ -254,7 +252,6 @@ def login_user_():
         
         user.is_logged_in = True
         db.session.commit()
-        print("redirect success ===============")
         return redirect(f'/dashboard')
 
     return render_template('account/auth-login.html', messages=messages, page="login")
@@ -315,7 +312,6 @@ def reset_password(token):
                 email = data['email']
                 
                 # Find user and update password
-                print(email)
                 user = User.query.filter_by(email=email).first()
                 if user:
                     hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')

@@ -175,7 +175,6 @@ def update_performance(id, score):
 @croute_bp.route('/deleteperformance/<string:id>', methods=['POST'])
 @user_required
 def delete_performance(id):
-    print(id)
     performance = Performance.query.get(id)
     if not performance:
         flash('Performance not found.', 'warning')

@@ -57,7 +57,6 @@ class User(UserMixin, db.Model):
         return object_session(self).query(Group).with_parent(self).filter(Group.activated == True).all()
     
     def refer_user(self, referred_user):
-        print("referid", self.id, referred_user.id)
         referral = Referral(referrer_id=self.id, referred_id=referred_user.id)
         db.session.add(referral)
         db.session.commit()

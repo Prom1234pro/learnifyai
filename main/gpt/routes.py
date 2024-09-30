@@ -39,7 +39,6 @@ def generate_audio():
     if not os.path.exists(output_file):
         return jsonify({'error': 'Audio file could not be created'}), 500
 
-    print("audio is ready")
     return jsonify({'message': 'Audio generated successfully', 'file_path': filename}), 200
 
 

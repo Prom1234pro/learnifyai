@@ -163,7 +163,6 @@ def submit_quiz(course_id):
     user = User.query.get_or_404(session.get('user_id'))
     user_answers = []
     years = request.args.get('year')
-    print(years)
     questions_limit = request.args.get('questions', type=int, default=0)
 
     # Parse years if provided

@@ -31,7 +31,6 @@ def landing_page():
 
     #     mail.send(msg)
     # except Exception as e:
-    #     print(f"Error sending verification email: {e}")
     #     return redirect('/register')
     return render_template('pages/index.html')
 
@@ -51,19 +50,16 @@ if __name__ == '__main__':
 
 # @socketio.on('connect')
 # def handle_connect():
-#     print('Client connected')
 
 # @socketio.on('disconnect')
 # def handle_disconnect():
 #     user = session.get('user')
-#     print(user)
-#     print('Client disconnected')
+#     
 
 # @socketio.on('user-offline')
 # def handle_offline(id):
 #     user = User.query.get_or_404(id)
 #     user.is_logged_in = False
-#     print("Offline")
     # db.session.commit()
 
 

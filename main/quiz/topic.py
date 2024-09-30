@@ -2,7 +2,6 @@ from .models import db, Topic, Summary
 
 def create_topic(summaries, **kwargs):
     topic = Topic(**kwargs)
-    print(topic.id)
     db.session.add(topic)
     db.session.commit()
     for summary in summaries:

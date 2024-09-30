@@ -18,7 +18,6 @@ def create_past_questions(path):
     except json.JSONDecodeError:
         return jsonify({'error': 'Error decoding JSON file'}), 400
     
-    print(data)
     if isinstance(data, list):
         questions = []
         for item in data:
@@ -170,26 +169,20 @@ def convert_text_to_json2():
     if request.method == 'POST':
         data = request.get_json()  # Get JSON data from the request body
         text = data.get('text')    # Extract the text from the data
-        print(text)
-        # user_id = session.get('user_id')
-        # user = User.query.get_or_404(user_id)
+        user_id = session.get('user_id')
+        user = User.query.get_or_404(user_id)
         try:
             # is_valid, message = validate_format(text)
             # if not is_valid:
                 # return jsonify({'error': message}), 400
             
             json_data = read_text(text)  # Convert text to JSON
-            # directory = user.username
-            directory = "promise"
-            print("here 0")
+            directory = user.username
             json_file_path = os.path.join(directory, 'temp_data.json')
-            print("here 1")
             if not os.path.exists(directory):
                 os.makedirs(directory)
             with open(json_file_path, 'w') as json_file:
-                print("here 2")
                 json.dump(json_data, json_file, indent=4, separators=(',', ': '))
-            print("here 3")
             create_past_questions(json_file_path)
             return jsonify(json_data), 201
         except Exception as e:
@@ -228,7 +221,6 @@ def filter_past_questions():
         'topic': q.topic,
         'created_at': q.created_at
     } for q in past_questions]
-    print(result)
     return jsonify(result), 200
 
 
