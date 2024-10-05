@@ -39,6 +39,10 @@ def landing_page():
 def past_question():
     return render_template('pages/bb.html')
 
+@app.route('/cbt-calculator')
+@user_required
+def past_question_calc():
+    return render_template('pages/calc.html')
 
 @app.route('/admin-editor/create-quiz')
 @admin_required

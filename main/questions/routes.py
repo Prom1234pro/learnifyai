@@ -223,6 +223,41 @@ def filter_past_questions():
     } for q in past_questions]
     return jsonify(result), 200
 
+@question_bp.route('/past-questions/update-subject', methods=['GET'])
+@user_required
+def update_question_subject():
+    # Get the parameters for filtering and updating
+    school_code = request.args.get('school_code')
+    current_subject = request.args.get('current_subject')
+    new_subject = request.args.get('new_subject')
+    year = request.args.get('year')
+    school = request.args.get('school')
+
+    # Ensure all required parameters are provided
+    if not all([school_code, current_subject, new_subject, year, school]):
+        return jsonify({"error": "Missing required parameters"}), 400
+
+    # Filter past questions by the given parameters
+    query = PastQuestion.query.filter_by(
+        school_code=school_code,
+        subject=current_subject,
+        year=year,
+        school=school
+    )
+
+    # Check if any questions are found
+    past_questions = query.all()
+    if not past_questions:
+        return jsonify({"message": "No questions found for the specified filters"}), 404
+
+    # Update the subject for all the found questions
+    for q in past_questions:
+        q.subject = new_subject
+
+    # Commit the changes to the database
+    db.session.commit()
+
+    return jsonify({"message": f"Subject updated to '{new_subject}' for {len(past_questions)} questions"}), 200
 
 @question_bp.route('/past-questions/<int:id>', methods=['PUT'])
 @admin_required

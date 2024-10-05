@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f7f7f7;
+            font-family: Arial, sans-serif;
+        }
+        
+        .calculator {
+            width: 320px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        
+        #display {
+            width: 100%;
+            height: 60px;
+            font-size: 24px;
+            padding: 10px;
+            border: none;
+            text-align: right;
+            margin-bottom: 15px;
+            background-color: #eaeaea;
+        }
+        
+        .button-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .button-row:first-of-type .btn {
+            width: 32%;
+        }
+        
+        .btn {
+            width: 18%;
+            height: 50px;
+            font-size: 18px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: #ddd;
+        }
+        
+        .operator {
+            background-color: #f7c346;
+        }
+        
+        .operator:hover {
+            background-color: #e6b938;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <input type="text" id="display" disabled />
+
+        <div class="button-row">
+            <button class="btn" id="backspace">X</button>
+            <button class="btn" id="ce">CE</button>
+            <button class="btn" id="c">C</button>
+        </div>
+
+        <div class="button-row">
+            <button class="btn" id="mc">MC</button>
+            <button class="btn num" value="7">7</button>
+            <button class="btn num" value="8">8</button>
+            <button class="btn num" value="9">9</button>
+            <button class="btn operator" value="/">/</button>
+            <button class="btn" id="sqrt">sqrt</button>
+        </div>
+
+        <div class="button-row">
+            <button class="btn" id="ms">MS</button>
+            <button class="btn num" value="4">4</button>
+            <button class="btn num" value="5">5</button>
+            <button class="btn num" value="6">6</button>
+            <button class="btn operator" value="-">-</button>
+            <button class="btn" id="percent">%</button>
+        </div>
+
+        <div class="button-row">
+            <button class="btn" id="mr">MR</button>
+            <button class="btn num" value="1">1</button>
+            <button class="btn num" value="2">2</button>
+            <button class="btn num" value="3">3</button>
+            <button class="btn operator" value="*">*</button>
+            <button class="btn" id="reciprocal">1/x</button>
+        </div>
+
+        <div class="button-row">
+            <button class="btn" id="mPlus">M+</button>
+            <button class="btn num" value="0">0</button>
+            <button class="btn" id="plus-minus">+/-</button>
+            <button class="btn num" value=".">.</button>
+            <button class="btn operator" value="+">+</button>
+            <button class="btn" id="equals">=</button>
+        </div>
+    </div>
+
+    <script>
+        const display = document.getElementById('display');
+let memory = 0;
+let currentValue = '';
+let operator = '';
+let isCalculated = false;
+
+document.querySelectorAll('.num').forEach(button => {
+    button.addEventListener('click', () => {
+        if (isCalculated) {
+            currentValue = '';
+            isCalculated = false;
+        }
+        currentValue += button.value;
+        display.value = currentValue;
+    });
+});
+
+document.querySelectorAll('.operator').forEach(button => {
+    button.addEventListener('click', () => {
+        if (currentValue === '' && display.value !== '') {
+            currentValue = display.value;
+        }
+        operator = button.value;
+        currentValue += ` ${operator} `;
+        display.value = currentValue;
+    });
+});
+
+document.getElementById('equals').addEventListener('click', () => {
+    if (operator && currentValue) {
+        const result = eval(currentValue);
+        display.value = result;
+        currentValue = result;
+        isCalculated = true;
+    }
+});
+
+document.getElementById('c').addEventListener('click', () => {
+    currentValue = '';
+    display.value = '';
+    operator = '';
+});
+
+document.getElementById('backspace').addEventListener('click', () => {
+    currentValue = currentValue.slice(0, -1);
+    display.value = currentValue;
+});
+
+document.getElementById('ce').addEventListener('click', () => {
+    display.value = '';
+});
+
+document.getElementById('sqrt').addEventListener('click', () => {
+    if (display.value) {
+        display.value = Math.sqrt(parseFloat(display.value)).toString();
+        currentValue = display.value;
+    }
+});
+
+document.getElementById('reciprocal').addEventListener('click', () => {
+    if (display.value) {
+        display.value = (1 / parseFloat(display.value)).toString();
+        currentValue = display.value;
+    }
+});
+
+document.getElementById('percent').addEventListener('click', () => {
+    if (display.value) {
+        display.value = (parseFloat(display.value) / 100).toString();
+        currentValue = display.value;
+    }
+});
+
+document.getElementById('plus-minus').addEventListener('click', () => {
+    if (display.value) {
+        display.value = (parseFloat(display.value) * -1).toString();
+        currentValue = display.value;
+    }
+});
+
+// Memory Functions (MC, MS, MR, M+)
+document.getElementById('mc').addEventListener('click', () => memory = 0);
+document.getElementById('ms').addEventListener('click', () => memory = parseFloat(display.value));
+document.getElementById('mr').addEventListener('click', () => display.value = memory.toString());
+document.getElementById('mPlus').addEventListener('click', () => memory += parseFloat(display.value));
+
+    </script>
+</body>
+</html>

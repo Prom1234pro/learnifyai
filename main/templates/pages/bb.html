@@ -57,6 +57,9 @@
                 background-color: #696cff;
                 color: white;
             }
+            #navButtons {
+                display: none; /* Hide by default */
+              }
     
             .no-quiz-message {
                 display: flex;
@@ -93,6 +96,17 @@
                 justify-content: center;
                 align-items: center;
                 transition: background-color 0.3s;
+            }
+
+            #toggleButton {
+                position: fixed;
+                bottom: 100px;
+                right: 20px;
+            }
+            #calcButton {
+                position: fixed;
+                bottom: 150px;
+                right: 20px;
             }
             .u-show {
                 position: fixed;
@@ -183,6 +197,8 @@
             <button onclick="location.reload()" class="btn btn-primary mb-3">Restart</button>
             <div id="timer">Time Remaining: 120:00</div>
 
+            <a href="cbt-calculator" target="_blank" id="calcButton" class="btn btn-label-primary">Calculator</a>
+            <button id="toggleButton" class="btn btn-label-primary">Show Numbers</button>
             <div id="navButtons"></div>
 
             <div class="row dp-none">
@@ -192,15 +208,15 @@
                     <div class="d-flex justify-content-between mt-4">
                         <!-- <button id="previousButton" onclick="prev()" type="button" class="btn btn-label-secondary">
                             <i class="bi bi-chevron-left"></i> Previous
-                        </button>
-                        <button id="nextButton" onclick="next()" type="button" class="btn btn-label-primary">
-                            Next <i class="bi bi-chevron-right"></i>
                         </button> -->
                         <button id="submitButton" type="submit" class="btn btn-success" style="display: none;">
                             Submit <i class="bi bi-check"></i>
                         </button>
                     </div>
-                    </form>
+                </form>
+                <button id="nextButton" type="button" class="btn btn-label-primary">
+                    Next <i class="bi bi-chevron-right"></i>
+                </button>
                 </div>
             </div>
 
@@ -264,8 +280,26 @@
                 document.getElementById('generateAudioBtn').addEventListener('click', generateAudio);
                 document.getElementById('playAudioBtn').addEventListener('click', playAudio);
                 document.getElementById('pauseAudioBtn').addEventListener('click', pauseAudio);
+
+                const toggleButton = document.getElementById('toggleButton');
+                const nextButton = document.getElementById('nextButton');
+                const navButtons = document.getElementById('navButtons');
+                toggleButton.addEventListener('click', function() {
+                    if (navButtons.style.display === "none") {
+                        navButtons.style.display = "block";
+                        toggleButton.textContent = "Hide Numbers"; // Update button text
+                      } else {
+                        navButtons.style.display = "none";
+                        toggleButton.textContent = "Show Numbers"; // Update button text
+                      }
+                });
+                nextButton.addEventListener("click", function(){
+                    currentQuestion++;
+                    showQuestion(currentQuestion)
+                })
                 
             });
+
         
             async function startQuiz() {
                 document.getElementById('startQuizButton').disabled = true;
@@ -337,6 +371,7 @@
                 }
                 return text;
             }
+            
             
 
             // Function to show the full text in a modal
