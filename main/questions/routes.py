@@ -330,3 +330,53 @@ def delete_past_question(id):
     db.session.delete(question)
     db.session.commit()
     return jsonify({"message": "Question deleted successfully!"}), 200
+
+
+@question_bp.route('/past-questions/rhema', methods=['GET'])
+@user_required
+def filter_hardcoded_past_questions():
+    school_code = 999998
+    subject = "unibenSOCMAG"
+    year = 2009
+    optional_text = "From the options A - D, choose the EMPHATIC stress written in capital letters to which the given sentence is the appropriate answer."
+
+    # Query to filter based on these hardcoded values
+    query = PastQuestion.query.filter_by(
+        school_code=school_code,
+        subject=subject,
+        year=year
+    ).filter(PastQuestion.optional_text.ilike(f"%{optional_text}%"))
+
+    # Fetch the filtered past questions
+    past_questions = query.all()
+
+    # Prepare the result for JSON response
+    school_code = 999998
+    subject = "unibenARTLAW"
+    year = 2022
+
+    query2 = PastQuestion.query
+    if school_code:
+        query2 = query2.filter_by(school_code=school_code)
+    if subject:
+        query2 = query2.filter_by(subject=subject)
+    if year:
+        query2 = query2.filter_by(year=year)
+
+    past_questions1 = query2.all()
+    result = [{
+        'id': q.id,
+        'question': q.question,
+        'options': q.options,
+        'correct_option': q.correct_option,
+        'optional_text': q.optional_text,
+        'year': q.year,
+        'school_code': q.school_code,
+        'school': q.school,
+        'subject': q.subject,
+        'topic': q.topic,
+        'created_at': q.created_at
+    } for q in past_questions1[1:] + past_questions]
+
+    # Return the result as JSON
+    return jsonify(result), 200
