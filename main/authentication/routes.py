@@ -363,6 +363,12 @@ def logout():
     session.clear()
     return redirect('/login-user')
 
+@a_route_bp.route('/maintenance')
+def maintenance():
+    #add reload functions here
+    return render_template('account/maintenance.html')
+
+
 @a_route_bp.route('/groups/remove_user', methods=['POST'])
 def remove_user_from_group():
     data = request.get_json()
