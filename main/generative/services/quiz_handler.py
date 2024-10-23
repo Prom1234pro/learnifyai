@@ -13,12 +13,9 @@ class QuizService:
     def execute(self, topic):
         parsed_quiz = None
         try:
-
             response = self.model.generate_content(topic)
             quiz_data = response.text
-
             json_pattern = re.compile(r"\{.*\}", re.DOTALL)
-
             match = json_pattern.search(quiz_data)
 
             if match:

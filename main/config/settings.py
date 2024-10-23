@@ -26,6 +26,7 @@ class DevConfig(BaseConfig):
     MAIL_PORT = 465
     MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
     MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
+    MAX_CONTENT_LENGTH = 10 * 1024 * 1024 
     MAIL_USE_TLS = False
     MAIL_USE_SSL = True
     # SQLALCHEMY_DATABASE_URI = 'postgresql://db_user:db_password@db-postgres:5432/flask-deploy'
@@ -43,6 +44,7 @@ class ProductionConfig(BaseConfig):
     UPLOAD_FOLDER = 'main/static/media'
     MAIL_SERVER = os.environ.get("MAIL_SERVER")
     MAIL_PORT = 465
+    MAX_CONTENT_LENGTH = 10 * 1024 * 1024 
     MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
     MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
     MAIL_USE_TLS = False
