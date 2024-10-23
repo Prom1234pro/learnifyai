@@ -2,15 +2,13 @@ from concurrent.futures import ThreadPoolExecutor
 from io import BytesIO
 from PyPDF2 import PdfReader
 import google.generativeai as genai
-import os
 
 class DocumentService:
     """Handles both regular and scanned PDFs with text extraction and OCR."""
 
-    def __init__(self, max_workers=4):
-        self.max_workers = max_workers
-        genai.configure(api_key=os.getenv('GOOGLE_API_KEY'))
-        self.model = genai.GenerativeModel(model_name="models/gemini-1.5-flash-002")
+    def __init__(self, model):
+        self.max_workers = 4
+        self.model = model
 
     def extract_page_text(self, reader, page_num):
         """Extract text from a single page of a regular PDF."""

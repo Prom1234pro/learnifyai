@@ -12,6 +12,7 @@ class AudioConfig(BaseConfig):
     pass
 
 class DocumentConfig(BaseConfig):
+    model_name="models/gemini-1.5-flash-002"
     system_instruction = (
         "You are provided with a topic. Your task is to analyze the material and generate questions "
          "strictly based on the topic.\n"
